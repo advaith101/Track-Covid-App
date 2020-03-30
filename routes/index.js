@@ -12,4 +12,19 @@ router.get('/dashboard', ensureAuthenticated, (req, res) =>
   })
 );
 
+// Admin Dashboard
+router.get('/admindashboard', ensureAuthenticated, (req, res) =>
+  res.render('admindashboard', {
+    user: req.user
+  })
+);
+
+// router.get(
+//   '/admin-dashboard',
+//   passport.authenticate('jwt', { failureRedirect: '/login' }),
+//   User.admin,
+//   (req, res) => {
+//     return handle(req, res)
+//   }
+// )
 module.exports = router;

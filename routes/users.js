@@ -77,13 +77,27 @@ router.post('/register', (req, res) => {
 });
 
 // Login
-router.post('/login', (req, res, next) => {
+// router.post('/login', (req, res, next) => {
+//   passport.authenticate('local', {
+//     successRedirect: '/dashboard',
+//     failureRedirect: '/users/login',
+//     failureFlash: true
+//   })(req, res, next);
+// });
+router.post(
+  '/login',
   passport.authenticate('local', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/users/login',
+    failureRedirect: '/login',
     failureFlash: true
-  })(req, res, next);
-});
+  }), (req, res) => {
+    if (req.user.admin === true) {
+      res.redirect('/admindashboard');
+    }
+    if (req.user.admin === false) {
+      res.redirect('/dashboard');
+    }
+  });
+
 
 // Logout
 router.get('/logout', (req, res) => {
@@ -91,5 +105,7 @@ router.get('/logout', (req, res) => {
   req.flash('success_msg', 'You are logged out');
   res.redirect('/users/login');
 });
+
+
 
 module.exports = router;
