@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
+
 var Schema = mongoose.Schema;
 
 class Absence {
@@ -73,6 +75,10 @@ const UserSchema = Schema({
   }
 });
 
+UserSchema.plugin(mongoosePaginate);
+
 const User = mongoose.model('User', UserSchema);
+
+User.paginate().then({})
 
 module.exports = User;
