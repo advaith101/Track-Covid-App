@@ -8,8 +8,12 @@ async function getUserByEmail(email) {
   return await UserModel.findOne({ email }).exec()
 }
 
-async function getUserByProviderId(providerId) {
-  return await UserModel.findOne({ providerId }).exec()
+async function getUserByName(name) {
+  return await UserModel.findOne({ name }).exec()
 }
 
-export { getUserById, getUserByEmail, getUserByProviderId }
+async function getUsersByLocation(location) {
+  return await UserModel.findOne({ location }).exec()
+}
+
+export { getUserById, getUserByEmail, getUserByName }

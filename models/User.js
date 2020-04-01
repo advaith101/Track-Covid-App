@@ -72,6 +72,18 @@ const UserSchema = Schema({
   currentAbsence: {
     type: Absence,
     default: new Absence()
+  },
+  company: {
+    type: String,
+    default: "Sherwin-Williams Co."
+  },
+  location: {
+    type: String,
+    default: "New York, NY"
+  },
+  department: {
+    type: String,
+    default: "Human Resources"
   }
 });
 
