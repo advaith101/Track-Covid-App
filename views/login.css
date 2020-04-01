@@ -39,6 +39,7 @@ body {
     border-radius: 12px;
     border: 1px solid #ededed;
     background-color: #ededed;
+    text-indent:20px;
 }
 
 .username-textfield::placeholder {
@@ -60,6 +61,7 @@ body {
     border-radius: 12px;
     border: 1px solid #ededed;
     background-color: #ededed;
+    text-indent:20px;
 }
 
 .password-textfield::placeholder {
@@ -81,6 +83,10 @@ body {
     border: 1px solid #9b8ec8;
     background-color: #9b8fc9;
 }
+
+.button:hover {
+    background-color: #685C96;
+  }
 
 .button-text {
     margin: auto;
