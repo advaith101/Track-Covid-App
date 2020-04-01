@@ -22,8 +22,7 @@ body {
 
 .login {
     margin: auto;
-    margin-top: 10px;
-
+    margin-top: 70px;
     width: 83px;
     height: 38px;
     color: #707070;
@@ -33,7 +32,8 @@ body {
 }
 
 .username-textfield {
-    padding-top: 50;
+    margin: auto;
+    margin-top: 40px;
     width: 400px;
     height: 50px;
     border-radius: 12px;
@@ -41,7 +41,19 @@ body {
     background-color: #ededed;
 }
 
+.username-textfield::placeholder {
+    padding-left: 15px;
+    width: 83px;
+    height: 22px;
+    color: #707070;
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 100;
+  }
+
 .password-textfield {
+    margin: auto;
+    margin-top: 25px;
     padding-top: 20;
     width: 400px;
     height: 50px;
@@ -50,7 +62,19 @@ body {
     background-color: #ededed;
 }
 
+.password-textfield::placeholder {
+    padding-left: 15px;
+    width: 83px;
+    height: 22px;
+    color: #707070;
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 100;
+  }
+
 .button {
+    margin: auto;
+    margin-top: 30px;
     width: 177px;
     height: 41px;
     border-radius: 12px;
