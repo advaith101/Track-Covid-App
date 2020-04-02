@@ -1,1 +1,10 @@
-node_modules
+.DS_Store
+node_modules/
+npm-debug.log
+.idea/
+dump.rdb
+.vscode/
+dist
+coverage/
+.nyc_output/
+yarn.lock

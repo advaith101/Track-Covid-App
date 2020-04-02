@@ -7,6 +7,9 @@ const session = require('express-session');
 
 const app = express();
 
+// Mounting static files in public folder
+app.use(express.static(__dirname + '/public'));
+
 // Passport Config
 require('./config/passport')(passport);
 

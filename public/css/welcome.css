@@ -1,0 +1,35 @@
+body {
+    background-color: #f0eff4;
+}
+
+.vertical-center {
+    min-height: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.register-button {
+    border: 1px solid #9b8ec8;
+    background-color: #9b8fc9;
+}
+
+.register-button:hover {
+    border: 1px solid #685C96;
+    background-color: #685C96;
+}
+
+.register-button:active {
+    border: 1px solid #685C96;
+    background-color: #685C96;
+}
+
+.register-button:focus {
+    border: 1px solid #685C96;
+    background-color: #685C96;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    border: 1px solid #685C96 !important;
+    background-color: #8064A2 !important;
+}
