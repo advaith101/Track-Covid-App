@@ -1,4 +1,5 @@
 const express = require('express');
+var path = require('path');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
@@ -7,7 +8,7 @@ const User = require('../models/User');
 const { forwardAuthenticated } = require('../config/auth');
 
 // Login Page
-router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
+router.get('/login', forwardAuthenticated, (req, res) => res.render('login.ejs'));
 
 // Register Page
 router.get('/register', forwardAuthenticated, (req, res) => res.render('register'));
