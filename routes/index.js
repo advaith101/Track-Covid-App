@@ -19,31 +19,35 @@ router.get('/dashboard', ensureAuthenticated, (req, res, next) =>
 );
 
 // Admin Dashboard
-router.get('/admindashboard', ensureAuthenticated, (req, res, next) => {
-  var dataArray = [];
-  var cursor = User.find();
-  cursor.forEach(function(doc, err) {
-    assert.equals(null, err);
-    dataArray.push(doc);
-  }, function() {
-    res.render('/admindashboard', {
-      userData: dataArray
-    });
-  });
-});
+// router.get('/admindashboard', ensureAuthenticated, (req, res, next) => {
+//   var dataArray = [];
+//   var cursor = User.find();
+//   cursor.forEach(function(doc, err) {
+//     assert.equals(null, err);
+//     dataArray.push(doc);
+//   }, function() {
+//     res.render('/admindashboard', {
+//       userData: dataArray
+//     });
+//   });
+// });
 
-// router.get('/admindashboard', ensureAuthenticated, (req, res, next) =>
-//   res.render('adminndashboard', {
-//     user: req.user
-//   })
-// );
+router.get('/admindashboard', ensureAuthenticated, (req, res, next) =>
+  res.render('admindashboard', {
+    userData: User.find().cursor()
+  })
+);
 
-// router.get(
-//   '/admin-dashboard',
-//   passport.authenticate('jwt', { failureRedirect: '/login' }),
-//   User.admin,
-//   (req, res) => {
-//     return handle(req, res)
-//   }
-// )
+
+
+// Create Absence
+router.get('/createabsence', (req, res, next) =>
+  res.render('/createabsence', {
+    user: req.user
+  })
+);
+
+
+
+
 module.exports = router;

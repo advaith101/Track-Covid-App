@@ -23,6 +23,7 @@ mongoose
   .catch(err => console.log(err));
 
 // EJS
+app.set('views', __dirname + '/views')
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 

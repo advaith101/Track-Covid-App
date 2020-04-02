@@ -1,0 +1,68 @@
+[
+    {
+        "id": "1",
+        "name": "Jack White",
+        "email": "jack@white.com",
+        "location": "Boston, MA",
+        "department": "HR",
+        "absence": {
+            "start_date": "03/24/2020",
+            "end_date": "03/28/2020",
+            "reason_code": "COVID-19",
+            "current": "True" 
+        }
+    },
+
+    {
+        "id": "2",
+        "name": "John Snow",
+        "email": "john@snow.com",
+        "location": "New York, NY",
+        "department": "Software",
+        "absence": {
+            "start_date": "03/24/2020",
+            "end_date": "03/29/2020",
+            "reason_code": "COVID-19",
+            "current": "True" 
+        }
+    },
+    {
+        "id": "3",
+        "name": "Josh Rafaeli",
+        "email": "josh@rafaeli.com",
+        "location": "Boston, MA",
+        "department": "HR",
+        "absence": {
+            "start_date": "03/24/2020",
+            "end_date": "03/28/2020",
+            "reason_code": "COVID-19",
+            "current": "True" 
+        }
+    },
+    {
+        "id": "4",
+        "name": "Jason Saul",
+        "email": "jason@saul.com",
+        "location": "Boston, MA",
+        "department": "HR",
+        "absence": {
+            "start_date": "03/24/2020",
+            "end_date": "03/28/2020",
+            "reason_code": "COVID-19",
+            "current": "True" 
+        }
+    },
+    {
+        "id": "1",
+        "name": "Ron Wesley",
+        "email": "ron@wesley.com",
+        "location": "New York, NY",
+        "department": "Software",
+        "absence": {
+            "start_date": "03/24/2020",
+            "end_date": "03/28/2020",
+            "reason_code": "Quarantine - not sick",
+            "current": "True" 
+        }
+    }
+]
