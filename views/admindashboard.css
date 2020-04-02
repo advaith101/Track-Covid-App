@@ -1,0 +1,479 @@
+.mediaViewInfo {
+    --web-view-name: Web 1920 – 3;
+    --web-view-id: Web_1920___3;
+    --web-scale-on-resize: true;
+    --web-enable-deep-linking: true;
+}
+:root {
+    --web-view-ids: Web_1920___3;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+}
+#Web_1920___3 {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    background-color: rgba(255,255,255,1);
+    overflow: hidden;
+    --web-view-name: Web 1920 – 3;
+    --web-view-id: Web_1920___3;
+    --web-scale-on-resize: true;
+    --web-enable-deep-linking: true;
+}
+@keyframes fadein {
+
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+
+}
+#Group_27 {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    left: 0px;
+    top: 0px;
+    overflow: visible;
+}
+.Rectangle_1 {
+    position: absolute;
+    overflow: visible;
+    width: 1920px;
+    height: 1080px;
+    left: 0px;
+    top: 0px;
+}
+#Name_bf {
+    position: absolute;
+    left: 136px;
+    top: 277px;
+    overflow: visible;
+    width: 341px;
+    height: 34px;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 26px;
+    color: rgba(112,112,112,1);
+}
+#Employee_ID {
+    position: absolute;
+    left: 426px;
+    top: 277px;
+    overflow: visible;
+    width: 341px;
+    height: 34px;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 26px;
+    color: rgba(112,112,112,1);
+}
+#Leave_Reason {
+    position: absolute;
+    left: 724px;
+    top: 277px;
+    overflow: visible;
+    width: 341px;
+    height: 34px;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 26px;
+    color: rgba(112,112,112,1);
+}
+#Location {
+    position: absolute;
+    left: 1264px;
+    top: 277px;
+    overflow: visible;
+    width: 341px;
+    height: 34px;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 26px;
+    color: rgba(112,112,112,1);
+}
+#View_Report {
+    position: absolute;
+    left: 1592px;
+    top: 277px;
+    overflow: visible;
+    width: 186px;
+    height: 34px;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 26px;
+    color: rgba(112,112,112,1);
+}
+#Name_bf {
+    position: absolute;
+    left: 136px;
+    top: 277px;
+    overflow: visible;
+    width: 341px;
+    height: 34px;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 26px;
+    color: rgba(112,112,112,1);
+}
+#Days_on_Leave {
+    position: absolute;
+    left: 1015px;
+    top: 277px;
+    overflow: visible;
+    width: 341px;
+    height: 34px;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 26px;
+    color: rgba(112,112,112,1);
+}
+#Employees_on_Leave {
+    position: absolute;
+    left: 107px;
+    top: 183px;
+    overflow: hidden;
+    width: 436px;
+    height: 34px;
+    text-align: left;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 35px;
+    color: rgba(112,112,112,1);
+}
+.Rectangle_18 {
+    position: absolute;
+    overflow: visible;
+    width: 416px;
+    height: 55px;
+    left: 1397px;
+    top: 181px;
+}
+#Filter_by {
+    position: absolute;
+    left: 1419px;
+    top: 192px;
+    overflow: visible;
+    width: 114px;
+    height: 34px;
+    text-align: left;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 26px;
+    color: rgba(112,112,112,1);
+}
+.ic_expand_less_24px {
+    overflow: visible;
+    position: absolute;
+    width: 12px;
+    height: 7.41px;
+    transform: matrix(1,0,0,1,1777,205) rotate(180deg);
+    transform-origin: center;
+    left: 0px;
+    top: 0px;
+}
+#Sherwin_Williams_Co_ {
+    position: absolute;
+    left: 1393px;
+    top: 74px;
+    overflow: visible;
+    width: 421px;
+    height: 49px;
+    text-align: right;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 35px;
+    color: rgba(112,112,112,1);
+}
+#Component_1___29 {
+    position: absolute;
+    width: 667px;
+    height: 61px;
+    left: 627px;
+    top: 565px;
+    overflow: visible;
+}
+.Rectangle_19 {
+    position: absolute;
+    overflow: visible;
+    width: 667px;
+    height: 61px;
+    left: 0px;
+    top: 0px;
+}
+#Nothing_to_show {
+    position: absolute;
+    left: 839px;
+    top: 577px;
+    overflow: visible;
+    width: 243px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 33px;
+    color: rgba(112,112,112,1);
+}
+#Component_1___42 {
+    position: absolute;
+    width: 177px;
+    height: 41px;
+    left: 508px;
+    top: 186px;
+    overflow: visible;
+}
+.Rectangle_19_bq {
+    position: absolute;
+    overflow: visible;
+    width: 177px;
+    height: 41px;
+    left: 0px;
+    top: 0px;
+}
+#New_Entry {
+    position: absolute;
+    left: 553px;
+    top: 196px;
+    overflow: visible;
+    width: 89px;
+    white-space: nowrap;
+    text-align: left;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    color: rgba(255,255,255,1);
+}
+#Group_28 {
+    position: absolute;
+    width: 145px;
+    height: 36px;
+    left: 1236px;
+    top: 192px;
+    overflow: visible;
+}
+#Component_1___43 {
+    position: absolute;
+    width: 145px;
+    height: 36px;
+    left: 0px;
+    top: 0px;
+    overflow: visible;
+}
+.Rectangle_19_bu {
+    position: absolute;
+    overflow: visible;
+    width: 145px;
+    height: 36px;
+    left: 0px;
+    top: 0px;
+}
+#Remove_Filters {
+    position: absolute;
+    left: 14px;
+    top: 8px;
+    overflow: visible;
+    width: 119px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    color: rgba(112,112,112,1);
+}
+#Component_1___47 {
+    position: absolute;
+    width: 667px;
+    height: 61px;
+    left: 258px;
+    top: 55px;
+    overflow: visible;
+}
+.Rectangle_19_bx {
+    position: absolute;
+    overflow: visible;
+    width: 667px;
+    height: 61px;
+    left: 0px;
+    top: 0px;
+}
+.ic_search_24px {
+    overflow: visible;
+    position: absolute;
+    width: 28.251px;
+    height: 26.425px;
+    left: 287.67px;
+    top: 72px;
+    transform: matrix(1,0,0,1,0,0);
+}
+#Search {
+    position: absolute;
+    left: 343px;
+    top: 75px;
+    overflow: visible;
+    width: 67px;
+    height: 22px;
+    text-align: left;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    color: rgba(112,112,112,1);
+}
+#ic_view_headline_24px {
+    position: absolute;
+    width: 37.377px;
+    height: 32.705px;
+    left: 107px;
+    top: 76px;
+    overflow: visible;
+}
+.ic_view_headline_24px_b {
+    overflow: visible;
+    position: absolute;
+    width: 37.377px;
+    height: 32.705px;
+    left: 0px;
+    top: 0px;
+    transform: matrix(1,0,0,1,0,0);
+}
+.ic_home_24px {
+    overflow: visible;
+    position: absolute;
+    width: 44.884px;
+    height: 38.151px;
+    left: 179.71px;
+    top: 70.553px;
+    transform: matrix(1,0,0,1,0,0);
+}
+#Group_29 {
+    position: absolute;
+    width: 246px;
+    height: 61px;
+    left: 949px;
+    top: 55px;
+    overflow: visible;
+    --web-animation: fadein 0.3s ease-out;
+    --web-action-type: page;
+    --web-action-target: Web_1920___9.html;
+    cursor: pointer;
+}
+#Component_1___48 {
+    position: absolute;
+    width: 246px;
+    height: 61px;
+    left: 0px;
+    top: 0px;
+    overflow: visible;
+}
+.Rectangle_19_b {
+    position: absolute;
+    overflow: visible;
+    width: 246px;
+    height: 61px;
+    left: 0px;
+    top: 0px;
+}
+#Update_Employee_List {
+    position: absolute;
+    left: 21px;
+    top: 19px;
+    overflow: visible;
+    width: 205px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: rgba(255,255,255,1);
+}
+#Group_30 {
+    position: absolute;
+    width: 602px;
+    height: 24px;
+    left: 659px;
+    top: 748px;
+    overflow: visible;
+}
+#or_click_the__Update_Employee_ {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    overflow: visible;
+    width: 603px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: rgba(112,112,112,1);
+}
+#Group_31 {
+    position: absolute;
+    width: 379px;
+    height: 61px;
+    left: 784px;
+    top: 660px;
+    overflow: visible;
+    --web-animation: fadein 0.3s ease-out;
+    --web-action-type: page;
+    --web-action-target: Web_1920___9.html;
+    cursor: pointer;
+}
+#Component_1___55 {
+    position: absolute;
+    width: 379px;
+    height: 61px;
+    left: 0px;
+    top: 0px;
+    overflow: visible;
+}
+.Rectangle_19_cb {
+    position: absolute;
+    overflow: visible;
+    width: 379px;
+    height: 61px;
+    left: 0px;
+    top: 0px;
+}
+#Click_to_Upload_Employee_List_ {
+    position: absolute;
+    left: 47px;
+    top: 18px;
+    overflow: visible;
+    width: 285px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: rgba(255,255,255,1);
+}

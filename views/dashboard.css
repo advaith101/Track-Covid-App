@@ -1,0 +1,242 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+}
+#Web_1920___8 {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    background-color: rgba(255,255,255,1);
+    overflow: hidden;
+    --web-view-name: Web 1920 – 8;
+    --web-view-id: Web_1920___8;
+    --web-scale-on-resize: true;
+    --web-enable-deep-linking: true;
+}
+@keyframes fadein {
+
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+
+}
+.Rectangle_1 {
+    position: absolute;
+    overflow: visible;
+    width: 1920px;
+    height: 1080px;
+    left: 0px;
+    top: 0px;
+}
+#Sherwin_Williams_Co_ {
+    position: absolute;
+    left: 1393px;
+    top: 74px;
+    overflow: visible;
+    width: 421px;
+    height: 49px;
+    text-align: right;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 35px;
+    color: rgba(112,112,112,1);
+}
+#Current_Leave {
+    position: absolute;
+    left: 107px;
+    top: 187px;
+    overflow: visible;
+    width: 436px;
+    height: 42px;
+    text-align: left;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 35px;
+    color: rgba(112,112,112,1);
+}
+#Component_1___91 {
+    position: absolute;
+    width: 667px;
+    height: 61px;
+    left: 258px;
+    top: 55px;
+    overflow: visible;
+}
+.Rectangle_19 {
+    position: absolute;
+    overflow: visible;
+    width: 667px;
+    height: 61px;
+    left: 0px;
+    top: 0px;
+}
+.ic_search_24px {
+    overflow: visible;
+    position: absolute;
+    width: 28.251px;
+    height: 26.425px;
+    left: 287.67px;
+    top: 72px;
+    transform: matrix(1,0,0,1,0,0);
+}
+#Search {
+    position: absolute;
+    left: 343px;
+    top: 75px;
+    overflow: visible;
+    width: 67px;
+    height: 22px;
+    text-align: left;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    color: rgba(112,112,112,1);
+}
+#ic_view_headline_24px {
+    position: absolute;
+    width: 37.377px;
+    height: 32.705px;
+    left: 107px;
+    top: 76px;
+    overflow: visible;
+}
+.ic_view_headline_24px_bg {
+    overflow: visible;
+    position: absolute;
+    width: 37.377px;
+    height: 32.705px;
+    left: 0px;
+    top: 0px;
+    transform: matrix(1,0,0,1,0,0);
+}
+.ic_home_24px {
+    overflow: visible;
+    position: absolute;
+    width: 44.884px;
+    height: 38.151px;
+    left: 179.709px;
+    top: 70.553px;
+    transform: matrix(1,0,0,1,0,0);
+}
+.Line_12 {
+    overflow: visible;
+    position: absolute;
+    width: 1705.5px;
+    height: 2px;
+    left: 107.5px;
+    top: 397.5px;
+    transform: matrix(1,0,0,1,0,0);
+}
+#Past_Leave_Periods {
+    position: absolute;
+    left: 107px;
+    top: 421px;
+    overflow: visible;
+    width: 436px;
+    height: 42px;
+    text-align: left;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 35px;
+    color: rgba(112,112,112,1);
+}
+.Line_13 {
+    overflow: visible;
+    position: absolute;
+    width: 1705.5px;
+    height: 2px;
+    left: 107.5px;
+    top: 486.5px;
+    transform: matrix(1,0,0,1,0,0);
+}
+.Polygon_1 {
+    overflow: hidden;
+    position: absolute;
+    width: 30px;
+    height: 19px;
+    transform: matrix(1,0,0,1,1737,433) rotate(180deg);
+    transform-origin: center;
+    left: 0px;
+    top: 0px;
+    --web-animation: fadein 0.3s ease-out;
+    --web-action-type: page;
+    --web-action-target: Web_1920___17.html;
+    cursor: pointer;
+}
+#Group_35 {
+    position: absolute;
+    width: 358px;
+    height: 61px;
+    left: 1455px;
+    top: 168px;
+    overflow: visible;
+}
+#Component_1___92 {
+    position: absolute;
+    width: 358px;
+    height: 61px;
+    left: 0px;
+    top: 0px;
+    overflow: visible;
+}
+.Rectangle_19_bo {
+    position: absolute;
+    overflow: visible;
+    width: 358px;
+    height: 61px;
+    left: 0px;
+    top: 0px;
+}
+#Submit_New_Leave_Request {
+    position: absolute;
+    left: 51px;
+    top: 19px;
+    overflow: visible;
+    width: 257px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    color: rgba(255,255,255,1);
+}
+#Component_1___103 {
+    position: absolute;
+    width: 667px;
+    height: 61px;
+    left: 627px;
+    top: 288px;
+    overflow: visible;
+}
+.Rectangle_19_br {
+    position: absolute;
+    overflow: visible;
+    width: 667px;
+    height: 61px;
+    left: 0px;
+    top: 0px;
+}
+#You_don_t_have_an_active_leave {
+    position: absolute;
+    left: 736px;
+    top: 300px;
+    overflow: visible;
+    width: 449px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 33px;
+    color: rgba(112,112,112,1);
+}
