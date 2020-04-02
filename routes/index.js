@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const mongo = require('mongodb');
 const User = require('../models/User');
 var assert = require('assert');
 
