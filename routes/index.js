@@ -34,6 +34,7 @@ router.get('/dashboard', ensureAuthenticated, (req, res, next) =>
 
 router.get('/admindashboard', ensureAuthenticated, (req, res, next) =>
   res.render('admindashboard', {
+    user: req.user,
     userData: User.find().cursor()
   })
 );
