@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
+
 var Schema = mongoose.Schema;
 
 class Absence {
@@ -73,18 +74,18 @@ const UserSchema = Schema({
     type: Absence,
     default: new Absence()
   },
-  // company: {
-  //   type: String,
-  //   default: "Sherwin-Williams Co."
-  // },
-  // location: {
-  //   type: String,
-  //   default: "New York, NY"
-  // },
-  // department: {
-  //   type: String,
-  //   default: "Human Resources"
-  // }
+  company: {
+    type: String,
+    default: "Sherwin-Williams Co."
+  },
+  location: {
+    type: String,
+    default: "New York, NY"
+  },
+  department: {
+    type: String,
+    default: "Human Resources"
+  }
 });
 
 UserSchema.plugin(mongoosePaginate);
