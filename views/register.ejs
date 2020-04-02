@@ -1,4 +1,5 @@
-<div class="row mt-5">
+<link href="/css/register.css" rel="stylesheet" type="text/css">
+<div class="row mt-5 vertical-center">
   <div class="col-md-6 m-auto">
     <div class="card card-body">
       <h1 class="text-center mb-3">
@@ -50,11 +51,11 @@
             value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
           />
         </div>
-        <button type="submit" class="btn btn-primary btn-block">
+        <button type="submit" class="btn btn-primary btn-block register-button">
           Register
         </button>
       </form>
-      <p class="lead mt-4">Have An Account? <a href="/users/login">Login</a></p>
+      <p class="lead mt-4">Have An Account? <a href="/users/login" class="login-button">Login</a></p>
     </div>
   </div>
 </div>
