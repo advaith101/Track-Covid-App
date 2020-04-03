@@ -220,7 +220,26 @@
                                     <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                                     <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                                 </td>
-                            </tr>      
+                            </tr>  
+                            
+                            
+                            <% employeeList.forEach(function(employee){ %>
+                                <tr>
+                                        <td><%=employee.name %></td>
+                                        <td><%=employee.reason %><</td>
+                                        <td>Atlanta, GA</td>
+                                        <td>Research and Development</td>
+                                        <td><%=employee.startDate %></td>
+                                        <td><%=employee.endDate %></td>
+                                        <td>
+                                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                        </td>
+                                </tr>
+                            <%});%>
+
+
                         </tbody>
                     </table>
                 </div>

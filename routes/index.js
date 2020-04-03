@@ -9,7 +9,12 @@ const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 // Welcome Page
 router.get('/', forwardAuthenticated, (req, res) => res.render('welcome'));
 
-var absenceList = [{reason:"sick", startDate:"01/01/1901", endDate:"02/02/2020"}]
+var absenceList = [{name: "swaraj", reason:"sick", startDate:"01/01/1901", endDate:"02/02/2020"}]
+var employeeList = []
+
+// function filterByLocation(location)
+// function filterByDepartment(department)
+// function filterByReason(reason)
 
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, (req, res, next) =>{
@@ -23,11 +28,27 @@ router.get('/dashboard', ensureAuthenticated, (req, res, next) =>{
 );
 
 router.post('/dashboard', (req, res) => {
+  const name = req.body.name;
   const reason = req.body.leavereason;
   const startDate = req.body.startDate;
   const endDate = req.body.endDate;
-  const newAbsence = {reason:reason, startDate:startDate, endDate:endDate};
+  const newAbsence = {name: name, reason:reason, startDate:startDate, endDate:endDate};
+
+
+  // 1. init query list []
+  // 2. destructure post req 
+  // 3. if desatructed not nil or whatever add to query list
+  // 4. below function on query list
+
+// {  copylist
+//   for quer in qieryes
+//     copy.filter ($.location =quer )
+//     [].filter ()
+//   return coply}
+
   absenceList.push(newAbsence);
+  employeeList.push(newAbsence);
+  console.log(employeeList.toString());
   console.log("dashboard posting");
   res.render('dashboard', {
     user: req.user,
@@ -37,6 +58,23 @@ router.post('/dashboard', (req, res) => {
   })
 }
 );
+
+// {/* <button onClick="sortByReason(button.text)" >Reason</button>
+//       -> covid19
+//       -> flu
+//       <button onClick="sortByCovid(button.text)" >Reason</button>
+
+//       function sortByCovid {
+//         sortByReason("covid")
+//       }
+  
+// function sortByReason(reason) {
+//   newArray = employeeList // copy 
+//   newArray.filter ($.name == reason);
+//   // rerender 
+//   delete class
+
+// } */}
 
 // Admin Dashboard
 // router.get('/admindashboard', ensureAuthenticated, (req, res, next) => {
@@ -55,7 +93,8 @@ router.post('/dashboard', (req, res) => {
 router.get('/admindashboard', ensureAuthenticated, (req, res, next) =>
   res.render('admindashboard', {
     user: req.user,
-    userData: User.find().cursor()
+    userData: User.find().cursor(),
+    employeeList: employeeList
   })
 );
 

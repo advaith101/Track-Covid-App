@@ -90,7 +90,7 @@ router.post('/register', (req, res) => {
 router.post(
   '/login',
   passport.authenticate('local', {
-    failureRedirect: '/login',
+    failureRedirect: '/users/login',
     failureFlash: true
   }), (req, res) => {
     if (req.user.admin === true) {
