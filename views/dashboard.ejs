@@ -2,7 +2,6 @@
 <p class="lead mb-3">Welcome <%= user.name %> </p>
 <a href="/users/logout" class="btn btn-secondary">Logout</a>
 <a href="/users/createabsence" class="btn btn-secondary">Create/Update Absence</a>
-<h1>Leave Records</h1>
 <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -108,9 +107,8 @@
                 $(this).attr("disabled", "disabled");
                 var index = $("table tbody tr:last-child").index();
                 var row = '<tr>' +
-                    '<td><input type="text" class="form-control" name="name" id="name"></td>' +
-                    '<td><input type="text" class="form-control" name="department" id="department"></td>' +
-                    '<td><input type="text" class="form-control" name="phone" id="phone"></td>' +
+                    '<td><input type="text" class="form-control" name="reasoncode" id="name"></td>' +
+                    '<td><input type="text" class="form-control" name="dates" id="department"></td>' +
                     '<td>' + actions + '</td>' +
                 '</tr>';
                 $("table").append(row);		
@@ -159,7 +157,7 @@
                 <div class="table-wrapper">
                     <div class="table-title">
                         <div class="row">
-                            <div class="col-sm-8"><h2>Employee <b>Details</b></h2></div>
+                            <div class="col-sm-8"><h2>Leave <b>Records</b></h2></div>
                             <div class="col-sm-4">
                                 <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
                             </div>
@@ -169,16 +167,14 @@
                         <thead>
                             <tr>
                                 <th>Leave Reason</th>
-                                <th>Department</th>
-                                <th>Phone</th>
+                                <th>Dates</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>John Doe</td>
-                                <td>Administration</td>
-                                <td>(171) 555-2222</td>
+                                <td>Quarantine - not sick</td>
+                                <td>03/22/2020 - 04/01/2020</td>
                                 <td>
                                     <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                                     <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
@@ -186,9 +182,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Peter Parker</td>
-                                <td>Customer Service</td>
-                                <td>(313) 555-5735</td>
+                                <td>COVID-19</td>
+                                <td>04/01/2020 - 04/20/2020</td>
                                 <td>
                                     <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                                     <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
@@ -196,9 +191,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Fran Wilson</td>
-                                <td>Human Resources</td>
-                                <td>(503) 555-9931</td>
+                                <td>Other Illness</td>
+                                <td>05/20/2020 - 06/01/2020</td>
                                 <td>
                                     <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                                     <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
