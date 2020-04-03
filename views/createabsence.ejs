@@ -1,12 +1,17 @@
 <h1>Create Absence</h1>
-<form>
+<form action="/dashboard" method="POST">
   <label for="name">Legal Name:</label><br>
   <input type="text" id="name" name="name"><br>
+  <label for="startDate">Start Date:</label><br>
+  <input type="text" id="startDate" name="startDate"><br>
+  <label for="endDate">End Date:</label><br>
+  <input type="text" id="endDate" name="endDate"><br>
   <label for="leavereason">Leave Reason</label><br>
-  <select id="leavereason">
+  <select id="leavereason" name="leavereason">
     <option value="Quarantine">Quarantine - not sick</option>
-    <option value="COVID">Saab</option>
-    <option value="Flu">Mercedes</option>
-    <option value="Other Illness">Audi</option>
+    <option value="COVID">COVID-19</option>
+    <option value="Flu">Flu</option>
+    <option value="Other Illness">Other Illness</option>
   </select>
+  <button type="submit" class="btn btn-primary btn-block login-button">Submit</button>
 </form>

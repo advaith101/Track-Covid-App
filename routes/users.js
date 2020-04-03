@@ -109,6 +109,7 @@ router.get('/logout', (req, res) => {
   res.redirect('/users/login');
 });
 
+
 // Create Absence
 router.get('/createabsence', (req, res, next) =>
   res.render('createabsence', {
