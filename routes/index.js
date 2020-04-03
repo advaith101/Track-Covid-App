@@ -9,12 +9,10 @@ const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 // Welcome Page
 router.get('/', forwardAuthenticated, (req, res) => res.render('welcome'));
 
-var absenceList = [{name: "swaraj", reason:"sick", startDate:"01/01/1901", endDate:"02/02/2020"}]
-var employeeList = []
+var absenceList = [{name: "swaraj", reason:"sick", startDate:"01/01/1901", endDate:"02/02/2020"}];
+var employeeList = [];
+var queries = [];
 
-// function filterByLocation(location)
-// function filterByDepartment(department)
-// function filterByReason(reason)
 
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, (req, res, next) =>{
@@ -33,19 +31,6 @@ router.post('/dashboard', (req, res) => {
   const startDate = req.body.startDate;
   const endDate = req.body.endDate;
   const newAbsence = {name: name, reason:reason, startDate:startDate, endDate:endDate};
-
-
-  // 1. init query list []
-  // 2. destructure post req 
-  // 3. if desatructed not nil or whatever add to query list
-  // 4. below function on query list
-
-// {  copylist
-//   for quer in qieryes
-//     copy.filter ($.location =quer )
-//     [].filter ()
-//   return coply}
-
   absenceList.push(newAbsence);
   employeeList.push(newAbsence);
   console.log(employeeList.toString());
@@ -101,11 +86,26 @@ router.get('/admindashboard', ensureAuthenticated, (req, res, next) =>
 
 
 // Create Absence
-router.get('/createabsence', (req, res, next) =>
-  res.render('/createabsence', {
-    user: req.user
-  })
-);
+// router.get('/createabsence', (req, res, next) =>
+//   res.render('/createabsence', {
+//     user: req.user
+//   })
+// );
+
+
+
+
+
+  // 1. init query list []
+  // 2. destructure post req 
+  // 3. if desatructed not nil or whatever add to query list
+  // 4. below function on query list
+
+// {  copylist
+//   for quer in qieryes
+//     copy.filter ($.location =quer )
+//     [].filter ()
+//   return coply}
 
 
 

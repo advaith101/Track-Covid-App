@@ -1,0 +1,32 @@
+<h1>Specify Filter Criteria</h1>
+<form action="/admindashboard" method="POST">
+
+  <label for="name">Name:</label><br>
+  <input type="text" id="name" name="name"><br>
+
+  <label for="location">Location</label><br>
+  <select id="location" name="location">
+    <option value="newyork">New York, NY</option>
+    <option value="atlanta">Atlanta, GA</option>
+    <option value="boston">Boston, MA</option>
+    <option value="chicago">Chicago, IL</option>
+  </select>
+
+  <label for="department">Department</label><br>
+  <select id="department" name="department">
+    <option value="hr">Human Resources</option>
+    <option value="software">Software</option>
+    <option value="rnd">Research and Development</option>
+    <option value="marketing">Marketing</option>
+  </select>
+  
+  <label for="leavereason">Leave Reason</label><br>
+  <select id="leavereason" name="leavereason">
+    <option value="Quarantine">Quarantine - not sick</option>
+    <option value="COVID">COVID-19</option>
+    <option value="Flu">Flu</option>
+    <option value="Other Illness">Other Illness</option>
+  </select>
+
+  <button type="submit" class="btn btn-primary btn-block login-button">Submit</button>
+</form>
