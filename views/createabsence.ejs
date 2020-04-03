@@ -1,17 +1,57 @@
-<h1>Create Absence</h1>
-<form action="/dashboard" method="POST">
-  <label for="name">Legal Name:</label><br>
-  <input type="text" id="name" name="name"><br>
-  <label for="startDate">Start Date:</label><br>
-  <input type="text" id="startDate" name="startDate"><br>
-  <label for="endDate">End Date:</label><br>
-  <input type="text" id="endDate" name="endDate"><br>
-  <label for="leavereason">Leave Reason</label><br>
-  <select id="leavereason" name="leavereason">
-    <option value="Quarantine">Quarantine - not sick</option>
-    <option value="COVID">COVID-19</option>
-    <option value="Flu">Flu</option>
-    <option value="Other Illness">Other Illness</option>
-  </select>
-  <button type="submit" class="btn btn-primary btn-block login-button">Submit</button>
-</form>
+<link href="/css/createabsence.css" rel="stylesheet" type="text/css">
+<div class="row mt-5 vertical-center">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h1 class="text-center mb-3">
+        <i class="fas"></i> Create Absence
+      </h1>
+      <form action="/dashboard" method="POST">
+        <div class="form-group">
+          <label for="name">Legal Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="form-control"
+            placeholder="Enter Name"
+            value="<%= typeof name != 'undefined' ? name : '' %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="startDate">Start Date:</label>
+          <input
+            type="text"
+            id="startDate"
+            name="startDate"
+            class="form-control"
+            placeholder="Enter Start Date (i.e. 01/01/2020)"
+            value="<%= typeof startDate != 'undefined' ? startDate : '' %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="endDate">End Date</label>
+          <input
+            type="text"
+            id="endDate"
+            name="endDate"
+            class="form-control"
+            placeholder="Enter End Date (i.e. 01/01/2020)"
+            value="<%= typeof endDate != 'undefined' ? endDate : '' %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="leavereason">Pick Reason for Leave</label>
+          <select id="leavereason" name="leavereason" class="form-control">
+            <option value="Quarantine">Quarantine - not sick</option>
+            <option value="COVID">COVID-19</option>
+            <option value="Flu">Flu</option>
+            <option value="Other Illness">Other Illness</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block register-button">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
