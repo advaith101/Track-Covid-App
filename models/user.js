@@ -1,0 +1,35 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const UserSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+      type: String,
+      required: true
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    date: {
+      type: Date,
+      default: Date.now
+    },
+    admin: {
+      type: Boolean,
+      default: false
+    },
+    absences: {
+      type: [Absence],
+      default: [new Absence()], 
+    },
+    currentAbsence: {
+      type: Absence,
+      default: new Absence()
+    }
+});
+
+module.exports = User = mongoose.model('User', UserSchema);
