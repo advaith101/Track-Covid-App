@@ -1,22 +1,15 @@
 import React, { Component } from 'react';
 import { Container, ListGroup, ListGroupItem, Button, Table } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-const { v4: uuidv4 } = require('uuid');
 
 class EmployeeAbsenceList extends Component {
     state = {
         data: [],
         displayedData: [],
-        absences: [
-            {id: uuidv4(), name: 'Nick' },
-            {id: uuidv4(), name: 'Jakob' },
-            {id: uuidv4(), name: 'Advaith' },
-            {id: uuidv4(), name: 'swaraj' },
-        ]
     }
 
     render() {
-        const { absences } = this.state;
+        const { data } = this.state;
         return(
             <Container>
 
@@ -27,7 +20,7 @@ class EmployeeAbsenceList extends Component {
                     const name = prompt('Enter name');
                     if(name) {
                         this.setState(state => ({
-                            absences: [...state.absences, { id: uuidv4(), name }]
+                            data: [...state.data, { name }]
                         }));
                     }
                 }}>New Entry
@@ -54,7 +47,7 @@ class EmployeeAbsenceList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {absences.map(({id, name}) => (
+                        {data.map(({id, name}) => (
                             <tr>
                             <td>{name}</td>
                             <td>leave reason</td>
@@ -64,7 +57,7 @@ class EmployeeAbsenceList extends Component {
                             <td>yes/no</td>
                             <td><Button>View</Button></td>
                             </tr>
-                        ))}
+                        ))};
                     </tbody>
                 </Table>
             </Container>
