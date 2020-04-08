@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// NOTE: `id` will correspond to the User.email property
+
 const AbsenceSchema = new Schema({
     id: {
-        type: Number,
-        required: true
-    },
-    associatedUsersEmail: {
         type: String,
         required: true
     },

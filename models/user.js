@@ -21,14 +21,6 @@ const UserSchema = new Schema({
     admin: {
       type: Boolean,
       default: false
-    },
-    absences: {
-      type: [Absence],
-      default: [new Absence()], 
-    },
-    currentAbsence: {
-      type: Absence,
-      default: new Absence()
     }
 });
 
