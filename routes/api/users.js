@@ -7,7 +7,7 @@ const User = require('../../models/User');
 // @route   GET api/users
 // @desc    Get a user using email (email serves as a user id)
 // @access  Public
-router.get('/', (req, res) => {
+router.post('/', (req, res) => {
     User.find({ email: req.body.email })    
         .then(user => res.json(user))
         .catch(err => console.log('User not found. Error:' + err));

@@ -1,18 +1,62 @@
 import React, { Component } from 'react';
-import { Container, ListGroup, ListGroupItem, Button, Table } from 'reactstrap';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { Container, Button, Table } from 'reactstrap';
+const axios = require('axios')
+
+// TODO: move to a utils folder
+export function formattedDate(date) {
+    let year = date.getFullYear();
+    let month = (1 + date.getMonth()).toString().padStart(2, '0');
+    let day = date.getDate().toString().padStart(2, '0');
+    return month + '/' + day + '/' + year;
+}
+
+// TODO: move to a utils folder
+export function formattedDateSpanFromAbsence(absence) {
+    const formattedStartDate = formattedDate(new Date(absence.startDate));
+    const formattedEndDate = absence.current ? 'Present' : formattedDate(new Date(absence.endDate));
+    return  formattedStartDate + ' - ' + formattedEndDate;
+}
 
 class EmployeeAbsenceList extends Component {
     state = {
-        data: [],
-        displayedData: [],
+        viewModels: []
+    }
+
+    getUser(email) {
+        return axios.post("/api/users", {email});
+    }
+    
+    componentDidMount() {
+        axios.get(`/api/absences/all`).then(res => {
+            const data = res.data;
+
+            const userPromises = data.map(async absence => {
+                return this.getUser(absence.id).then(response => {
+                    const user = {...response.data[0]};
+                    console.log(user);
+                    const viewModel = {
+                        user: {
+                            name: user.name,
+                            location: user.location,
+                            department: user.department
+                        },
+                        absence: absence
+                    };
+                    return viewModel;
+                });
+            })
+
+            Promise.all(userPromises).then(viewModels => {
+                console.log(viewModels);
+                this.setState({ viewModels });
+            });
+
+        });
     }
 
     render() {
-        const { data } = this.state;
         return(
             <Container>
-
                 <Button
                 color="dark"
                 style={{marginBottom: '2rem'}}
@@ -35,7 +79,7 @@ class EmployeeAbsenceList extends Component {
                 </Button>
 
                 <Table hover>
-                    <thead class="thead-dark">
+                    <thead className="thead-dark">
                         <tr>
                         <th>Name</th>
                         <th>Leave Reason</th>
@@ -47,17 +91,17 @@ class EmployeeAbsenceList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map(({id, name}) => (
-                            <tr>
-                            <td>{name}</td>
-                            <td>leave reason</td>
-                            <td>date range</td>
-                            <td>location</td>
-                            <td>department</td>
-                            <td>yes/no</td>
+                        {this.state.viewModels.map((viewModel) => (
+                            <tr key={viewModel.absence.id}>
+                            <td>{viewModel.user.name}</td>
+                            <td>{viewModel.absence.reason}</td>
+                            <td>{formattedDateSpanFromAbsence(viewModel.absence)}</td>
+                            <td>{viewModel.user.location}</td>
+                            <td>{viewModel.user.department}</td>
+                            <td>{viewModel.absence.processed ? 'Yes' : 'No'}</td>
                             <td><Button>View</Button></td>
                             </tr>
-                        ))};
+                        ))}
                     </tbody>
                 </Table>
             </Container>
@@ -67,27 +111,3 @@ class EmployeeAbsenceList extends Component {
 }
 
 export default EmployeeAbsenceList;
-
-                // {/* <ListGroup>
-                //     <TransitionGroup className="employee-absence-list">
-                //         {absences.map(({id, name}) => (
-                //             <CSSTransition key={id} timeout={500} classNames="fade">
-                //                 <ListGroupItem>
-                //                 {name}
-                //                 <Button
-                //                     className="remove-btn"
-                //                     color="danger"
-                //                     size="sm"
-                //                     onClick={() => {
-                //                         this.setState(state => ({
-                //                             absences: state.absences.filter(absence => absence.id !== id)
-                //                         }));
-                //                     }}
-                //                 >&times;</Button>
-                //                 </ListGroupItem>
-                //             </CSSTransition>
-                //         ))}
-                //     </TransitionGroup>
-                // </ListGroup>  */}
-
-
