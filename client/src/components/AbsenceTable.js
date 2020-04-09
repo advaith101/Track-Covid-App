@@ -17,7 +17,7 @@ export function formattedDateSpanFromAbsence(absence) {
     return  formattedStartDate + ' - ' + formattedEndDate;
 }
 
-class EmployeeAbsenceList extends Component {
+class AbsenceTable extends Component {
     state = {
         viewModels: []
     }
@@ -54,6 +54,64 @@ class EmployeeAbsenceList extends Component {
         });
     }
 
+    employeeTable() {
+        return (
+            <Table hover>
+            <thead className="thead-dark">
+                <tr>
+                <th>Leave Reason</th>
+                <th>Date of Absence</th>
+                <th>View Report</th>
+                </tr>
+            </thead>
+            <tbody>
+                {this.state.viewModels.map((viewModel) => (
+                    <tr key={viewModel.absence.id}>
+                    <td>{viewModel.absence.reason}</td>
+                    <td>{formattedDateSpanFromAbsence(viewModel.absence)}</td>
+                    <td><Button>View</Button></td>
+                    </tr>
+                ))}
+            </tbody>
+            </Table>
+        );
+    }
+
+    adminTable() {
+        return (
+            <Table hover>
+            <thead className="thead-dark">
+                <tr>
+                <th>Name</th>
+                <th>Leave Reason</th>
+                <th>Date of Absence</th>
+                <th>Location</th>
+                <th>Department</th>
+                <th>Processed</th>
+                <th>View Report</th>
+                </tr>
+            </thead>
+            <tbody>
+                {this.state.viewModels.map((viewModel) => (
+                    <tr key={viewModel.absence.id}>
+                    <td>{viewModel.user.name}</td>
+                    <td>{viewModel.absence.reason}</td>
+                    <td>{formattedDateSpanFromAbsence(viewModel.absence)}</td>
+                    <td>{viewModel.user.location}</td>
+                    <td>{viewModel.user.department}</td>
+                    <td>{viewModel.absence.processed ? 'Yes' : 'No'}</td>
+                    <td><Button>View</Button></td>
+                    </tr>
+                ))}
+            </tbody>
+            </Table>
+        );
+    }
+
+    tableForType(userType) {
+        return (userType === 'admin' ? this.adminTable() : this.employeeTable());
+    }
+
     render() {
         return(
             <Container>
@@ -77,37 +135,12 @@ class EmployeeAbsenceList extends Component {
                     // Pop up modal with form
                 }}>Add Absence
                 </Button>
+                {this.tableForType(this.props.userType)}
 
-                <Table hover>
-                    <thead className="thead-dark">
-                        <tr>
-                        <th>Name</th>
-                        <th>Leave Reason</th>
-                        <th>Date of Absence</th>
-                        <th>Location</th>
-                        <th>Department</th>
-                        <th>Processed</th>
-                        <th>View Report</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.viewModels.map((viewModel) => (
-                            <tr key={viewModel.absence.id}>
-                            <td>{viewModel.user.name}</td>
-                            <td>{viewModel.absence.reason}</td>
-                            <td>{formattedDateSpanFromAbsence(viewModel.absence)}</td>
-                            <td>{viewModel.user.location}</td>
-                            <td>{viewModel.user.department}</td>
-                            <td>{viewModel.absence.processed ? 'Yes' : 'No'}</td>
-                            <td><Button>View</Button></td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
             </Container>
         );
     }
 
 }
 
-export default EmployeeAbsenceList;
+export default AbsenceTable;

@@ -10,7 +10,7 @@ import {
     Container
 } from 'reactstrap';
 
-class AppNavbar extends Component {
+class DashboardHeader extends Component {
     state = {
         isOpen: false
     }
@@ -26,7 +26,7 @@ class AppNavbar extends Component {
             <div>
                 <Navbar color="dark" dark expand="sm" className="mb-5">
                     <Container>
-                        <NavbarBrand href="/">Employee Absences</NavbarBrand>
+                        <NavbarBrand href="/">{this.props.barTitle}</NavbarBrand>
                         <NavbarToggler onClick={this.toggle}/>
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className="ml-auto" navbar>
@@ -40,8 +40,6 @@ class AppNavbar extends Component {
             </div>
         );
     }
-
-
 }
 
-export default AppNavbar;
+export default DashboardHeader;
