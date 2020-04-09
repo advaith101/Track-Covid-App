@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Container, Button, Table } from 'reactstrap';
-import FilterModal from './FilterModal'
+import FilterModal from './FilterModal';
+import CreateAbsence from './CreateAbsence';
 const axios = require('axios');
+
 
 
 // TODO: move to a utils folder
@@ -68,24 +70,27 @@ class AbsenceTable extends Component {
 
     employeeTable() {
         return (
-            <Table hover>
-            <thead className="thead-dark">
-                <tr>
-                <th>Leave Reason</th>
-                <th>Date of Absence</th>
-                <th>View Report</th>
-                </tr>
-            </thead>
-            <tbody>
-                {this.state.viewModels.map((viewModel) => (
-                    <tr key={viewModel.id}>
-                    <td>{viewModel.reason}</td>
-                    <td>{formattedDateSpanFromAbsence(viewModel)}</td>
-                    <td><Button>View</Button></td>
-                    </tr>
-                ))}
-            </tbody>
-            </Table>
+            <Fragment>
+                <CreateAbsence />
+                <Table hover>
+                    <thead className="thead-dark">
+                        <tr>
+                        <th>Leave Reason</th>
+                        <th>Date of Absence</th>
+                        <th>View Report</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.viewModels.map((viewModel) => (
+                            <tr key={viewModel.id}>
+                            <td>{viewModel.reason}</td>
+                            <td>{formattedDateSpanFromAbsence(viewModel)}</td>
+                            <td><Button>View</Button></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </Fragment>
         );
     }
 
