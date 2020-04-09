@@ -7,16 +7,16 @@ const Absence = require('../../models/Absence');
 // @route   GET api/absences
 // @desc    Get an absence
 // @access  Public
-router.get('/', (req, res) => {
+router.post('/', (req, res) => {
     Absence.find({ id: req.body.email })    
         .then(absence => res.json(absence))
         .catch(err => console.log('Absence not found. Error:' + err));
 });
 
-// @route   POST api/absences
+// @route   POST api/absences/create
 // @desc    Create an absence
 // @access  Public
-router.post('/', (req, res) => {
+router.post('/create', (req, res) => {
     const newAbsence = new Absence({
         id: req.body.id,
         startDate: req.body.startDate,

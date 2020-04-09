@@ -3,23 +3,17 @@ const mongoose = require('mongoose');
 
 const users = require('./routes/api/users');
 const absences = require('./routes/api/absences');
-
 const passport = require('passport');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 const app = express();
 
 // For JSON Parsing 
 app.use(express.json());
 
-// Passport
-// app.use(passport.initialize())
-// app.use(passport.session()) // calls the deserializeUser
-// Passport Config
-// require('./config/passport')(passport);
+require('./config/passport')(passport);
 
-// // Passport middleware
-// app.use(passport.initialize());
-// app.use(passport.session());
 
 // DB Config
 const db = require('./config/keys').mongoURI;
@@ -28,6 +22,32 @@ const db = require('./config/keys').mongoURI;
 mongoose.connect(db)
     .then(() => console.log('\nMongoDB Connected...'))
     .catch(err => console.log(err));
+
+app.use(express.urlencoded({ extended: true }));
+
+// Express session
+app.use(
+    session({
+      secret: 'secret',
+      resave: true,
+      saveUninitialized: true
+    })
+  );
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Connect flash
+app.use(flash());
+
+// Global variables
+app.use(function(req, res, next) {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  next();
+});
 
 // Use routes
 app.use('/api/users', users);

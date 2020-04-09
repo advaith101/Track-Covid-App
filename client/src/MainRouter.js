@@ -22,7 +22,7 @@ class MainRouter extends Component {
 
                     <Route exact path="/dashboard">
                         <DashboardHeader barTitle="Employee Dashboard"/>
-                        <AbsenceTable  userType="employee"/>
+                        <AbsenceTable  userType="employee" name="Goti" email="zx2q5890lm@gmail.com"/>
                     </Route>
 
                 </Switch>

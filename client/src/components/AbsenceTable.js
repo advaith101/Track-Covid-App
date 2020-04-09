@@ -27,31 +27,41 @@ class AbsenceTable extends Component {
     }
     
     componentDidMount() {
-        axios.get(`/api/absences/all`).then(res => {
-            const data = res.data;
-
-            const userPromises = data.map(async absence => {
-                return this.getUser(absence.id).then(response => {
-                    const user = {...response.data[0]};
-                    console.log(user);
-                    const viewModel = {
-                        user: {
-                            name: user.name,
-                            location: user.location,
-                            department: user.department
-                        },
-                        absence: absence
-                    };
-                    return viewModel;
-                });
-            })
-
-            Promise.all(userPromises).then(viewModels => {
-                console.log(viewModels);
-                this.setState({ viewModels });
+        if(this.props.userType === "employee") {
+            axios.post("/api/absences/", {email: this.props.email}).then(res => {
+                const data = res.data;
+                this.setState({ viewModels: data });
             });
 
-        });
+        } else {
+            // Fetch data for admin
+            axios.get(`/api/absences/all`).then(res => {
+                const data = res.data;
+    
+                const userPromises = data.map(async absence => {
+                    return this.getUser(absence.id).then(response => {
+                        const user = {...response.data[0]};
+                        console.log(user);
+                        const viewModel = {
+                            user: {
+                                name: user.name,
+                                location: user.location,
+                                department: user.department
+                            },
+                            absence: absence
+                        };
+                        return viewModel;
+                    });
+                })
+    
+                Promise.all(userPromises).then(viewModels => {
+                    console.log(viewModels);
+                    this.setState({ viewModels });
+                });
+    
+            });
+        }
+
     }
 
     employeeTable() {
@@ -66,9 +76,9 @@ class AbsenceTable extends Component {
             </thead>
             <tbody>
                 {this.state.viewModels.map((viewModel) => (
-                    <tr key={viewModel.absence.id}>
-                    <td>{viewModel.absence.reason}</td>
-                    <td>{formattedDateSpanFromAbsence(viewModel.absence)}</td>
+                    <tr key={viewModel.id}>
+                    <td>{viewModel.reason}</td>
+                    <td>{formattedDateSpanFromAbsence(viewModel)}</td>
                     <td><Button>View</Button></td>
                     </tr>
                 ))}

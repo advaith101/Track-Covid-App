@@ -21,9 +21,15 @@ class Login extends Component {
     }
 
     handleSubmit() {
+        let config = {
+            headers: { 'Content-Type': 'application/json' },
+            responseType: 'json'
+          };
+          
+
         console.log('Email: ' + this.state.email);
         console.log('Password: ' + this.state.password);
-        axios.post('/api/users/login', {data: {email: this.state.email, password: this.state.password}, crossDomain:true}).then(res => console.log(res)).catch(err => console.error(err));
+        axios.post('/api/users/login', { data : {email: this.state.email, password: this.state.password}}, config).then(res => console.log(res)).catch(err => console.error(err));
     }
 
     handleChange(event) {

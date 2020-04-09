@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+//const passport = require('../../config/passport');
 const passport = require('passport');
+const { forwardAuthenticated } = require('../../config/auth');
 
 // User Model
 const User = require('../../models/User');
@@ -63,7 +65,7 @@ router.get('/all', (req, res) => {
 router.post(
     '/login',
     passport.authenticate('local', {
-      failureRedirect: '/login',
+      failureRedirect: '/',
       failureFlash: true
     }), (req, res) => {
 
