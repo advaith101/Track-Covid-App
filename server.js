@@ -3,12 +3,15 @@ const mongoose = require('mongoose');
 
 const users = require('./routes/api/users');
 const absences = require('./routes/api/absences');
+const filter = require('./routes/api/filter');
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
+var cors = require('cors')
 
 const app = express();
 
+app.use(cors())
 // For JSON Parsing 
 app.use(express.json());
 
@@ -52,6 +55,7 @@ app.use(function(req, res, next) {
 // Use routes
 app.use('/api/users', users);
 app.use('/api/absences', absences);
+app.use('/api/filter', filter);
 
 const port = process.env.PORT || 5000;
 

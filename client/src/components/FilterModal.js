@@ -3,29 +3,47 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, La
 
 
 const FilterModal = (props) => {
-  const {
-    buttonLabel,
-    className
-  } = props;
+  // const {
+  //   className
+  // } = props;
 
   const [modal, setModal] = useState(false);
 
   const toggle = () => setModal(!modal);
 
+  const handleSubmit = () => {
+    setModal(!modal)
+
+    props.handleFiltering(filterQuery)
+
+  }
+
+  var filterQuery = {
+    userQuery: {
+      email: ""
+      // location: "",
+      // department: ""
+    },
+    absenceQuery: {
+      // reason: ""
+    }
+  }
+
   return (
     <div>
-      <Button color="dark" style={{marginBottom: '2rem'}} onClick={toggle}>Filter</Button>
-      <Modal isOpen={modal} toggle={toggle} className={className}>
+      <Button color="dark" style={{marginBottom: '2rem'}} onClick={toggle} className="float-right">Filter</Button>
+      <Modal isOpen={modal} toggle={toggle} >
         <ModalHeader toggle={toggle}>Specify Filter Criteria</ModalHeader>
         <ModalBody>
             <Form>
                 <FormGroup>
                     <Label for="name">Name</Label>
-                    <Input type="name" name="name" id="name" placeholder="Enter Name" />
+                    <Input type="name" name="name" id="name" placeholder="Enter Name" onChange={e => filterQuery.userQuery.email = e.target.value}/>
                 </FormGroup>
                 <FormGroup>
                     <Label for="location">Select Location</Label>
-                    <Input type="select" name="location" id="location">
+                    <Input type="select" name="location" id="location" onChange={e => filterQuery.userQuery.location = e.target.value}>
+                    <option>--</option>
                     <option>Boston, MA</option>
                     <option>New York, NY</option>
                     <option>Atlanta, GA</option>
@@ -33,7 +51,8 @@ const FilterModal = (props) => {
                 </FormGroup>
                 <FormGroup>
                     <Label for="department">Select Department</Label>
-                    <Input type="select" name="department" id="department">
+                    <Input type="select" name="department" id="department" onChange={e => filterQuery.userQuery.department = e.target.value}>
+                    <option>--</option>
                     <option>Human Resources</option>
                     <option>Software</option>
                     <option>Research and Development</option>
@@ -41,7 +60,8 @@ const FilterModal = (props) => {
                 </FormGroup>
                 <FormGroup>
                     <Label for="reason">Select Reason Code</Label>
-                    <Input type="select" name="reason" id="reason">
+                    <Input type="select" name="reason" id="reason" onChange={e => filterQuery.absenceQuery.reason = e.target.value}>
+                    <option>--</option>
                     <option>EE Quarantine - not sick</option>
                     <option>EE Quarantine - sick</option>
                     <option>Other Quarantine - not sick</option>
@@ -52,7 +72,7 @@ const FilterModal = (props) => {
             </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={toggle}>Filter</Button>{' '}
+          <Button color="primary" onClick={handleSubmit}>Filter</Button>{' '}
           <Button color="secondary" onClick={toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
@@ -61,3 +81,5 @@ const FilterModal = (props) => {
 }
 
 export default FilterModal;
+
+

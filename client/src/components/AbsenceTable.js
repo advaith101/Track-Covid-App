@@ -20,6 +20,11 @@ export function formattedDateSpanFromAbsence(absence) {
 }
 
 class AbsenceTable extends Component {
+    constructor() {
+        super()
+        this.handleFiltering = this.handleFiltering.bind(this);
+    }
+
     state = {
         viewModels: []
     }
@@ -89,10 +94,14 @@ class AbsenceTable extends Component {
         );
     }
 
+    handleFiltering(filterQuery) {
+        axios.post(`/api/filter`, filterQuery).then(res => console.log(res.data));
+    }
+
     adminTable() {
         return (
             <Fragment>
-            <FilterModal />
+            <FilterModal handleFiltering={this.handleFiltering}/>
             <Table hover>
             <thead className="thead-dark">
                 <tr>
