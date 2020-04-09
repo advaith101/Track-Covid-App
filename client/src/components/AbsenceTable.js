@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Container, Button, Table } from 'reactstrap';
-const axios = require('axios')
+import FilterModal from './FilterModal'
+const axios = require('axios');
+
 
 // TODO: move to a utils folder
 export function formattedDate(date) {
@@ -89,6 +91,8 @@ class AbsenceTable extends Component {
 
     adminTable() {
         return (
+            <Fragment>
+            <FilterModal />
             <Table hover>
             <thead className="thead-dark">
                 <tr>
@@ -115,6 +119,7 @@ class AbsenceTable extends Component {
                 ))}
             </tbody>
             </Table>
+            </Fragment>
         );
     }
 
