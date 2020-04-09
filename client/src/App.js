@@ -1,6 +1,6 @@
 import React from 'react';
-import AppNavbar from './components/AppNavbar';
-import EmployeeAbsenceList from './components/EmployeesAbsenceList';
+import { BrowserRouter } from 'react-router-dom';
+import MainRouter from './MainRouter';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -8,8 +8,9 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <AppNavbar />
-      <EmployeeAbsenceList />
+      <BrowserRouter>
+        <MainRouter />
+      </BrowserRouter>
     </div>
   );
 }

@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+const passport = require('passport');
 
 // User Model
 const User = require('../../models/User');
 
-// @route   GET api/users
+// @route   POST api/users
 // @desc    Get a user using email (email serves as a user id)
 // @access  Public
 router.post('/', (req, res) => {
@@ -54,5 +56,27 @@ router.get('/all', (req, res) => {
         .then(users => res.json(users))
         .catch(err => console.log('Users not found. Error:' + err));
 });
+
+// @route   POST api/users/login
+// @desc    Aunthenticate user login attempt
+// @access  Public
+router.post(
+    '/login',
+    passport.authenticate('local', {
+      failureRedirect: '/login',
+      failureFlash: true
+    }), (req, res) => {
+
+        console.log('logged in', req.user);
+
+        const userInfo = {
+            username: req.user.username,
+            admin: req.user.admin
+        };
+        console.log('user info', userInfo);
+
+        res.json(userInfo);
+
+    });
 
 module.exports = router;
