@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Button, Table, Row, Col } from 'reactstrap';
+import { Container, Button, Table, Row } from 'reactstrap';
 import FilterModal from './FilterModal';
 import CreateAbsence from './CreateAbsence';
 const axios = require('axios');
@@ -26,6 +26,8 @@ class AbsenceTable extends Component {
         super()
         this.handleFiltering = this.handleFiltering.bind(this);
         this.resetFilteredViewModels = this.resetFilteredViewModels.bind(this);
+        this.handleCreateAbsence = this.handleCreateAbsence.bind(this);
+        this.updateEmployeeViewModels = this.updateEmployeeViewModels.bind(this);
     }
 
     state = {
@@ -36,14 +38,18 @@ class AbsenceTable extends Component {
     getUser(email) {
         return axios.post("/api/users", {email});
     }
+
+    updateEmployeeViewModels() {
+        axios.post("/api/absences/", {email: this.props.email}).then(res => {
+            const data = res.data;
+            this.setState({ viewModels: data, filteredViewModels: [...data]});
+        });
+    }
     
     componentDidMount() {
         console.log('Component did mount!');
         if(this.props.userType === "employee") {
-            axios.post("/api/absences/", {email: this.props.email}).then(res => {
-                const data = res.data;
-                this.setState({ viewModels: data, filteredViewModels: [...data]});
-            });
+            this.updateEmployeeViewModels()
 
         } else {
             // Fetch data for admin
@@ -108,7 +114,7 @@ class AbsenceTable extends Component {
     employeeTable() {
         return (
             <Fragment>
-                <CreateAbsence />
+                <CreateAbsence handleCreateAbsence={this.handleCreateAbsence}/>
                 <Table hover>
                     <thead className="thead-dark">
                         <tr>
@@ -134,6 +140,11 @@ class AbsenceTable extends Component {
     handleFiltering(filterQuery) {
         console.log(filterQuery);
         this.updateFilteredViewModels(filterQuery);
+    }
+
+    handleCreateAbsence(newAbsenceQuery) {
+        console.log(newAbsenceQuery);
+        axios.post(`/api/absences/create`, newAbsenceQuery).then(this.updateEmployeeViewModels());
     }
 
     resetFilteredViewModels() {
