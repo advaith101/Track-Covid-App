@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Button, Table } from 'reactstrap';
+import { Container, Button, Table, Row, Col } from 'reactstrap';
 import FilterModal from './FilterModal';
 import CreateAbsence from './CreateAbsence';
 const axios = require('axios');
@@ -25,10 +25,12 @@ class AbsenceTable extends Component {
     constructor() {
         super()
         this.handleFiltering = this.handleFiltering.bind(this);
+        this.resetFilteredViewModels = this.resetFilteredViewModels.bind(this);
     }
 
     state = {
-        viewModels: []
+        viewModels: [], // these are to be kept as our reset viewModels, do not modify
+        filteredViewModels: []
     }
 
     getUser(email) {
@@ -36,41 +38,71 @@ class AbsenceTable extends Component {
     }
     
     componentDidMount() {
+        console.log('Component did mount!');
         if(this.props.userType === "employee") {
             axios.post("/api/absences/", {email: this.props.email}).then(res => {
                 const data = res.data;
-                this.setState({ viewModels: data });
+                this.setState({ viewModels: data, filteredViewModels: [...data]});
             });
 
         } else {
             // Fetch data for admin
-            axios.get(`/api/absences/all`).then(res => {
-                const data = res.data;
-    
-                const userPromises = data.map(async absence => {
-                    return this.getUser(absence.id).then(response => {
-                        const user = {...response.data[0]};
-                        console.log(user);
-                        const viewModel = {
-                            user: {
-                                name: user.name,
-                                location: user.location,
-                                department: user.department
-                            },
-                            absence: absence
-                        };
-                        return viewModel;
-                    });
-                })
-    
-                Promise.all(userPromises).then(viewModels => {
-                    console.log(viewModels);
-                    this.setState({ viewModels });
-                });
-    
-            });
+            this.createViewModels()
         }
+    }
 
+    updateFilteredViewModels(filterQuery) {
+        axios.post(`/api/filter`, filterQuery).then(res => {
+            const data = res.data;
+            const userPromises = data.map(async absence => {
+                return this.getUser(absence.id).then(response => {
+                    const user = {...response.data[0]};
+                    console.log(user);
+                    const viewModel = {
+                        user: {
+                            name: user.name,
+                            location: user.location,
+                            department: user.department
+                        },
+                        absence: absence
+                    };
+                    return viewModel;
+                });
+            })
+
+            Promise.all(userPromises).then(viewModels => {
+                console.log(viewModels);
+                this.setState({filteredViewModels: [...viewModels] });
+            });
+        });
+    }
+
+    createViewModels() {
+        axios.get(`/api/absences/all`).then(res => {
+            const data = res.data;
+
+            const userPromises = data.map(async absence => {
+                return this.getUser(absence.id).then(response => {
+                    const user = {...response.data[0]};
+                    console.log(user);
+                    const viewModel = {
+                        user: {
+                            name: user.name,
+                            location: user.location,
+                            department: user.department
+                        },
+                        absence: absence
+                    };
+                    return viewModel;
+                });
+            })
+
+            Promise.all(userPromises).then(viewModels => {
+                console.log(viewModels);
+                this.setState({ viewModels: viewModels, filteredViewModels: [...viewModels] });
+            });
+
+        });
     }
 
     employeeTable() {
@@ -100,13 +132,23 @@ class AbsenceTable extends Component {
     }
 
     handleFiltering(filterQuery) {
-        axios.post(`/api/filter`, filterQuery).then(res => console.log(res.data));
+        console.log(filterQuery);
+        this.updateFilteredViewModels(filterQuery);
+    }
+
+    resetFilteredViewModels() {
+        this.setState({filteredViewModels: [... this.state.viewModels]});
     }
 
     adminTable() {
         return (
             <Fragment>
-            <FilterModal handleFiltering={this.handleFiltering}/>
+            <div className="float-right">
+                <Row>
+                    <FilterModal handleFiltering={this.handleFiltering}/>
+                    <Button color="dark" style={{marginBottom: '2rem'}} onClick={this.resetFilteredViewModels} className="float-right">Clear Filter</Button>
+                </Row>
+            </div>
             <Table hover>
             <thead className="thead-dark">
                 <tr>
@@ -120,7 +162,7 @@ class AbsenceTable extends Component {
                 </tr>
             </thead>
             <tbody>
-                {this.state.viewModels.map((viewModel) => (
+                {this.state.filteredViewModels.map((viewModel) => (
                     <tr key={viewModel.absence.id}>
                     <td>{viewModel.user.name}</td>
                     <td>{viewModel.absence.reason}</td>
@@ -148,13 +190,8 @@ class AbsenceTable extends Component {
                 color="dark"
                 style={{marginBottom: '2rem'}}
                 onClick={() => {
-                    const name = prompt('Enter name');
-                    if(name) {
-                        this.setState(state => ({
-                            data: [...state.data, { name }]
-                        }));
-                    }
-                }}>New Entry
+                    this.handleFiltering({absenceQuery: {current: true}});
+                }}>Show Only Current Absences
                 </Button>
 
                 <Button
@@ -162,7 +199,7 @@ class AbsenceTable extends Component {
                 style={{marginBottom: '2rem', marginLeft: '2rem'}}
                 onClick={() => {
                     // Pop up modal with form
-                }}>Add Absence
+                }}>Go to Personal Dashboard
                 </Button>
                 {this.tableForType(this.props.userType)}
 

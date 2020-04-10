@@ -3,9 +3,6 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, La
 
 
 const FilterModal = (props) => {
-  // const {
-  //   className
-  // } = props;
 
   const [modal, setModal] = useState(false);
 
@@ -20,25 +17,23 @@ const FilterModal = (props) => {
 
   var filterQuery = {
     userQuery: {
-      email: ""
-      // location: "",
-      // department: ""
+
     },
     absenceQuery: {
-      // reason: ""
+
     }
   }
 
   return (
     <div>
-      <Button color="dark" style={{marginBottom: '2rem'}} onClick={toggle} className="float-right">Filter</Button>
+      <Button color="dark" style={{marginBottom: '2rem', marginRight: '1rem'}} onClick={toggle} className="float-right">Filter</Button>
       <Modal isOpen={modal} toggle={toggle} >
         <ModalHeader toggle={toggle}>Specify Filter Criteria</ModalHeader>
         <ModalBody>
             <Form>
                 <FormGroup>
-                    <Label for="name">Name</Label>
-                    <Input type="name" name="name" id="name" placeholder="Enter Name" onChange={e => filterQuery.userQuery.email = e.target.value}/>
+                    <Label for="email">Enter Employee Email</Label>
+                    <Input type="email" email="email" id="email" placeholder="Enter Email" onChange={e => filterQuery.userQuery.email = e.target.value}/>
                 </FormGroup>
                 <FormGroup>
                     <Label for="location">Select Location</Label>
@@ -68,6 +63,12 @@ const FilterModal = (props) => {
                     <option>Other Quarantine - sick</option>
                     <option>School/Business Closure</option>
                     </Input>
+                </FormGroup>
+                <FormGroup check>
+                  <Label check>
+                    <Input type="radio" name="radio1" onChange={e => filterQuery.absenceQuery.current = (e.target.value === 'on')} />{' '}
+                    Filter for current absences
+                  </Label>
                 </FormGroup>
             </Form>
         </ModalBody>
