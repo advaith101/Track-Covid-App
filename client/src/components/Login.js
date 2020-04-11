@@ -5,7 +5,7 @@ import {
   FormGroup, Label, Input,
   Button,
 } from 'reactstrap';
-
+import RegisterModal from './RegisterModal';
 const axios = require('axios');
 
 class Login extends Component {
@@ -19,6 +19,7 @@ class Login extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleRegister = this.handleRegister.bind(this)
     }
 
     handleSubmit() {
@@ -41,6 +42,10 @@ class Login extends Component {
         this.setState({
             [event.target.name]: event.target.value
         });
+    }
+
+    handleRegister(registerQuery) {
+
     }
 
     render() {
@@ -82,6 +87,7 @@ class Login extends Component {
               </Col>
               <Button onClick={this.handleSubmit}>Submit</Button>
             </Form>
+          <RegisterModal handleRegister={this.handleRegister}/>
           </Container>
         );
     }
