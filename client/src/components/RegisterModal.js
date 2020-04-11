@@ -28,7 +28,7 @@ const RegisterModal = (props) => {
             <Form>
                 <FormGroup>
                     <Label for="name">Enter Name</Label>
-                    <Input type="name" name="name" id="name" placeholder="Enter Email" onChange={e => registerQuery.email = e.target.value}/>
+                    <Input type="name" name="name" id="name" placeholder="Enter Email" onChange={e => registerQuery.name = e.target.value}/>
                 </FormGroup>
                 <FormGroup>
                     <Label for="email">Enter Employee Email</Label>
@@ -38,9 +38,10 @@ const RegisterModal = (props) => {
                     <Label for="password">Create Password</Label>
                     <Input type="password" password="password" id="password" placeholder="Create Password" onChange={e => registerQuery.password = e.target.value}/>
                 </FormGroup>
+                {/* !need to change this to verify if password = confirmpassword! */}
                 <FormGroup>
                     <Label for="confirmpassword">Confirm Password</Label>
-                    <Input type="confirmpassword" confirmpassword="confirmpassword" id="password" placeholder="Confirm Password" onChange={e => registerQuery.confirmpassword = e.target.value}/>
+                    <Input type="confirmpassword" confirmpassword="confirmpassword" id="password" placeholder="Confirm Password" onChange={e => registerQuery.password = e.target.value}/>
                 </FormGroup>
                 <FormGroup>
                     <Label for="location">Select Location</Label>

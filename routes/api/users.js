@@ -36,6 +36,8 @@ router.post('/create', (req, res) => {
        password: req.body.password,
        date: req.body.date,
        admin: req.body.admin,
+       location: req.body.location,
+       department: req.body.department
     });
 
     newUser.save().then(user => res.json(user));
