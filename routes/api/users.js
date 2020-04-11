@@ -66,23 +66,18 @@ router.post(
     passport.authenticate('local', {
       failureRedirect: '/',
       failureFlash: true
-    }, function(err, user, info) {
-        console.log("authenticate");
-        console.log(err);
-        console.log(user);
-        console.log(info);
     }), (req, res) => {
 
-        console.log('logged in', req.user);
+        console.log('login success');
 
         const userInfo = {
-            username: req.user.username,
+            name: req.user.name,
+            email: req.user.email,
             admin: req.user.admin
         };
         console.log('user info', userInfo);
 
         res.json(userInfo);
-
     });
 
 

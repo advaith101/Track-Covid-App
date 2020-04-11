@@ -5,6 +5,27 @@ import Login from './components/Login';
 import AbsenceTable from './components/AbsenceTable';
 
 class MainRouter extends Component {
+
+    constructor() {
+        super()
+        this.handleStateChange = this.handleStateChange.bind(this);
+    }
+
+    state = {
+        // maybe a logged in
+        name: "",
+        email: "",
+        admin: false,
+    }
+
+    handleStateChange(user) {
+        this.setState({
+            name: user.name,
+            email: user.email,
+            userType: user.admin ? "admin" : "employee"
+        });
+        console.log("global state change");
+    }
     
     render() {
         return (
@@ -12,7 +33,7 @@ class MainRouter extends Component {
                 <Switch>
 
                     <Route exact path="/"> 
-                        <Login />
+                        <Login handleStateChange={this.handleStateChange}/>
                     </Route>
 
                     <Route exact path="/admin/dashboard">
@@ -22,7 +43,7 @@ class MainRouter extends Component {
 
                     <Route exact path="/dashboard">
                         <DashboardHeader barTitle="Employee Dashboard"/>
-                        <AbsenceTable  userType="employee" name="Goti" email="zx2q5890lm@gmail.com"/>
+                        <AbsenceTable  userType="employee" name={this.state.name} email={this.state.email}/>
                     </Route>
 
                 </Switch>

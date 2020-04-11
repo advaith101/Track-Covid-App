@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert } from 'reactstrap'
+import {Redirect} from 'react-router-dom'
 import {
   Container, Col, Form,
   FormGroup, Label, Input,
@@ -13,7 +13,8 @@ class Login extends Component {
         super()
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            redirect: false
         };
 
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -25,11 +26,15 @@ class Login extends Component {
             headers: { 'Content-Type': 'application/json' },
             responseType: 'json'
           };
-          
-
+        
         console.log('Email: ' + this.state.email);
         console.log('Password: ' + this.state.password);
-        axios.post('/api/users/login', {email: this.state.email, password: this.state.password}, config).then(res => console.log(res)).catch(err => console.error(err));
+        
+        axios.post('/api/users/login', {email: this.state.email, password: this.state.password}, config).then(res => {
+          console.log(res.data); // check in chrom terminal
+          this.props.handleStateChange(res.data);
+          this.setState({redirect: true});
+        }).catch(err => console.error(err));
     }
 
     handleChange(event) {
@@ -39,6 +44,12 @@ class Login extends Component {
     }
 
     render() {
+        const { redirect } = this.state;
+        if (redirect) {
+          console.log('redirecting');
+          return <Redirect to='/dashboard'/>;
+        }
+
         return (
           <Container className="Login">
             <h2>Sign In</h2>
