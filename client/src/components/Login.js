@@ -29,7 +29,7 @@ class Login extends Component {
 
         console.log('Email: ' + this.state.email);
         console.log('Password: ' + this.state.password);
-        axios.post('/api/users/login', { data : {email: this.state.email, password: this.state.password}}, config).then(res => console.log(res)).catch(err => console.error(err));
+        axios.post('/api/users/login', {email: this.state.email, password: this.state.password}, config).then(res => console.log(res)).catch(err => console.error(err));
     }
 
     handleChange(event) {

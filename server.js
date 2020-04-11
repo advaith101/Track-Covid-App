@@ -26,7 +26,8 @@ mongoose.connect(db)
     .then(() => console.log('\nMongoDB Connected...'))
     .catch(err => console.log(err));
 
-app.use(express.urlencoded({ extended: true }));
+
+//app.use(express.urlencoded({ extended: true }));
 
 // Express session
 app.use(

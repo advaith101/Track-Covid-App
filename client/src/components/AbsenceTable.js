@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Container, Button, Table, Row } from 'reactstrap';
 import FilterModal from './FilterModal';
-import CreateAbsence from './CreateAbsence';
+import CreateAbsence from './CreateAbsence'
+import PasswordChangeModal from './PasswordChangeModal'
+
 const axios = require('axios');
 
 
@@ -28,6 +30,7 @@ class AbsenceTable extends Component {
         this.resetFilteredViewModels = this.resetFilteredViewModels.bind(this);
         this.handleCreateAbsence = this.handleCreateAbsence.bind(this);
         this.updateEmployeeViewModels = this.updateEmployeeViewModels.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);
     }
 
     state = {
@@ -39,10 +42,12 @@ class AbsenceTable extends Component {
         return axios.post("/api/users", {email});
     }
 
+    
     updateEmployeeViewModels() {
         axios.post("/api/absences/", {email: this.props.email}).then(res => {
             const data = res.data;
-            this.setState({ viewModels: data, filteredViewModels: [...data]});
+            this.setState({ viewModels: [...data] });
+            this.forceUpdate()
         });
     }
     
@@ -115,6 +120,7 @@ class AbsenceTable extends Component {
         return (
             <Fragment>
                 <CreateAbsence handleCreateAbsence={this.handleCreateAbsence}/>
+                <PasswordChangeModal handlePasswordChange={this.handlePasswordChange}/>
                 <Table hover>
                     <thead className="thead-dark">
                         <tr>
@@ -149,6 +155,16 @@ class AbsenceTable extends Component {
 
     resetFilteredViewModels() {
         this.setState({filteredViewModels: [... this.state.viewModels]});
+    }
+
+    handlePasswordChange(newPassword) {
+        console.log(newPassword)
+        const passwordChangeQuery = {
+            "email": this.props.email,
+            "password": newPassword
+        }
+        axios.put("/api/users", passwordChangeQuery);
+
     }
 
     adminTable() {

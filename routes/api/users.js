@@ -20,12 +20,11 @@ router.post('/', (req, res) => {
 // @route   GET api/users
 // @desc    Update a user's password
 // @access  Public
-router.put('/', (req, res) => {
-    User.findAndModify({
-        query: { "email" : req.body.email },
-        update: { "password": req.body.password }
-    });
-})
+router.put('/', async (req, res) => {
+    const user = await User.findOne({email: req.body.email});
+    user.password = req.body.password;
+    await user.save();
+});
 
 // @route   POST api/users
 // @desc    Create a user
@@ -67,6 +66,11 @@ router.post(
     passport.authenticate('local', {
       failureRedirect: '/',
       failureFlash: true
+    }, function(err, user, info) {
+        console.log("authenticate");
+        console.log(err);
+        console.log(user);
+        console.log(info);
     }), (req, res) => {
 
         console.log('logged in', req.user);
@@ -80,5 +84,6 @@ router.post(
         res.json(userInfo);
 
     });
+
 
 module.exports = router;
