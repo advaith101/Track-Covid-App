@@ -21,6 +21,14 @@ const UserSchema = new Schema({
     admin: {
       type: Boolean,
       default: false
+    },
+    location: {
+      type: String,
+      default: "Boston, MA"
+    },
+    department: {
+      type: String,
+      default: "Human Resources"
     }
 });
 
