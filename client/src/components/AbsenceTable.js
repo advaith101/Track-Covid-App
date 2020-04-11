@@ -3,6 +3,7 @@ import { Container, Button, Table, Row } from 'reactstrap';
 import FilterModal from './FilterModal';
 import CreateAbsence from './CreateAbsence'
 import PasswordChangeModal from './PasswordChangeModal'
+import { ExportCSV } from './ExportCSV';
 
 const axios = require('axios');
 
@@ -116,6 +117,10 @@ class AbsenceTable extends Component {
         });
     }
 
+    excelData() {
+        return this.state.viewModels.map(viewModel => {return {name: viewModel.user.name, email: viewModel.absence.id, location:viewModel.user.location, department:viewModel.user.department, reason:viewModel.absence.reason,  startDate:viewModel.absence.startDate, endDate:viewModel.absence.endDate, current:viewModel.absence.current, processed:viewModel.absence.processed}});
+    }
+
     employeeTable() {
         return (
             <Fragment>
@@ -176,6 +181,7 @@ class AbsenceTable extends Component {
                     <Button color="dark" style={{marginBottom: '2rem'}} onClick={this.resetFilteredViewModels} className="float-right">Clear Filter</Button>
                 </Row>
             </div>
+            <ExportCSV csvData={this.excelData()} fileName={'absence_report'} />
             <Table hover>
             <thead className="thead-dark">
                 <tr>
