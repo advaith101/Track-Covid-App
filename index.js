@@ -62,7 +62,7 @@ app.use('/api/filter', filter);
 if (process.env.NODE_ENV === "production") {
     // Express will serve up production assets
     app.use(express.static("build"));
-    app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")));
+    app.get("*", (req, res) => res.sendFile(path.resolve("client/build", "index.html")));
 }
 
 const port = process.env.PORT || 5000;
