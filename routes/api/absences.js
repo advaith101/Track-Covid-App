@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Absence Model
-const Absence = require('../../models/Absence');
+const Absence = require('../../models/absence');
 
 // @route   GET api/absences
 // @desc    Get an absence

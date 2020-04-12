@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 // Data Models
-const User = require('../../models/User');
-const Absence = require('../../models/Absence');
+const User = require('../../models/user');
+const Absence = require('../../models/absence');
 
 // @route   GET api/filter
 // @desc    Filter absences based on { user } and { absence } query

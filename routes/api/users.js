@@ -6,7 +6,7 @@ const passport = require('passport');
 const { forwardAuthenticated } = require('../../config/auth');
 
 // User Model
-const User = require('../../models/User');
+const User = require('../../models/user');
 
 // @route   POST api/users
 // @desc    Get a user using email (email serves as a user id)
