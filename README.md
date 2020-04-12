@@ -1,4 +1,12 @@
 
+# Run Scripts
+
+## To run locally for Dev env
+
+``npm run dev``
+
+
+
 # Heroku Details
 
 ## Login
