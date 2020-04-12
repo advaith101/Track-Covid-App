@@ -46,6 +46,7 @@ class Login extends Component {
 
     handleRegister(registerQuery) {
         axios.post('/api/users/create', registerQuery)
+        console.log('creating user...')
     }
 
     render() {

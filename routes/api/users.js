@@ -30,6 +30,7 @@ router.put('/', async (req, res) => {
 // @desc    Create a user
 // @access  Public
 router.post('/create', (req, res) => {
+    console.log('user create request recieved...')
     const newUser = new User({
        name: req.body.name,
        email: req.body.email,
@@ -39,8 +40,8 @@ router.post('/create', (req, res) => {
        location: req.body.location,
        department: req.body.department
     });
-
     newUser.save().then(user => res.json(user));
+    console.log('successfully created user!')
 });
 
 // @route   DELETE api/users
