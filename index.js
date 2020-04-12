@@ -58,14 +58,11 @@ app.use('/api/users', users);
 app.use('/api/absences', absences);
 app.use('/api/filter', filter);
 
+
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("build"));
-
-
-  app.get("*", (req, res) => {
-      res.sendFile(path.resolve(__dirname,  "build", "index.html"));
-  });
-
+    // Express will serve up production assets
+    app.use(express.static("build"));
+    app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")));
 }
 
 const port = process.env.PORT || 5000;
