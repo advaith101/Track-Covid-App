@@ -21,7 +21,7 @@ const RegisterModal = (props) => {
 
   return (
     <div>
-      <Button color="dark" style={{marginBottom: '2rem', marginRight: '1rem'}} onClick={toggle} className="float-right">Register</Button>
+      <Button className="btn-primary" style={{marginBottom: '2rem', marginRight: '1rem'}} onClick={toggle} className="float-right">Register</Button>
       <Modal isOpen={modal} toggle={toggle} >
         <ModalHeader toggle={toggle}>Register</ModalHeader>
         <ModalBody>
@@ -41,7 +41,7 @@ const RegisterModal = (props) => {
                 {/* !need to change this to verify if password = confirmpassword! */}
                 <FormGroup>
                     <Label for="confirmpassword">Confirm Password</Label>
-                    <Input type="confirmpassword" confirmpassword="confirmpassword" id="password" placeholder="Confirm Password" onChange={e => registerQuery.password = e.target.value}/>
+                    <Input type="password" confirmpassword="confirmpassword" id="password" placeholder="Confirm Password" onChange={e => registerQuery.password = e.target.value}/>
                 </FormGroup>
                 <FormGroup>
                     <Label for="location">Select Location</Label>

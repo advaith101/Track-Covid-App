@@ -21,6 +21,7 @@ class DashboardHeader extends Component {
         });
     }
 
+    //TODO: Link Logout to Login page
     render() {
         return (
             <div>

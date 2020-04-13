@@ -36,15 +36,15 @@ const PasswordChangeModal = (props) => {
             <Form>
                 <FormGroup>
                     <Label for="currentpassword">Current Password:</Label>
-                    <Input type="name" name="name" id="currentpassword" placeholder="Enter current password" />
+                    <Input type="password" name="name" id="currentpassword" placeholder="Enter current password" />
                 </FormGroup>
                 <FormGroup>
                     <Label for="newpassword">New Password:</Label>
-                    <Input type="name" name="name" id="newpassword" placeholder="Enter new password" onChange={e => passwordQuery.firstNewPassword = e.target.value}/>
+                    <Input type="password" name="name" id="newpassword" placeholder="Enter new password" onChange={e => passwordQuery.firstNewPassword = e.target.value}/>
                 </FormGroup>
                 <FormGroup>
                     <Label for="confirmpassword">Confirm New Password:</Label>
-                    <Input type="name" name="name" id="confirmpassword" placeholder="Confirm new password" onChange={e => passwordQuery.secondNewPassword = e.target.value}/>
+                    <Input type="password" name="name" id="confirmpassword" placeholder="Confirm new password" onChange={e => passwordQuery.secondNewPassword = e.target.value}/>
                 </FormGroup>       
             </Form>
         </ModalBody>

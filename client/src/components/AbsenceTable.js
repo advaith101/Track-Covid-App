@@ -144,7 +144,6 @@ class AbsenceTable extends Component {
                         <tr>
                         <th>Leave Reason</th>
                         <th>Date of Absence</th>
-                        <th>View Report</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -152,7 +151,6 @@ class AbsenceTable extends Component {
                             <tr key={viewModel.id}>
                             <td>{viewModel.reason}</td>
                             <td>{formattedDateSpanFromAbsence(viewModel)}</td>
-                            <td><Button>View</Button></td>
                             </tr>
                         ))}
                     </tbody>
@@ -192,13 +190,19 @@ class AbsenceTable extends Component {
     adminTable() {
         return (
             <Fragment>
+            <Button
+                style={{marginBottom: '2rem', marginLeft: '2rem'}}
+                onClick={() => {
+                    // Pop up modal with form
+                }}>Go to Personal Dashboard
+            </Button>
+            <ExportCSV csvData={this.excelData()} fileName={'absence_report'} style={{marginBottom: '2rem', marginLeft: '2rem'}} />
             <div className="float-right">
                 <Row>
                     <FilterModal handleFiltering={this.handleFiltering}/>
-                    <Button color="dark" style={{marginBottom: '2rem'}} onClick={this.resetFilteredViewModels} className="float-right">Clear Filter</Button>
+                    <Button className="btn-primary" style={{marginBottom: '2rem'}} onClick={this.resetFilteredViewModels} className="float-right">Clear Filter</Button>
                 </Row>
             </div>
-            <ExportCSV csvData={this.excelData()} fileName={'absence_report'} />
             <Table hover>
             <thead className="thead-dark">
                 <tr>
@@ -207,8 +211,6 @@ class AbsenceTable extends Component {
                 <th>Date of Absence</th>
                 <th>Location</th>
                 <th>Department</th>
-                <th>Processed</th>
-                <th>View Report</th>
                 </tr>
             </thead>
             <tbody>
@@ -219,8 +221,6 @@ class AbsenceTable extends Component {
                     <td>{formattedDateSpanFromAbsence(viewModel.absence)}</td>
                     <td>{viewModel.user.location}</td>
                     <td>{viewModel.user.department}</td>
-                    <td>{viewModel.absence.processed ? 'Yes' : 'No'}</td>
-                    <td><Button>View</Button></td>
                     </tr>
                 ))}
             </tbody>
@@ -240,20 +240,19 @@ class AbsenceTable extends Component {
         return(
             <Container>
                 <Button
-                color="dark"
                 style={{marginBottom: '2rem'}}
                 onClick={() => {
                     this.handleFiltering({absenceQuery: {current: true}});
                 }}>Show Only Current Absences
                 </Button>
 
-                <Button
-                color="dark"
+                {/* <Button
                 style={{marginBottom: '2rem', marginLeft: '2rem'}}
                 onClick={() => {
                     // Pop up modal with form
                 }}>Go to Personal Dashboard
-                </Button>
+                </Button> */}
+                {/* <ExportCSV csvData={this.excelData()} fileName={'absence_report'} style={{marginBottom: '2rem', marginLeft: '2rem'}} /> */}
                 {this.tableForType(this.props.userType)}
 
 

@@ -6,6 +6,8 @@ import {
   Button,
 } from 'reactstrap';
 import RegisterModal from './RegisterModal';
+
+
 const axios = require('axios');
 
 class Login extends Component {
@@ -87,7 +89,7 @@ class Login extends Component {
                   />
                 </FormGroup>
               </Col>
-              <Button onClick={this.handleSubmit}>Submit</Button>
+              <Button className="btn-primary" onClick={this.handleSubmit}>Submit</Button>
             </Form>
           <RegisterModal handleRegister={this.handleRegister}/>
           </Container>
