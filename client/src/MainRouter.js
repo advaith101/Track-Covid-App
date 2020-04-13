@@ -27,6 +27,11 @@ class MainRouter extends Component {
         console.log("global state change");
 
     }
+    // var ProtectedRoute = ({ isAllowed, ...props }) => 
+    //  isAllowed 
+    //  ? <Route {...props}/> 
+    //  : <Redirect to="/authentificate"/>;
+
     
     render() {
         return (
@@ -41,6 +46,13 @@ class MainRouter extends Component {
                         <DashboardHeader barTitle="Administrator Dashboard"/>
                         <AbsenceTable userType="admin" name={this.state.name} email={this.state.email}/>
                     </Route>
+
+                    {/* <Route exact path="/admin/dashboard" => (
+                        user.admin == "admin" ?
+                        <DashboardHeader barTitle="Administrator Dashboard"/>
+                        <AbsenceTable userType="admin" name={this.state.name} email={this.state.email}/>
+                        : <Redirect to='/' />
+                    )} /> */}
 
                     <Route exact path="/dashboard">
                         <DashboardHeader barTitle="Employee Dashboard"/>

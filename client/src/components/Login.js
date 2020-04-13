@@ -48,10 +48,13 @@ class Login extends Component {
         
         console.log('Email: ' + this.state.email);
         console.log('Password: ' + this.state.password);
+
         
         axios.post('/api/users/login', {email: this.state.email, password: this.state.password}, config).then(res => {
           console.log(res.data); // check in chrom terminal
           this.props.handleStateChange(res.data);
+          localStorage.setItem("logintype", "employee")
+          console.log(localStorage.getItem("logintype"))
           this.setState({redirect: true});
         }).catch(err => console.error(err));
     }

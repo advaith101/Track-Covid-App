@@ -1,9 +1,11 @@
-import React, { Component, Fragment } from 'react';
-import { Container, Button, Table, Row } from 'reactstrap';
+import React, { Component, Fragment} from 'react';
+import {Route, Switch, Redirect} from 'react-router-dom'
+import { Container, Button, Table, Row, Label } from 'reactstrap';
 import FilterModal from './FilterModal';
 import CreateAbsence from './CreateAbsence'
 import PasswordChangeModal from './PasswordChangeModal'
 import { ExportCSV } from './ExportCSV';
+import { string } from 'prop-types';
 
 const axios = require('axios');
 
@@ -33,11 +35,13 @@ class AbsenceTable extends Component {
         this.updateEmployeeViewModels = this.updateEmployeeViewModels.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
     }
+    
 
     state = {
         viewModels: [], // these are to be kept as our reset viewModels, do not modify
         filteredViewModels: []
     }
+
 
     getUser(email) {
         return axios.post("/api/users", {email});
@@ -60,10 +64,12 @@ class AbsenceTable extends Component {
         if(this.props.userType === "employee") {
             this.updateEmployeeViewModels()
 
-        } else {
+        } 
+        else if (localStorage.getItem("logintype") !== null && localStorage.getItem("logintype") !== ''){
             // Fetch data for admin
             this.createViewModels()
         }
+        
     }
 
     updateFilteredViewModels(filterQuery) {
@@ -133,6 +139,8 @@ class AbsenceTable extends Component {
                processed:viewModel.absence.processed}});
                
     }
+    
+    
 
     employeeTable() {
         return (
@@ -193,6 +201,16 @@ class AbsenceTable extends Component {
 
     }
 
+    componentWillUnmount() {
+        localStorage.setItem("logintype", "")
+        console.log('changed employee logintype')
+    }
+
+    componentDidUpdate() {
+        localStorage.setItem("logintype", "")
+        console.log('updated employee logintype')
+    }
+
     adminTable() {
         return (
             <Fragment>
@@ -250,12 +268,20 @@ class AbsenceTable extends Component {
 
     render() {
         console.log(this.props.email);
-
-        return(
-            <Container>
-                {this.tableForType(this.props.userType)}
-            </Container>
-        );
+        console.log(localStorage.getItem("logintype"), 'asdfasdf')
+        
+        
+            if (localStorage.getItem("logintype") !== null && localStorage.getItem("logintype") !== ''){
+                return (<Container>
+                    {this.tableForType(this.props.userType)}
+                    </Container>)
+              } else{
+                 return (<Redirect to='/'/>)
+              }
+            // <Container>
+            //     {this.tableForType(this.props.userType)}
+            // </Container>
+        
     }
 
 }
