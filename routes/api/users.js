@@ -7,6 +7,7 @@ const { forwardAuthenticated } = require('../../config/auth');
 
 // User Model
 const User = require('../../models/user');
+const Absence = require('../../models/absence');
 
 // @route   POST api/users
 // @desc    Get a user using email (email serves as a user id)
@@ -22,8 +23,22 @@ router.post('/', (req, res) => {
 // @access  Public
 router.put('/', async (req, res) => {
     const user = await User.findOne({email: req.body.email});
+    //run bcrypt on req.body.password = newPassword
+    //user.password = newPassword
     user.password = req.body.password;
-    await user.save();
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(user.password, salt, (err, hash) => {
+          if (err) throw err;
+          user.password = hash;
+          user
+            .save()
+            .then(user => {  
+              console.log('password successfully changed and encrypted...');
+              res.json(user); //passing back user json to login
+            })
+            .catch(err => console.log(err));
+        });
+    });
 });
 
 // @route   POST api/users
@@ -40,8 +55,25 @@ router.post('/create', (req, res) => {
        location: req.body.location,
        department: req.body.department
     });
-    newUser.save().then(user => res.json(user));
+
+    //encrypting password
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+          if (err) throw err;
+          newUser.password = hash;
+          newUser
+            .save()
+            .then(user => {  
+              console.log('password successfully encrypted...');
+              res.json(user); //passing back user json to login
+            })
+            .catch(err => console.log(err));
+        });
+    });
     console.log('successfully created user!')
+
+
+    
 });
 
 // @route   DELETE api/users

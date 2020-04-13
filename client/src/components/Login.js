@@ -52,8 +52,9 @@ class Login extends Component {
     render() {
         const { redirect } = this.state;
         if (redirect) {
+          var redirictpage = this.props.userType == "admin" ? '/admin/dashboard':'/dashboard'
           console.log('redirecting');
-          return <Redirect to='/dashboard'/>;
+          return <Redirect to= {redirictpage}/>;
         }
 
         return (

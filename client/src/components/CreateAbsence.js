@@ -18,7 +18,6 @@ const CreateAbsence = (props) => {
   }
 
   var newAbsenceQuery = {
-    id: "",
     startDate: "",
     endDate: "",
     reason: "",
@@ -34,10 +33,6 @@ const CreateAbsence = (props) => {
         <ModalBody>
             <Form>
                 <FormGroup>
-                    <Label for="Email">Email</Label>
-                    <Input type="Email" Email="Email" id="Email" placeholder="Enter Email" onChange={e => newAbsenceQuery.id = e.target.value}/>
-                </FormGroup>
-                <FormGroup>
                     <Label for="startDate">Start Date</Label>
                     <Input type="name" name="name" id="startDate" placeholder="Enter Start Date (eg. '01/01/2020')" onChange={e => newAbsenceQuery.startDate = e.target.value}/>
                 </FormGroup>
@@ -48,6 +43,7 @@ const CreateAbsence = (props) => {
                 <FormGroup>
                     <Label for="reason">Select Reason</Label>
                     <Input type="select" name="reason" id="reason" onChange={e => newAbsenceQuery.reason = e.target.value}>
+                    <option>--</option>
                     <option>EE Quarantine - not sick</option>
                     <option>EE Quarantine - sick</option>
                     <option>Other Quarantine - not sick</option>

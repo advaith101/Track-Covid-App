@@ -25,6 +25,7 @@ class MainRouter extends Component {
             userType: user.admin ? "admin" : "employee"
         });
         console.log("global state change");
+
     }
     
     render() {
@@ -33,12 +34,12 @@ class MainRouter extends Component {
                 <Switch>
 
                     <Route exact path="/"> 
-                        <Login handleStateChange={this.handleStateChange}/>
+                        <Login userType={this.state.userType} handleStateChange={this.handleStateChange}/>
                     </Route>
 
                     <Route exact path="/admin/dashboard">
                         <DashboardHeader barTitle="Administrator Dashboard"/>
-                        <AbsenceTable userType="admin"/>
+                        <AbsenceTable userType="admin" name={this.state.name} email={this.state.email}/>
                     </Route>
 
                     <Route exact path="/dashboard">

@@ -25,8 +25,10 @@ router.post('/create', (req, res) => {
         current: req.body.current,
         processed: req.body.processed
     });
+    console.log('creating absence...')
 
     newAbsence.save().then(absence => res.json(absence)).catch((err) => console.log("Error:" + err));
+    
 });
 
 // @route   PUT api/absences

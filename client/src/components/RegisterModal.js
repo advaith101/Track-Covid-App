@@ -28,7 +28,7 @@ const RegisterModal = (props) => {
             <Form>
                 <FormGroup>
                     <Label for="name">Enter Name</Label>
-                    <Input type="name" name="name" id="name" placeholder="Enter Email" onChange={e => registerQuery.name = e.target.value}/>
+                    <Input type="name" name="name" id="name" placeholder="Enter Name" onChange={e => registerQuery.name = e.target.value}/>
                 </FormGroup>
                 <FormGroup>
                     <Label for="email">Enter Employee Email</Label>

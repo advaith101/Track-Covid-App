@@ -11,7 +11,7 @@ const Absence = require('../../models/absence');
 router.post('/', async (req, res) => {  
     const users = await User.find(req.body.userQuery);
     const filteredUserEmails = users.map(user => user.email);
-    const filteredAbsencesBasedOnEmails = await Absence.find(req.body.absenceQuery).where('id').in(filteredUserEmails);
+    const filteredAbsencesBasedOnEmails = await Absence.find(req.body.absenceQuery).where('id').in(filteredUserEmails); // 
     res.json(filteredAbsencesBasedOnEmails);
 });
 

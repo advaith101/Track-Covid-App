@@ -47,8 +47,11 @@ class AbsenceTable extends Component {
     updateEmployeeViewModels() {
         axios.post("/api/absences/", {email: this.props.email}).then(res => {
             const data = res.data;
+            console.log(data);
+            console.log("Look here" + this.props.email);
             this.setState({ viewModels: [...data] });
-            this.forceUpdate()
+            console.log(this.state.viewModels);
+            //this.forceUpdate()
         });
     }
     
@@ -64,7 +67,7 @@ class AbsenceTable extends Component {
     }
 
     updateFilteredViewModels(filterQuery) {
-        axios.post(`/api/filter`, filterQuery).then(res => {
+        axios.post(`/api/filter/`, filterQuery).then(res => {
             const data = res.data;
             const userPromises = data.map(async absence => {
                 return this.getUser(absence.id).then(response => {
@@ -84,7 +87,7 @@ class AbsenceTable extends Component {
 
             Promise.all(userPromises).then(viewModels => {
                 console.log(viewModels);
-                this.setState({filteredViewModels: [...viewModels] });
+                this.setState({filteredViewModels: [...viewModels] });//spread is key
             });
         });
     }
@@ -118,7 +121,17 @@ class AbsenceTable extends Component {
     }
 
     excelData() {
-        return this.state.viewModels.map(viewModel => {return {name: viewModel.user.name, email: viewModel.absence.id, location:viewModel.user.location, department:viewModel.user.department, reason:viewModel.absence.reason,  startDate:viewModel.absence.startDate, endDate:viewModel.absence.endDate, current:viewModel.absence.current, processed:viewModel.absence.processed}});
+        return this.state.filteredViewModels.map(viewModel => {return {
+            name: viewModel.user.name, 
+            email: viewModel.absence.id, 
+            location:viewModel.user.location, 
+            department:viewModel.user.department, 
+            reason:viewModel.absence.reason,  
+            startDate:viewModel.absence.startDate,
+             endDate:viewModel.absence.endDate,
+              current:viewModel.absence.current,
+               processed:viewModel.absence.processed}});
+               
     }
 
     employeeTable() {
@@ -154,8 +167,12 @@ class AbsenceTable extends Component {
     }
 
     handleCreateAbsence(newAbsenceQuery) {
+        newAbsenceQuery.id = this.props.email;
         console.log(newAbsenceQuery);
-        axios.post(`/api/absences/create`, newAbsenceQuery).then(this.updateEmployeeViewModels());
+        axios.post(`/api/absences/create`, newAbsenceQuery).then(smthg => {
+            console.log("Creating absence for" + this.props.email);
+            this.updateEmployeeViewModels()
+        }).catch(err => console.log(err));
     }
 
     resetFilteredViewModels() {
@@ -213,10 +230,13 @@ class AbsenceTable extends Component {
     }
 
     tableForType(userType) {
+        console.log('rendering based on user type...')
         return (userType === 'admin' ? this.adminTable() : this.employeeTable());
     }
 
     render() {
+        console.log(this.props.email);
+
         return(
             <Container>
                 <Button
@@ -235,6 +255,7 @@ class AbsenceTable extends Component {
                 }}>Go to Personal Dashboard
                 </Button>
                 {this.tableForType(this.props.userType)}
+
 
             </Container>
         );
