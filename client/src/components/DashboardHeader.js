@@ -32,7 +32,7 @@ class DashboardHeader extends Component {
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
-                                    <NavLink href="https://google.com/"> Logout </NavLink>
+                                    <NavLink href="https://esratrackcovid.herokuapp.com/"> Logout </NavLink>
                                 </NavItem>
                             </Nav>
                         </Collapse>
