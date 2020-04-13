@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import Button from '@material-ui/core/Button';
 
 
 const RegisterModal = (props) => {
@@ -21,7 +22,7 @@ const RegisterModal = (props) => {
 
   return (
     <div>
-      <Button className="btn-primary" style={{marginBottom: '2rem', marginRight: '1rem'}} onClick={toggle} className="float-right">Register</Button>
+      <Button onClick = {toggle} type="submit" fullWidth variant="contained" color="default">Register An Employee</Button>
       <Modal isOpen={modal} toggle={toggle} >
         <ModalHeader toggle={toggle}>Register</ModalHeader>
         <ModalBody>

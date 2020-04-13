@@ -137,8 +137,14 @@ class AbsenceTable extends Component {
     employeeTable() {
         return (
             <Fragment>
-                <CreateAbsence handleCreateAbsence={this.handleCreateAbsence}/>
-                <PasswordChangeModal handlePasswordChange={this.handlePasswordChange}/>
+                {/* <CreateAbsence handleCreateAbsence={this.handleCreateAbsence}/>
+                <PasswordChangeModal handlePasswordChange={this.handlePasswordChange}/> */}
+
+                <Row>
+                    <CreateAbsence handleCreateAbsence={this.handleCreateAbsence}/>
+                    <PasswordChangeModal handlePasswordChange={this.handlePasswordChange}/>
+                </Row>
+                <h3>Your Personal Leave Records</h3>
                 <Table hover>
                     <thead className="thead-dark">
                         <tr>
@@ -190,12 +196,12 @@ class AbsenceTable extends Component {
     adminTable() {
         return (
             <Fragment>
-            <Button
+            {/* <Button
                 style={{marginBottom: '2rem', marginLeft: '2rem'}}
                 onClick={() => {
                     // Pop up modal with form
                 }}>Go to Personal Dashboard
-            </Button>
+            </Button> */}
             <Button
                 style={{marginBottom: '2rem'}}
                 onClick={() => {
@@ -203,12 +209,14 @@ class AbsenceTable extends Component {
                 }}>Show Only Current Absences
             </Button>
             <div className="float-right">
+                <ExportCSV csvData={this.excelData()} fileName={'absence_report'} style={{marginBottom: '5rem', marginLeft: '5rem'}} />
+            </div>
+            <div className="float-right">
                 <Row>
                     <FilterModal handleFiltering={this.handleFiltering}/>
-                    <Button className="btn-primary" style={{marginBottom: '2rem'}} onClick={this.resetFilteredViewModels} className="float-right">Clear Filter</Button>
+                    <Button className="btn-primary" style={{marginBottom: '2rem', marginRight: '2rem'}} onClick={this.resetFilteredViewModels} className="float-right">Clear Filter</Button>
                 </Row>
             </div>
-            <ExportCSV csvData={this.excelData()} fileName={'absence_report'} style={{marginBottom: '2rem', marginLeft: '2rem'}} />
             <Table hover>
             <thead className="thead-dark">
                 <tr>
@@ -245,23 +253,7 @@ class AbsenceTable extends Component {
 
         return(
             <Container>
-                {/* <Button
-                style={{marginBottom: '2rem'}}
-                onClick={() => {
-                    this.handleFiltering({absenceQuery: {current: true}});
-                }}>Show Only Current Absences
-                </Button> */}
-
-                {/* <Button
-                style={{marginBottom: '2rem', marginLeft: '2rem'}}
-                onClick={() => {
-                    // Pop up modal with form
-                }}>Go to Personal Dashboard
-                </Button> */}
-                {/* <ExportCSV csvData={this.excelData()} fileName={'absence_report'} style={{marginBottom: '2rem', marginLeft: '2rem'}} /> */}
                 {this.tableForType(this.props.userType)}
-
-
             </Container>
         );
     }
