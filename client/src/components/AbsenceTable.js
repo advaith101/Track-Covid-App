@@ -134,10 +134,9 @@ class AbsenceTable extends Component {
             department:viewModel.user.department, 
             reason:viewModel.absence.reason,  
             startDate:viewModel.absence.startDate,
-             endDate:viewModel.absence.endDate,
-              current:viewModel.absence.current,
-               processed:viewModel.absence.processed}});
-               
+            endDate:viewModel.absence.endDate,
+            current:viewModel.absence.current,
+            processed:viewModel.absence.processed}});       
     }
     
     
@@ -269,7 +268,6 @@ class AbsenceTable extends Component {
     render() {
         console.log(this.props.email);
         console.log(localStorage.getItem("logintype"), 'asdfasdf')
-        
         
             if (localStorage.getItem("logintype") !== null && localStorage.getItem("logintype") !== ''){
                 return (<Container>
