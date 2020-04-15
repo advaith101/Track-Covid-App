@@ -80,6 +80,7 @@ const PasswordChangeModal = (props) => {
   var passwordQuery = { }
 
   const onSubmit = () => {
+  alert(' Password changed successful')
     setModal(!modal)
 
     // verify new passwords match

@@ -12,3 +12,9 @@ body {
     color: white !important;
     background-color: #343a40;
 }
+
+
+.BgImage{
+    height:100vh;
+    background-image: url(./assets/stay.jpg );
+  }

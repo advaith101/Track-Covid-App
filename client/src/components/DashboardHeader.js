@@ -26,14 +26,14 @@ class DashboardHeader extends Component {
     }
 
     handleRegister(registerQuery) {
-        axios.post('/api/users/create', registerQuery)
+        axios.post(' https://esratrackcovidtest.herokuapp.com/api/users/create', registerQuery)
         console.log('creating user...')
     }
 
     handleCreateAbsenceAdmin(newAbsenceQuery) {
         // newAbsenceQuery.id = this.props.email;
         console.log(newAbsenceQuery);
-        axios.post(`/api/absences/create`, newAbsenceQuery).then(smthg => {
+        axios.post(` https://esratrackcovidtest.herokuapp.com/api/absences/create`, newAbsenceQuery).then(smthg => {
             console.log("Creating absence for" + this.props.email);
             this.updateEmployeeViewModels()
         }).catch(err => console.log(err));

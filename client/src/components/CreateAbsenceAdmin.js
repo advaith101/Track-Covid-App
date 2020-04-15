@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import NoteAddIcon from '@material-ui/icons/NoteAdd';
 
 
 const CreateAbsenceAdmin = (props) => {
@@ -28,6 +29,7 @@ const CreateAbsenceAdmin = (props) => {
   const toggle = () => setModal(!modal);
 
   const handleSubmit = () => {
+    alert('Absence added successful');
     setModal(!modal)
 
     props.handleCreateAbsenceAdmin(newAbsenceQuery)
@@ -44,7 +46,7 @@ const CreateAbsenceAdmin = (props) => {
 
   return (
     <div>
-      <Button onClick = {toggle} type="submit" variant="contained" color="default" style={{marginBottom: '2rem'}} onClick={toggle}>Create Employee Absence</Button>
+      <Button  startIcon={<NoteAddIcon />} onClick = {toggle} type="submit" variant="contained" color="default" style={{ fontSize:"13px",marginLeft:"1rem",color: "black", position: "relative", float: "left",  backgroundColor: "white"}} onClick={toggle}>Create Employee Absence</Button>
       <Modal isOpen={modal} toggle={toggle} className={className}>
         <ModalHeader toggle={toggle}>New Absence</ModalHeader>
         <ModalBody>

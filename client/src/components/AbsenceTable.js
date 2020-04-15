@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
+import 'typeface-roboto';
 
 
 import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
@@ -120,12 +121,12 @@ class AbsenceTable extends Component {
 
 
     getUser(email) {
-        return axios.post("/api/users", {email});
+        return axios.post(" https://esratrackcovidtest.herokuapp.com/api/users", {email});
     }
 
     
     updateEmployeeViewModels() {
-        axios.post("/api/absences/", {email: this.props.email}).then(res => {
+        axios.post(" https://esratrackcovidtest.herokuapp.com/api/absences/", {email: this.props.email}).then(res => {
             const data = res.data;
             console.log(data);
             console.log("Look here" + this.props.email);
@@ -149,7 +150,7 @@ class AbsenceTable extends Component {
     }
 
     updateFilteredViewModels(filterQuery) {
-        axios.post(`/api/filter/`, filterQuery).then(res => {
+        axios.post(` https://esratrackcovidtest.herokuapp.com/api/filter/`, filterQuery).then(res => {
             const data = res.data;
             const userPromises = data.map(async absence => {
                 return this.getUser(absence.id).then(response => {
@@ -175,7 +176,7 @@ class AbsenceTable extends Component {
     }
 
     createViewModels() {
-        axios.get(`/api/absences/all`).then(res => {
+        axios.get(` https://esratrackcovidtest.herokuapp.com/api/absences/all`).then(res => {
             const data = res.data;
 
             const userPromises = data.map(async absence => {
@@ -234,7 +235,7 @@ class AbsenceTable extends Component {
                     <CreateAbsence handleCreateAbsence={this.handleCreateAbsence}/>
                     <PasswordChangeModal handlePasswordChange={this.handlePasswordChange}/>
                 </Row>
-                <h3 style={{display:'flex', alignItems:'center', justifyContent:'center'}}>Your Personal Leave Records</h3>
+                <h4 style={{display:'flex', alignItems:'center', justifyContent:'center'}}>Your Personal Leave Records</h4>
                 
                 < div
                 className = "ag-theme-balham"
@@ -268,7 +269,7 @@ class AbsenceTable extends Component {
     handleCreateAbsence(newAbsenceQuery) {
         newAbsenceQuery.id = this.props.email;
         console.log(newAbsenceQuery);
-        axios.post(`/api/absences/create`, newAbsenceQuery).then(smthg => {
+        axios.post(` https://esratrackcovidtest.herokuapp.com/api/absences/create`, newAbsenceQuery).then(smthg => {
             console.log("Creating absence for" + this.props.email);
             this.updateEmployeeViewModels()
         }).catch(err => console.log(err));
@@ -284,7 +285,7 @@ class AbsenceTable extends Component {
             "email": this.props.email,
             "password": newPassword
         }
-        axios.put("/api/users", passwordChangeQuery);
+        axios.put(" https://esratrackcovidtest.herokuapp.com/api/users", passwordChangeQuery);
 
     }
     

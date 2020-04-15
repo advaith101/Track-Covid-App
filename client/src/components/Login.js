@@ -8,7 +8,7 @@ import {Form} from 'reactstrap'
 // import {Container} from 'reactstrap';
 // import RegisterModal from './RegisterModal';
 
-import Avatar from '@material-ui/core/Avatar';
+import { Avatar } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -21,7 +21,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
+import Spinner from './LoaderSpinner';
+import bgimag from '../assets/bgimag.svg';
+import stayhome from '../assets/stayhome.jpg';
+import 'typeface-roboto';
+import "../App.css"
 
 const axios = require('axios');
 
@@ -31,7 +35,8 @@ class Login extends Component {
         this.state = {
             email: '',
             password: '',
-            redirect: false
+            redirect: false,
+            loading:false,
         };
 
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -41,6 +46,7 @@ class Login extends Component {
     }
 
     handleSubmit() {
+      this.setState({loading: true});
         let config = {
             headers: { 'Content-Type': 'application/json' },
             responseType: 'json'
@@ -50,11 +56,16 @@ class Login extends Component {
         console.log('Password: ' + this.state.password);
 
         
-        axios.post('/api/users/login', {email: this.state.email, password: this.state.password}, config).then(res => {
+        axios.post(' https://esratrackcovidtest.herokuapp.com/api/users/login', {email: this.state.email, password: this.state.password}, config).then(res => {
        ///   console.log(res.data); // check in chrom terminal
           this.props.handleStateChange(res.data);         
           this.setState({redirect: true});
+          if (this.setState({redirect: true})){
+            alert(' Please check your Email or Password');
+          }
         }).catch(err => console.error(err));
+
+       
     }
 
     handleChange(event) {
@@ -62,6 +73,7 @@ class Login extends Component {
             [event.target.name]: event.target.value
         });
         console.log('change handled')
+        
     }
 
     // handleRegister(registerQuery) {
@@ -97,6 +109,7 @@ class Login extends Component {
     render() {
         const { redirect } = this.state;
         if (redirect) {
+          
           var redirictpage = this.props.userType == "admin" ? '/admin/dashboard':'/dashboard'
           console.log('redirecting');
           return <Redirect to= {redirictpage}/>;
@@ -104,16 +117,16 @@ class Login extends Component {
         const classes = this.useStyles();
         
         return (
+      
           <Fragment>
-            <div style = {{display: 'flex',  justifyContent:'center', alignItems:'center', height: '80vh'}}>
-              <Container component="main" maxWidth="xs">
+            <div className={'BgImage'} style = {{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
+              <Container style = {{backgroundColor: "#ffffffb3" , padding:"2rem"}} component="main" maxWidth="xs">
               <CssBaseline />
               <div className={classes.paper}>
-              <Avatar className={classes.avatar}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Sign in
+              <Avatar style={{marginLeft:"11rem",marginBottom:"2rem"}} src="/broken-image.jpg" />
+              {/* <img style={{marginLeft:"4rem"}} alt="TrackCovid" src={stayhome} title="TrackCovid" /> */}
+              <Typography style={{marginLeft:"7rem",fontWeight:"bold"}} component="h1" variant="h5">
+              Track Absence
               </Typography>
                 <Form className="form">
                   <Col>
@@ -174,13 +187,15 @@ class Login extends Component {
                   <Button
                     fullWidth
                     variant="contained"
-                    color="primary"
+                    style={{color: "white",backgroundColor: "#343a40"}}
                     onClick={e => this.handleSubmit()}
                     className={classes.submit}
                   >
                   Sign In
+                  {this.state.loading && < Spinner style={{ marginLeft: "0" }}></Spinner>}
                   </Button>
                 </Form>
+                
 
                 {/* <form className={classes.form} noValidate>
                 <TextField
@@ -293,6 +308,8 @@ class Login extends Component {
         //   </Container>
         // </div>
         // </Fragment>
+
+        
         );
     }
 }

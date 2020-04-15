@@ -78,8 +78,8 @@ const CreateAbsence = (props) => {
 
   const handleSubmit = () => {
     setModal(!modal)
-
     props.handleCreateAbsence(newAbsenceQuery)
+    alert('Absence added successful');
   }
 
   var newAbsenceQuery = {

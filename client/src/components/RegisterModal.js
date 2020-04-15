@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import Button from '@material-ui/core/Button';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 
 const RegisterModal = (props) => {
@@ -23,7 +24,7 @@ const RegisterModal = (props) => {
 
   return (
     <div>
-      <Button onClick = {toggle} type="submit" fullWidth variant="contained"  color="default">Register An Employee</Button>
+      <Button startIcon={<PersonAddIcon />} style={{fontSize:"13px",color: "black", position: "relative", float: "left",  backgroundColor: "white"}} onClick = {toggle} type="submit" fullWidth variant="contained">Register An Employee</Button>
       <Modal isOpen={modal} toggle={toggle} >
         <ModalHeader toggle={toggle}>Register</ModalHeader>
         <ModalBody>
