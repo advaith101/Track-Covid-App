@@ -5,3 +5,10 @@ body {
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
     background-color: #9b8ec8 !important;
 }
+.ag-theme-balham .ag-root-wrapper{
+    width:81.5vw;
+}
+.ag-theme-balham .ag-header-row {
+    color: white !important;
+    background-color: #343a40;
+}

@@ -15,6 +15,7 @@ const RegisterModal = (props) => {
     props.handleRegister(registerQuery)
 
   }
+  
 
   var registerQuery = {
     
@@ -22,7 +23,7 @@ const RegisterModal = (props) => {
 
   return (
     <div>
-      <Button onClick = {toggle} type="submit" fullWidth variant="contained" color="default">Register An Employee</Button>
+      <Button onClick = {toggle} type="submit" fullWidth variant="contained"  color="default">Register An Employee</Button>
       <Modal isOpen={modal} toggle={toggle} >
         <ModalHeader toggle={toggle}>Register</ModalHeader>
         <ModalBody>

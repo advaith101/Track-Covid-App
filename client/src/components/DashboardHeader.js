@@ -7,8 +7,12 @@ import {
     Nav,
     NavItem, 
     NavLink,
-    Container
+    Container,
+    Row
 } from 'reactstrap';
+import RegisterModal from './RegisterModal';
+import CreateAbsenceAdmin from './CreateAbsenceAdmin';
+const axios = require('axios');
 
 class DashboardHeader extends Component {
     state = {
@@ -21,6 +25,20 @@ class DashboardHeader extends Component {
         });
     }
 
+    handleRegister(registerQuery) {
+        axios.post('/api/users/create', registerQuery)
+        console.log('creating user...')
+    }
+
+    handleCreateAbsenceAdmin(newAbsenceQuery) {
+        // newAbsenceQuery.id = this.props.email;
+        console.log(newAbsenceQuery);
+        axios.post(`/api/absences/create`, newAbsenceQuery).then(smthg => {
+            console.log("Creating absence for" + this.props.email);
+            this.updateEmployeeViewModels()
+        }).catch(err => console.log(err));
+    }
+
 
     //TODO: Link Logout to Login page
     render() {
@@ -30,13 +48,29 @@ class DashboardHeader extends Component {
                     <Container>
                         <NavbarBrand href="/">{this.props.barTitle}</NavbarBrand>
                         <NavbarToggler onClick={this.toggle}/>
+                     
                         <Collapse isOpen={this.state.isOpen} navbar>
+                       
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
-                                    <NavLink href="https://esratrackcovid.herokuapp.com/"> Logout </NavLink>
+                                 {   (this.props.userType == "admin") &&                                 
+                                <div>
+                <div style={{display:'flex'}}>
+                <RegisterModal handleRegister={this.handleRegister}/> 
+                
+                <CreateAbsenceAdmin handleCreateAbsenceAdmin={this.handleCreateAbsenceAdmin}/>
+                </div>
+                
+                </div> }
+                
+    
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink href="/"> Logout </NavLink>
                                 </NavItem>
                             </Nav>
                         </Collapse>
+                        
                     </Container>
                 </Navbar>
             </div>

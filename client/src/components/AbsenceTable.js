@@ -1,11 +1,83 @@
 import React, { Component, Fragment} from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom'
-import { Container, Button, Table, Row, Label } from 'reactstrap';
+import { Container,Button ,  Table, Row } from 'reactstrap';
 import FilterModal from './FilterModal';
 import CreateAbsence from './CreateAbsence'
 import PasswordChangeModal from './PasswordChangeModal'
 import { ExportCSV } from './ExportCSV';
 import { string } from 'prop-types';
+import "../App.css"
+import Typography from '@material-ui/core/Typography';
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-balham.css";
+
+
+import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+// import Button from '@material-ui/core/Button';
+import { green, purple } from '@material-ui/core/colors';
+
+const BootstrapButton = withStyles({
+  root: {
+    boxShadow: 'none',
+    textTransform: 'none',
+    fontSize: 16,
+    padding: '6px 12px',
+    border: '1px solid',
+    lineHeight: 1.5,
+    backgroundColor: '#0063cc',
+    borderColor: '#0063cc',
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:hover': {
+      backgroundColor: '#0069d9',
+      borderColor: '#0062cc',
+      boxShadow: 'none',
+    },
+    '&:active': {
+      boxShadow: 'none',
+      backgroundColor: '#0062cc',
+      borderColor: '#005cbf',
+    },
+    '&:focus': {
+      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.5)',
+    },
+  },
+})(Button);
+
+const ColorButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: purple[500],
+    '&:hover': {
+      backgroundColor: purple[700],
+    },
+  },
+}))(Button);
+
+const useStyles = makeStyles((theme) => ({
+  margin: {
+    margin: theme.spacing(1),
+  },
+}));
+
+const theme = createMuiTheme({
+  palette: {
+    primary: green,
+  },
+});
+
+
 
 const axios = require('axios');
 
@@ -26,20 +98,24 @@ export function formattedDateSpanFromAbsence(absence) {
     return  formattedStartDate + ' - ' + formattedEndDate;
 }
 
+
+
 class AbsenceTable extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props);
         this.handleFiltering = this.handleFiltering.bind(this);
         this.resetFilteredViewModels = this.resetFilteredViewModels.bind(this);
         this.handleCreateAbsence = this.handleCreateAbsence.bind(this);
         this.updateEmployeeViewModels = this.updateEmployeeViewModels.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);        
     }
     
 
     state = {
         viewModels: [], // these are to be kept as our reset viewModels, do not modify
-        filteredViewModels: []
+        filteredViewModels: [],
+        employeeViewModels: []
+        
     }
 
 
@@ -53,19 +129,19 @@ class AbsenceTable extends Component {
             const data = res.data;
             console.log(data);
             console.log("Look here" + this.props.email);
-            this.setState({ viewModels: [...data] });
-            console.log(this.state.viewModels);
+            this.setState({ employeeViewModels: [...data] });
+            console.log(this.state.employeeViewModels);
             //this.forceUpdate()
         });
     }
-    
+
     componentDidMount() {
         console.log('Component did mount!');
+        console.log(this.props.userType);
         if(this.props.userType === "employee") {
             this.updateEmployeeViewModels()
-
         } 
-        else if (localStorage.getItem("logintype") !== null && localStorage.getItem("logintype") !== ''){
+        else{
             // Fetch data for admin
             this.createViewModels()
         }
@@ -134,42 +210,54 @@ class AbsenceTable extends Component {
             department:viewModel.user.department, 
             reason:viewModel.absence.reason,  
             startDate:viewModel.absence.startDate,
-            endDate:viewModel.absence.endDate,
-            current:viewModel.absence.current,
-            processed:viewModel.absence.processed}});       
+             endDate:viewModel.absence.endDate,
+              current:viewModel.absence.current,
+               processed:viewModel.absence.processed}});
+               
     }
     
     
 
     employeeTable() {
+        var rowValue = [];
+        this.state.employeeViewModels && this.state.employeeViewModels.map((viewModel) => {
+        rowValue.push({ "leavereason": viewModel.reason, "dateOfAbsence": formattedDateSpanFromAbsence(viewModel)})
+        })
+        const header = [ { headerName: "Leave Reason", field: "leavereason", resizable: true },
+        { headerName: "Date of Absence", field: "dateOfAbsence", resizable: true }]
         return (
             <Fragment>
                 {/* <CreateAbsence handleCreateAbsence={this.handleCreateAbsence}/>
                 <PasswordChangeModal handlePasswordChange={this.handlePasswordChange}/> */}
 
-                <Row>
+                <Row style={{display: 'flex', justifySelf:'center'}}>
                     <CreateAbsence handleCreateAbsence={this.handleCreateAbsence}/>
                     <PasswordChangeModal handlePasswordChange={this.handlePasswordChange}/>
                 </Row>
-                <h3>Your Personal Leave Records</h3>
-                <Table hover>
-                    <thead className="thead-dark">
-                        <tr>
-                        <th>Leave Reason</th>
-                        <th>Date of Absence</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.viewModels.map((viewModel) => (
-                            <tr key={viewModel.id}>
-                            <td>{viewModel.reason}</td>
-                            <td>{formattedDateSpanFromAbsence(viewModel)}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
-            </Fragment>
-        );
+                <h3 style={{display:'flex', alignItems:'center', justifyContent:'center'}}>Your Personal Leave Records</h3>
+                
+                < div
+                className = "ag-theme-balham"
+                style = {{
+                    height: "65vh",
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    
+                }}
+            
+                >
+                <AgGridReact
+                    onGridReady={(params)=>params.api.sizeColumnsToFit()}
+                    columnDefs={header}
+                    rowData={rowValue}
+                    paginationAutoPageSize={true}
+                    singleClickEdit={true}
+                    pagination={true}
+                ></AgGridReact>
+                            </div >
+                            </Fragment>
+                        );
     }
 
     handleFiltering(filterQuery) {
@@ -199,18 +287,19 @@ class AbsenceTable extends Component {
         axios.put("/api/users", passwordChangeQuery);
 
     }
-
-    componentWillUnmount() {
-        localStorage.setItem("logintype", "")
-        console.log('changed employee logintype')
-    }
-
-    componentDidUpdate() {
-        localStorage.setItem("logintype", "")
-        console.log('updated employee logintype')
-    }
+    
+    
 
     adminTable() {
+       
+        var rowValue = [];
+        this.state.filteredViewModels && this.state.filteredViewModels.map((viewModel) => {
+        rowValue.push({ "name": viewModel.user.name, "leavereason": viewModel.absence.reason, "dateOfAbsence": formattedDateSpanFromAbsence(viewModel.absence),
+        "location": viewModel.user.location, "department": viewModel.user.department})
+        })
+        const header = [{ headerName: "Name", field: "name", resizable: true }, { headerName: "Leave Reason", field: "leavereason", resizable: true },
+        { headerName: "Date of Absence", field: "dateOfAbsence", resizable: true }, { headerName: "Location", field: "location", resizable: true },
+        { headerName: "Department", field: "department", resizable: true }]
         return (
             <Fragment>
             {/* <Button
@@ -220,7 +309,7 @@ class AbsenceTable extends Component {
                 }}>Go to Personal Dashboard
             </Button> */}
             <Button
-                style={{marginBottom: '2rem'}}
+                style={{marginBottom: '2rem',color: "white", position: "relative", float: "left", bottom: "10px", fontSize: "1rem", backgroundColor: "#343a40"}}
                 onClick={() => {
                     this.handleFiltering({absenceQuery: {current: true}});
                 }}>Show Only Current Absences
@@ -231,31 +320,28 @@ class AbsenceTable extends Component {
             <div className="float-right">
                 <Row>
                     <FilterModal handleFiltering={this.handleFiltering}/>
-                    <Button className="btn-primary" style={{marginBottom: '2rem', marginRight: '2rem'}} onClick={this.resetFilteredViewModels} className="float-right">Clear Filter</Button>
+                    <Button className="btn-primary" style={{backgroundColor: "#343a40",marginBottom: '2rem', marginRight: '2rem'}} onClick={this.resetFilteredViewModels} className="float-right">Clear Filter</Button>
                 </Row>
             </div>
-            <Table hover>
-            <thead className="thead-dark">
-                <tr>
-                <th>Name</th>
-                <th>Leave Reason</th>
-                <th>Date of Absence</th>
-                <th>Location</th>
-                <th>Department</th>
-                </tr>
-            </thead>
-            <tbody>
-                {this.state.filteredViewModels.map((viewModel) => (
-                    <tr key={viewModel.absence.id}>
-                    <td>{viewModel.user.name}</td>
-                    <td>{viewModel.absence.reason}</td>
-                    <td>{formattedDateSpanFromAbsence(viewModel.absence)}</td>
-                    <td>{viewModel.user.location}</td>
-                    <td>{viewModel.user.department}</td>
-                    </tr>
-                ))}
-            </tbody>
-            </Table>
+            <h3 style={{display:'flex', alignItems:'center', justifyContent:'center'}}>Employee Leave Records</h3>
+            <div
+                className="ag-theme-balham"
+                style={{
+                    height: "65vh",
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                <AgGridReact
+                    onGridReady={(params)=>params.api.sizeColumnsToFit()}
+                    columnDefs={header}
+                    rowData={rowValue}
+                    paginationAutoPageSize={true}
+                    singleClickEdit={true}
+                    pagination={true}                    
+                ></AgGridReact>
+            </div>
             </Fragment>
         );
     }
@@ -264,18 +350,17 @@ class AbsenceTable extends Component {
         console.log('rendering based on user type...')
         return (userType === 'admin' ? this.adminTable() : this.employeeTable());
     }
-
+    
     render() {
         console.log(this.props.email);
-        console.log(localStorage.getItem("logintype"), 'asdfasdf')
-        
-            if (localStorage.getItem("logintype") !== null && localStorage.getItem("logintype") !== ''){
+      
+            // if (localStorage.getItem("logintype") !== null && localStorage.getItem("logintype") !== ''){
                 return (<Container>
                     {this.tableForType(this.props.userType)}
                     </Container>)
-              } else{
-                 return (<Redirect to='/'/>)
-              }
+            //   } else{
+            //      return (<Redirect to='/'/>)
+            //   }
             // <Container>
             //     {this.tableForType(this.props.userType)}
             // </Container>
