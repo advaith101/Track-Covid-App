@@ -229,8 +229,8 @@ class AbsenceTable extends Component {
             <Fragment>
                 {/* <CreateAbsence handleCreateAbsence={this.handleCreateAbsence}/>
                 <PasswordChangeModal handlePasswordChange={this.handlePasswordChange}/> */}
-
-                <Row style={{display: 'flex', justifySelf:'center'}}>
+                <Row>
+                
                     <CreateAbsence handleCreateAbsence={this.handleCreateAbsence}/>
                     <PasswordChangeModal handlePasswordChange={this.handlePasswordChange}/>
                 </Row>

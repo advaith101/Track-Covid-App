@@ -26,7 +26,7 @@ const FilterModal = (props) => {
 
   return (
     <div>
-      <Button className="btn-primary" style={{marginBottom: '2rem', marginRight: '1rem'}} onClick={toggle} className="float-right">Filter</Button>
+      <Button color="dark" style={{marginBottom: '2rem', marginRight: '1rem'}} onClick={toggle} className="float-right">Filter</Button>
       <Modal isOpen={modal} toggle={toggle} >
         <ModalHeader toggle={toggle}>Specify Filter Criteria</ModalHeader>
         <ModalBody>

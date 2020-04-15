@@ -44,7 +44,7 @@ const CreateAbsenceAdmin = (props) => {
 
   return (
     <div>
-      <Button onClick = {toggle} type="submit" variant="contained" color="default" style={{marginBottom: '2rem'}} onClick={toggle}>Create/Update Absence</Button>
+      <Button onClick = {toggle} type="submit" variant="contained" color="default" style={{marginBottom: '2rem'}} onClick={toggle}>Create Employee Absence</Button>
       <Modal isOpen={modal} toggle={toggle} className={className}>
         <ModalHeader toggle={toggle}>New Absence</ModalHeader>
         <ModalBody>

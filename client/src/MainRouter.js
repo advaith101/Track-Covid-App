@@ -45,7 +45,7 @@ class MainRouter extends Component {
            :
             <Redirect to='/' />
         )} 
-      />
+        />
       
        <Route exact path="/dashboard"  render={() => ( this.state.userType == "employee" ?          
           <>
