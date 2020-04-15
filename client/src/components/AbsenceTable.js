@@ -121,12 +121,12 @@ class AbsenceTable extends Component {
 
 
     getUser(email) {
-        return axios.post(" https://esratrackcovidtest.herokuapp.com/api/users", {email});
+        return axios.post(" /api/users", {email});
     }
 
     
     updateEmployeeViewModels() {
-        axios.post(" https://esratrackcovidtest.herokuapp.com/api/absences/", {email: this.props.email}).then(res => {
+        axios.post(" /api/absences/", {email: this.props.email}).then(res => {
             const data = res.data;
             console.log(data);
             console.log("Look here" + this.props.email);
@@ -150,7 +150,7 @@ class AbsenceTable extends Component {
     }
 
     updateFilteredViewModels(filterQuery) {
-        axios.post(` https://esratrackcovidtest.herokuapp.com/api/filter/`, filterQuery).then(res => {
+        axios.post(`/api/filter/`, filterQuery).then(res => {
             const data = res.data;
             const userPromises = data.map(async absence => {
                 return this.getUser(absence.id).then(response => {
@@ -176,7 +176,7 @@ class AbsenceTable extends Component {
     }
 
     createViewModels() {
-        axios.get(` https://esratrackcovidtest.herokuapp.com/api/absences/all`).then(res => {
+        axios.get(`/api/absences/all`).then(res => {
             const data = res.data;
 
             const userPromises = data.map(async absence => {
@@ -269,7 +269,7 @@ class AbsenceTable extends Component {
     handleCreateAbsence(newAbsenceQuery) {
         newAbsenceQuery.id = this.props.email;
         console.log(newAbsenceQuery);
-        axios.post(` https://esratrackcovidtest.herokuapp.com/api/absences/create`, newAbsenceQuery).then(smthg => {
+        axios.post(`/api/absences/create`, newAbsenceQuery).then(smthg => {
             console.log("Creating absence for" + this.props.email);
             this.updateEmployeeViewModels()
         }).catch(err => console.log(err));
@@ -285,7 +285,7 @@ class AbsenceTable extends Component {
             "email": this.props.email,
             "password": newPassword
         }
-        axios.put(" https://esratrackcovidtest.herokuapp.com/api/users", passwordChangeQuery);
+        axios.put("/api/users", passwordChangeQuery);
 
     }
     

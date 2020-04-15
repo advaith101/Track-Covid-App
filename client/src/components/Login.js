@@ -56,8 +56,8 @@ class Login extends Component {
         console.log('Password: ' + this.state.password);
 
         
-        axios.post(' https://esratrackcovidtest.herokuapp.com/api/users/login', {email: this.state.email, password: this.state.password}, config).then(res => {
-       ///   console.log(res.data); // check in chrom terminal
+        axios.post('/api/users/login', {email: this.state.email, password: this.state.password}, config).then(res => {
+          console.log(res.data); // check in chrom terminal
           this.props.handleStateChange(res.data);         
           this.setState({redirect: true});
           if (this.setState({redirect: true})){
