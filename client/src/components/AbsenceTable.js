@@ -299,10 +299,9 @@ class AbsenceTable extends Component {
 
     handleDeleteAbsence(deleteQuery) {
         console.log(deleteQuery)
-        axios.delete('/api/absences', deleteQuery).then(e => {
-            alert('Absence Deleted!');
+        axios.post('/api/absences/delete', deleteQuery).then(e => {
+            console.log('Absence Deleted!');
         })
-        
     }
     
     

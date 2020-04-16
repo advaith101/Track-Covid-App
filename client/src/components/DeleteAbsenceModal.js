@@ -77,7 +77,7 @@ const DeleteAbsenceModal = (props) => {
       setModal(!modal)
   };
 
-  var deleteQuery = { }
+  var deleteQuery = {}
 
   const onSubmit = () => {
     props.handleDeleteAbsence(deleteQuery);
@@ -103,7 +103,10 @@ const DeleteAbsenceModal = (props) => {
             <Form>
                 <FormGroup>
                     <Label for="absenceid">Absence ID:</Label>
-                    <Input type="name" name="name" id="absenceid" placeholder="Enter your Absence ID" onChange={e => deleteQuery._id = e.target.value}/>
+                    <Input type="name" name="name" id="absenceid" placeholder="Enter your Absence ID" onChange={e => {
+                        deleteQuery._id = e.target.value
+                        console.log('HEEEEYYYY')
+                        }}/>
                 </FormGroup>    
             </Form>
         </ModalBody>

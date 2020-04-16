@@ -42,11 +42,12 @@ router.put('/', (req, res) => {
         .catch(err => console.log(err));
 });
 
-// @route   DELETE api/absences
+// @route   POST api/absences/delete
 // @desc    Delete an absence by absence ID
 // @access  Public
-router.delete('/', (req, res) => {
-    Absence.deleteOne({ _id: req.body._id })
+router.post('/delete', (req, res) => {
+    console.log(req.body, 'hello')
+    Absence.findOneAndRemove({ _id: req.body._id })
     .then((val) => {
         res.json({success: val.deletedCount})
         console.log('absence deleted!')
