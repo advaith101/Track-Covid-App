@@ -101,7 +101,7 @@ const PasswordChangeModal = (props) => {
        startIcon={<LockIcon/>}
         >Change Password
       </BootstrapButton>
-{/*       <Button color="dark" style={{marginBottom: '2rem'}} onClick={toggle}>Change Password</Button> */}
+    {/*       <Button color="dark" style={{marginBottom: '2rem'}} onClick={toggle}>Change Password</Button> */}
       <Modal isOpen={modal} toggle={toggle} className={className}>
         <ModalHeader toggle={toggle}>Change Password</ModalHeader>
         <ModalBody>
