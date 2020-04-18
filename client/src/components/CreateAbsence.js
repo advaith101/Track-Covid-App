@@ -145,20 +145,6 @@ const CreateAbsence = (props) => {
                     <option>Other Quarantine - sick</option>
                     <option>School/Business Closure</option>
                     </Input>
-
-                    {/* <Select
-                    labelId="reason"
-                    fullWidth
-                    id="reason"
-                    onChange={e => newAbsenceQuery.reason = e.target.value}
-                    >
-                    <MenuItem>--</MenuItem>
-                    <MenuItem>EE Quarantine - not sick</MenuItem>
-                    <MenuItem>EE Quarantine - sick</MenuItem>
-                    <MenuItem>Other Quarantine - not sick</MenuItem>
-                    <MenuItem>Other Quarantine - sick</MenuItem>
-                    <MenuItem>School/Business Closure</MenuItem>
-                    </Select> */}
                 </FormGroup>
             </Form>
         </ModalBody>

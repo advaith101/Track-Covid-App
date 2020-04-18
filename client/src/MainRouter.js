@@ -1,8 +1,24 @@
-import React, {Component} from 'react'
-import {Route, Switch, Redirect} from 'react-router-dom'
-import DashboardHeader from './components/DashboardHeader';
+import React, { Component } from 'react'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import Login from './components/Login';
-import AbsenceTable from './components/AbsenceTable';
+import Dashboard from './components/dashboard';
+import { transitions, positions, Provider as AlertProvider } from "react-alert";
+import "./App.css"
+
+const AlertTemplate = ({ style, message, close }) => (
+    <div style={style} className="alertTemplate">
+        {message}<div style={{ marginRight: "15px" }} onClick={close}>x</div>
+    </div>
+)
+// optional cofiguration
+const options = {
+    // you can also just use 'bottom center'
+    position: positions.BOTTOM_RIGHT,
+    timeout: 4000,
+    offset: '10px',
+    // you can also just use 'scale'
+    transition: transitions.SCALE
+}
 
 class MainRouter extends Component {
 
@@ -15,53 +31,45 @@ class MainRouter extends Component {
         // maybe a logged in
         name: "",
         email: "",
-        admin: false        
+        admin: false
     }
 
-    handleStateChange(user) {
+    handleStateChange(user, email) {
         this.setState({
-            name: user.name,
-            email: user.email,
-            userType: user.admin ? "admin" : "employee"
+            name: user.UserName,
+            email: email,
+            userType: user.IsAdmin ? "admin" : "employee"
         });
-        console.log("global state change");
-
     }
-   
+
+    apiCall(url, method, data, message) {
+        this.dashboard.apiCall(url, method, data, message);
+    }
+
     render() {
-        
-        return (           
+
+        return (
             <div>
                 <Switch>
 
-                    <Route exact path="/"> 
-                        <Login userType={this.state.userType} handleStateChange={this.handleStateChange}/>
+                    <Route exact path={["/", "/login"]}>
+                        <AlertProvider template={AlertTemplate} {...options}>
+                            <Login userType={this.state.userType} apiCall={this.apiCall} handleStateChange={this.handleStateChange} />
+                        </AlertProvider>
                     </Route>
-                   
-          <Route exact path="/admin/dashboard"  render={() => (  this.state.userType == "admin" ?              
-          <>
-          <DashboardHeader userType={this.state.userType} barTitle="Administrator Dashboard"/>
-          <AbsenceTable userType={this.state.userType} name={this.state.name} email={this.state.email}/> </>
-           :
-            <Redirect to='/' />
-        )} 
-        />
-      
-       <Route exact path="/dashboard"  render={() => ( this.state.userType == "employee" ?          
-          <>
-          <DashboardHeader  barTitle="Employee Dashboard"/>
-          <AbsenceTable  userType={this.state.userType} name={this.state.name} email={this.state.email}/> </>
-           :
-            <Redirect to='/' />
-        )} 
-      />
-                   
 
+                    <Route path="/dashboard" render={() => (
+                        <AlertProvider template={AlertTemplate} {...options}>
+                            <Dashboard onRef={ref => (this.dashboard = ref)} userType={this.state.userType} name={this.state.name} email={this.state.email} /></AlertProvider>
+
+                    )}
+                    />
+
+                    <Redirect to='/' />
                 </Switch>
             </div>
         );
     }
 }
-
 
 export default MainRouter;

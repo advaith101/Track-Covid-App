@@ -1,0 +1,16 @@
+.containers{
+    width: 97% !important;
+    min-height: 48%;
+    height:auto;
+    display: flex;
+    margin-top: 20px;
+    margin-left: 20px !important;
+    flex-wrap: wrap;
+    align-content: space-evenly;
+}
+
+.items{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

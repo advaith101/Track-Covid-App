@@ -5,16 +5,67 @@ body {
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
     background-color: #9b8ec8 !important;
 }
-.ag-theme-balham .ag-root-wrapper{
-    width:81.5vw;
+/* .ag-theme-material {
+    border-radius: 0px,
+
+} */
+.ag-theme-material .ag-root-wrapper{
+    width:100%;
 }
-.ag-theme-balham .ag-header-row {
+.ag-theme-material .ag-header-row {
     color: white !important;
-    background-color: #343a40;
+    background-color: #006b6a;
+}
+.ag-theme-material > div:first-of-type {
+    width:94% !important
 }
 
-
+.ag-header-cell-text {
+    font-weight: 400 !important;
+}
 .BgImage{
     height:100vh;
     background-image: url(./assets/stay.jpg );
   }
+  .breadCrumb{
+      font-family: "Roboto";
+      color: #bfbaba;
+  }
+  .breadCrumb:hover{
+color: #788195;
+cursor: pointer;
+  }
+.ag-center-cols-viewport {
+    max-height: 48vh !important;
+}
+  .ag-theme-material .ag-row {
+    color: #788195 !important;
+}
+.tableDeleteIcon{
+    display: none;
+    transition: display 2s;
+}
+
+.ag-row-hover .ag-cell .ag-react-container .encloser .tableDeleteIcon{
+    display: inline-flex !important;
+    max-width: 19px !important;
+    max-height: 19px !important;
+}
+.alertTemplate{
+    margin: 10px;
+    pointer-events: all;
+    font-family: "Roboto";
+    letter-spacing: 0.4;
+    font-size: 15px;
+    justify-content: space-between;
+    min-width: 22vw !important;
+    width: auto;
+    height: 5vh;
+    background-color: #f1f3f6;
+    display: flex;
+    border-left: 5px solid;
+    padding-left: 15px;
+    align-items: center;
+    color: #2d3446;
+    text-transform: uppercase;
+}
