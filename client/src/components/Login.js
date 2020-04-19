@@ -125,9 +125,9 @@ class Login extends Component {
             <CssBaseline />
             <div className={classes.paper}>
               <Grid container style={{alignItems:"center",flexDirection:"column"}}>
-              <Avatar variant='square' style={{  marginBottom: "0.5rem" }} src={EsraLogo} />
-              <Typography style={{ fontFamily: "roboto", fontWeight: "bold" }} component="h1" variant="h5">
-                Track Absence
+              <Avatar variant='square' style={{  marginTop: '0.1rem', marginBottom: "1.2rem" }} src={EsraLogo} />
+              <Typography style={{ fontFamily: "Helvetica Neue", fontWeight: "bold", marginBottom:'0.5rem' }} component="h1" variant="h5">
+                Login
               </Typography>
               </Grid>
               <Form className="form">

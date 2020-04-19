@@ -2,6 +2,8 @@ import React from 'react';
 import { string } from 'prop-types';
 import { Row } from 'simple-flexbox';
 import { StyleSheet, css } from 'aphrodite';
+import EsraLogo from '../../assets/EsraLogo.ico'
+import { Avatar } from '@material-ui/core';
 
 const styles = StyleSheet.create({
     avatar: {
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
         fontFamily: "Roboto",
         textAlign: 'right',
         letterSpacing: 0.4,
-        marginLeft: 30,
+        marginLeft: 21,
         '@media (max-width: 768px)': {
             marginLeft: 73
         },
@@ -64,7 +66,7 @@ const styles = StyleSheet.create({
     },
     iconStyles: {
         cursor: 'pointer',
-        marginLeft: 25,
+        marginLeft: 21,
         '@media (max-width: 768px)': {
             marginLeft: 12
         }
@@ -75,7 +77,9 @@ function HeaderComponent(props) {
     const { icon, title, ...otherProps } = props;
     return (
         <Row className={css(styles.container)} vertical="center" horizontal="space-between" {...otherProps}>
+            <Avatar variant='square' className={css(styles.iconStyles)} src={EsraLogo} />
             <span className={css(styles.title)}>{(Number(window.localStorage.getItem("isAdmin"))) ? "Admin Dashboard" : "Employee Dashboard"}</span>
+            
         </Row>
     );
 }
