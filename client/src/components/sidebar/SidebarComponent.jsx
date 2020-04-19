@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
         position: 'absolute',
         left: 24,
-        top: 34
+        top: 20
     },
     container: {
         backgroundColor: 'rgb(45, 52, 70)',
@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
     },
     containerMobile: {
         transition: 'left 0.5s, right 0.5s',
-        position: 'absolute',
+        position: 'absolute',        
+        backgroundColor: 'rgb(45, 52, 70)',
         width: 240,
         height: '100vh',
         zIndex: 901
@@ -63,14 +64,13 @@ const styles = StyleSheet.create({
     }
 });
 
-function SidebarComponent({ onChange, userType }) {
+function SidebarComponent({ changeRouter }) {
     const [expanded, setExpanded] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const input1 = useRef(null);
 
     const [, updateState] = React.useState();
     const forceUpdate = useCallback(() => updateState({}), []);
-
     useEffect(() => {
         setIsMobile(window.innerWidth <= 768);
         forceUpdate();
@@ -80,24 +80,34 @@ function SidebarComponent({ onChange, userType }) {
             $li.removeClass('selected');
             $(this).addClass('selected');
         });
+        if(window.location.href.substring(window.location.href.lastIndexOf('/') + 1)=="leaveRecord" ){
+            $(`#createAbsence`).removeClass('selected');
+        }
+        if(window.location.href.substring(window.location.href.lastIndexOf('/') + 1)=="dashboard" ){
+            $(`#leaveRecord`).addClass('selected');
+        }
         $(`#${window.location.href.substring(window.location.href.lastIndexOf('/') + 1)}`).addClass('selected');
-    }, [])
+    }, [changeRouter]);
+    
 
     const toggleMenu = () => setExpanded(!expanded);
 
     const renderBurger = () => {
         return (
-            <div onClick={toggleMenu} className={css(styles.burgerIcon)}>
+            <div onClick={toggleMenu} class={css(styles.burgerIcon)}>
                 <IconBurger />
             </div>
         );
     };
-
+    const collapse =()=>{
+        // alert("yes")
+        setExpanded(false)
+    }
     return (
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative' }} tabIndex="0" onBlur={collapse }>{console.log(isMobile ,expanded)}
             <Row
                 componentRef={element => (input1.current = element)}
-                className={css(styles.mainContainer)}
+                class={css(styles.mainContainer)}
                 breakpoints={{
                     768: css(
                         styles.mainContainerMobile,
@@ -107,7 +117,8 @@ function SidebarComponent({ onChange, userType }) {
             >
                 {isMobile && !expanded && renderBurger()}
                 <Column
-                    className={css(styles.container)}
+                // class = "sideBarHide"
+                    class={`${css(styles.container)} sideBarHide`}
                     breakpoints={{
                         768: css(
                             styles.containerMobile,
@@ -123,7 +134,7 @@ function SidebarComponent({ onChange, userType }) {
 
                                     <span class="isoMenuHolder" style={{ color: "inherit" }}>
                                         <ion-icon class="ion" name="document"></ion-icon>
-                                        <span class="nav-text"><span>Leave records</span></span>
+                                        <span class="nav-text"><span>Leave Records</span></span>
                                     </span>
 
                                 </li>
@@ -134,7 +145,7 @@ function SidebarComponent({ onChange, userType }) {
 
                                         <span class="isoMenuHolder" style={{ color: "inherit" }}>
                                             <ion-icon class="ion" name="person-add"></ion-icon>
-                                            <span class="nav-text"><span>{Number(window.localStorage.getItem("isAdmin")) ? "Employee registration" : "Registration"}</span></span>
+                                            <span class="nav-text"><span>{Number(window.localStorage.getItem("isAdmin")) ? "Employee Registration" : "Registration"}</span></span>
                                         </span>
 
                                     </li>
@@ -144,7 +155,7 @@ function SidebarComponent({ onChange, userType }) {
 
                                     <span class="isoMenuHolder" style={{ color: "inherit" }}>
                                         <ion-icon class="ion" name="create"></ion-icon>
-                                        <span class="nav-text"><span>{Number(window.localStorage.getItem("isAdmin")) ? "Create employee absence" : "Create absence"}</span></span>
+                                        <span class="nav-text"><span>{Number(window.localStorage.getItem("isAdmin")) ? "Create Employee Absence" : "Create Absence"}</span></span>
                                     </span>
 
                                 </li>
@@ -154,12 +165,12 @@ function SidebarComponent({ onChange, userType }) {
 
                                     <span class="isoMenuHolder" style={{ color: "inherit" }}>
                                         <ion-icon class="ion" name="lock-closed"></ion-icon>
-                                        <span class="nav-text"><span>Change password</span></span>
+                                        <span class="nav-text"><span>Change Password</span></span>
                                     </span>
 
                                 </li>
                             </NavLink>
-                            <div onClick={() => { window.location.href = "/login"; window.localStorage.clear() }} style={{ color: "inherit" }}>
+                            <div onClick={() => { window.location.href = "/"; window.localStorage.clear() }} style={{ color: "inherit" }}>
                                 <li class="ant-menu-item" role="menuitem" style={{ paddingLeft: "24px" }}>
 
                                     <span class="isoMenuHolder" style={{ color: "inherit" }}>
@@ -174,7 +185,7 @@ function SidebarComponent({ onChange, userType }) {
                 </Column>
                 {isMobile && expanded && (
                     <div
-                        className={css(styles.outsideLayer)}
+                        class={css(styles.outsideLayer)}
                         onClick={toggleMenu}
                     ></div>
                 )}

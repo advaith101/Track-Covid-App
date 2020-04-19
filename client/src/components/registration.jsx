@@ -8,8 +8,11 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import "./registration.css";
 var sha512 = require('js-sha512');
+
 
 export default class Registration extends Component {
     constructor(props) {
@@ -19,12 +22,15 @@ export default class Registration extends Component {
         this.pass = React.createRef();
         this.confPass = React.createRef();
         this.state = {
-            locationID: null, departmentID: null,
+            locationID: null, departmentID: null, checkedIsAdmin: false,
             nameError: false, emailError: false, locationIDError: false, departmentIDError: false, passwordError: false, confPassError: false
         }
     }
+    handleChange = (e) => {
+        this.setState({ checkedIsAdmin: e.target.checked })
+    }
     submit = () => {
-        var { nameError, emailError, locationIDError, departmentIDError, passwordError, confPassError, locationID, departmentID } = this.state;
+        var { checkedIsAdmin,nameError, emailError, locationIDError, departmentIDError, passwordError, confPassError, locationID, departmentID } = this.state;
         if (!this.name.current.value) nameError = true; else nameError = false;
         if (!this.email.current.value) emailError = true; else emailError = false;
         if (!this.pass.current.value) passwordError = true; else passwordError = false;
@@ -35,9 +41,9 @@ export default class Registration extends Component {
         if (!nameError && !emailError && !locationIDError && !departmentIDError && !passwordError && !confPassError) {
             var post_data = {
                 "name": this.name.current.value, "email": this.email.current.value, "locationID": locationID,
-                "departmentID": departmentID, "password": sha512(this.pass.current.value), "isAdmin": 0, "createdBy": Number(window.localStorage.getItem("userId"))
+                "departmentID": departmentID, "password": sha512(this.pass.current.value), "isAdmin": (checkedIsAdmin)?1:0, "createdBy": Number(window.localStorage.getItem("userId"))
             }
-            this.props.apiCall("users/saveuser", "POST", post_data, "save user ")
+            this.props.apiCall("users/saveuser", "POST", post_data, "User added successfully","Failed to add user")
                 .then(res => {
                     if (res.status == "ok") {
                         this.setState({
@@ -53,9 +59,12 @@ export default class Registration extends Component {
         }
     }
     render() {
-        const { locationID, departmentID, nameError, emailError, locationIDError, departmentIDError, passwordError, confPassError } = this.state;
+        const { locationID, checkedIsAdmin, departmentID, nameError, emailError, locationIDError, departmentIDError, passwordError, confPassError } = this.state;
         return (
-            <Paper className="containers">
+            <Paper className="containers" style={{minHeight:"66%"}}>
+                <Grid container style={{ fontSize:"24px",color:"#006b6a",paddingLeft:"5.8vw" }}>
+                    <span>EMPLOYEE REGISTRATION</span>
+                </Grid>
                 <Grid container style={{ alignItems: "center" }}>
                     <Grid item xs={12} md={6} className="items">
                         <TextField style={{ width: "70%" }} id="name" label="Enter Name" error={nameError} helperText={(nameError) ? "Incorrect entry." : ""} inputRef={this.name} onChange={(e) => { this.setState({ nameError: (e.target.value) ? false : true }) }} />
@@ -69,7 +78,7 @@ export default class Registration extends Component {
                         <TextField type="password" style={{ width: "70%" }} id="crPassword" label="Create Password" error={passwordError} helperText={(passwordError) ? "Incorrect entry." : ""} inputRef={this.pass} onChange={(e) => { this.setState({ passwordError: (e.target.value) ? false : true }) }} />
                     </Grid>
                     <Grid item xs={12} md={6} className="items">
-                        <TextField type="password" style={{ width: "70%" }} id="cnfPassword" label="confirm Password" error={confPassError} helperText={(confPassError) ? "Incorrect entry." : ""} inputRef={this.confPass} onChange={(e) => { this.setState({ confPassError: (e.target.value) ? false : true }) }} />
+                        <TextField type="password" style={{ width: "70%" }} id="cnfPassword" label="Confirm Password" error={confPassError} helperText={(confPassError) ? "Incorrect entry." : ""} inputRef={this.confPass} onChange={(e) => { this.setState({ confPassError: (e.target.value) ? false : true }) }} />
                     </Grid>
                 </Grid>
                 <Grid container style={{ alignItems: "center" }}>
@@ -112,6 +121,12 @@ export default class Registration extends Component {
                             <FormHelperText>{(departmentIDError) ? "Incorrect entry." : ""}</FormHelperText>
                         </FormControl>
                     </Grid>
+                </Grid>
+                <Grid container style={{color:"#788195",paddingLeft:"6vw"}}>
+                    <FormControlLabel
+                        control={<Switch checked={checkedIsAdmin} onChange={this.handleChange} name="checkedA" />}
+                        label="Admin"
+                    />
                 </Grid>
                 <Grid container style={{ justifyContent: "flex-end", width: "92.6%" }} >
                     <Button variant="contained" color="secondary" onClick={this.submit}> Submit </Button>

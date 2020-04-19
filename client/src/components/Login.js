@@ -5,6 +5,7 @@ import {
   FormGroup
 } from 'reactstrap';
 import { Form } from 'reactstrap';
+import Grid from '@material-ui/core/Grid';
 import { Provider as AlertProvider, withAlert } from "react-alert";
 import { Avatar } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -17,6 +18,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import 'typeface-roboto';
 import "../App.css";
+import EsraLogo from '../assets/EsraLogo.ico';
+
 var sha512 = require('js-sha512');
 
 class Login extends Component {
@@ -38,7 +41,7 @@ class Login extends Component {
 
   handleSubmit() {
 
-    fetch("http://15.206.72.83:8090/users/validatelogin", {
+    fetch(this.props.url+"users/validatelogin", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -73,9 +76,13 @@ class Login extends Component {
     this.setState({
       [event.target.name]: event.target.value
     });
-    if (event.target.name == "password" && event.key == "Enter")
-      this.handleSubmit();
+      
+  }
 
+  _handleKeyDown=(e)=> {
+    if (e.key === 'Enter') {
+      this.handleSubmit();
+    }
   }
 
 
@@ -117,10 +124,12 @@ class Login extends Component {
           <Container style={{ borderRadius: "0.3rem", backgroundColor: "#ffffffb3", padding: "2rem" }} component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
-              <Avatar style={{ marginLeft: "11rem", marginBottom: "2rem" }} src="/broken-image.jpg" />
-              <Typography style={{ fontFamily: "roboto", marginLeft: "7rem", fontWeight: "bold" }} component="h1" variant="h5">
+              <Grid container style={{alignItems:"center",flexDirection:"column"}}>
+              <Avatar variant='square' style={{  marginBottom: "0.5rem" }} src={EsraLogo} />
+              <Typography style={{ fontFamily: "roboto", fontWeight: "bold" }} component="h1" variant="h5">
                 Track Absence
               </Typography>
+              </Grid>
               <Form className="form">
                 <Col>
                   <FormGroup>
@@ -152,24 +161,28 @@ class Login extends Component {
                       type="password"
                       value={this.state.password}
                       onChange={this.handleChange}
+                      onKeyDown={this._handleKeyDown}
                       id="password"
                       autoComplete="current-password"
                     />
                   </FormGroup>
                 </Col>
-                <FormControlLabel style={{ marginLeft: "4px" }}
+                
+                <FormControlLabel style={{marginLeft:"0.2rem"}}
                   control={<Checkbox value="lsRememberMe" id="rememberMe" color="primary" />}
                   label="Remember me"
                 />
+                <Grid container style={{alignItems:"center",flexDirection:"column"}}>
                 <Button
                   fullWidth
                   variant="contained"
-                  style={{ width: "11rem", display: "flex", marginLeft: "6rem", color: "white", backgroundColor: "#343a40" }}
+                  style={{ width: "11rem", display: "flex", color: "white", backgroundColor: "#343a40" }}
                   onClick={e => this.handleSubmit()}
                   className={classes.submit}
                 >
                   Sign In
                 </Button>
+                </Grid>
               </Form>
 
             </div>

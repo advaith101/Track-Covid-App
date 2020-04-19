@@ -7,7 +7,7 @@ import "./App.css"
 
 const AlertTemplate = ({ style, message, close }) => (
     <div style={style} className="alertTemplate">
-        {message}<div style={{ marginRight: "15px" }} onClick={close}>x</div>
+        {message}<div style={{ marginRight: "15px", marginLeft: "15px" }} onClick={close}>x</div>
     </div>
 )
 // optional cofiguration
@@ -25,12 +25,14 @@ class MainRouter extends Component {
     constructor() {
         super()
         this.handleStateChange = this.handleStateChange.bind(this);
+        this.url = "https://api.esratrackcovid.com/";
+        // this.url = "http://15.206.72.83:8090/";
     }
 
     state = {
         // maybe a logged in
         name: "",
-        email: "",
+        email: window.localStorage.getItem("email"),
         admin: false
     }
 
@@ -50,22 +52,23 @@ class MainRouter extends Component {
 
         return (
             <div>
+
                 <Switch>
 
-                    <Route exact path={["/", "/login"]}>
+                    <Route exact path="/">
                         <AlertProvider template={AlertTemplate} {...options}>
-                            <Login userType={this.state.userType} apiCall={this.apiCall} handleStateChange={this.handleStateChange} />
+                            <Login url={this.url} userType={this.state.userType} apiCall={this.apiCall} handleStateChange={this.handleStateChange} />
                         </AlertProvider>
                     </Route>
 
-                    <Route path="/dashboard" render={() => (
+                    <Route path="/dashboard" render={() => (this.state.email ?
                         <AlertProvider template={AlertTemplate} {...options}>
-                            <Dashboard onRef={ref => (this.dashboard = ref)} userType={this.state.userType} name={this.state.name} email={this.state.email} /></AlertProvider>
-
+                            <Dashboard url={this.url} onRef={ref => (this.dashboard = ref)} userType={this.state.userType} name={this.state.name} email={this.state.email} /></AlertProvider>
+                        : <Redirect to='/' />
                     )}
                     />
 
-                    <Redirect to='/' />
+
                 </Switch>
             </div>
         );
