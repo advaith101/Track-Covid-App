@@ -15,19 +15,20 @@ class AbsenceTable extends Component {
         this.absenceDatefilterValue = [];
         this.namefilterValue = [];
         this.departmentfilterValue = [];
-        this.locationfilterValue = [];
+        this.locationfilterValue = [];        
     }
 
 
     state = {
         header : [
-            { headerName: "Name", field: "name", cellRendererFramework: withIcon },
+            { headerName: "Name", field: "name", cellRendererFramework: withIcon, editable: window.localStorage.getItem("isAdmin") == 1 ? true : false},
             {
                 headerName: "Leave Reason", field: "leavereason", cellEditor: "select", editable: true, cellEditorParams: {
-                    values: this.reasonValue
+                    // values: this.reasonValue   //this is not working: reasonValue seems to be undefined. I fixed it for now below:
+                    values: ['EE Quarantine - not sick', 'EE Quarantine - sick', 'Other Quarantine - not sick', 'Other Quarantine - sick', 'School/Business Closure']
                 }
             },
-            { headerName: "Date of Absence", field: "dateOfAbsence", editable: false  },
+            { headerName: "Date of Absence", field: "dateOfAbsence", editable: false }, //need to make this editable only if absence is current, and need to make it work in backend.
             { headerName: "Location", field: "location", editable: false },
             { headerName: "Department", field: "department", editable: false }
 
@@ -77,18 +78,19 @@ class AbsenceTable extends Component {
     }
 
     excelData() {
+        // console.log(this.state.filteredViewModels)
         return this.state.filteredViewModels.map(viewModel => {
             var date = viewModel.dateOfAbsence && viewModel.dateOfAbsence.split(" - ");
             return {
                 name: viewModel.name,
-                email: viewModel.id,
+                // email: viewModel.email,
                 location: viewModel.location,
                 department: viewModel.department,
-                reason: viewModel.reason,
+                reason: viewModel.leavereason,
                 startDate: (date)?date[0]:"",
                 endDate: (date)?date[1]:"",
-                current: 1,
-                processed: 1
+                // current: 1,
+                // processed: 1
             }
         });
 
@@ -351,6 +353,7 @@ class AbsenceTable extends Component {
     }
 
     onCellValueChanged = event => {
+        console.log(event.data)
         var oldDate = event.data.dateOfAbsence.split(" - ");
         if (event.newValue == event.oldValue) {
         }
@@ -360,6 +363,7 @@ class AbsenceTable extends Component {
                 "startDate": oldDate[0], "endDate": oldDate[1],
                 "reasonID": event.data.reasonId, "isCurrent": 1, "isProcessed": 0, "createdBy": Number(window.localStorage.getItem("userId"))
             };
+            console.log(post_data)
             if (event.colDef.field == "name") post_data["name"] = event.newValue;
             else if (event.colDef.field == "leavereason") post_data["reasonID"] = this.props.reason.data.filter(value => { if (value.Name == event.newValue) return true; else return false })[0].ReasonID;
             else {
