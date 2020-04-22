@@ -29,7 +29,7 @@ export default class CreateAbsence extends Component {
     if ( this.email.current && !this.email.current.value) emailError = true; else emailError = false;
     if ( this.name.current && !this.name.current.value) nameError = true; else nameError = false; //added setting nameError true or false based on form value.
     if (!reasonId) reasonError = true; else reasonError = false;
-    this.setState({ reasonError, emailError })
+    this.setState({ reasonError, emailError, nameError })
     if (!reasonError && !emailError && !nameError) { //name is also required so I added it here
       var post_data = {
         //Added "name", please make sure I did this right, it compiles and runs but I can't check without access to backend.
