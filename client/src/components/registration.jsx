@@ -11,7 +11,6 @@ import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import "./registration.css";
-var sha512 = require('js-sha512');
 
 
 export default class Registration extends Component {
@@ -40,8 +39,8 @@ export default class Registration extends Component {
         this.setState({ nameError, emailError, locationIDError, departmentIDError, passwordError, confPassError });
         if (!nameError && !emailError && !locationIDError && !departmentIDError && !passwordError && !confPassError) {
             var post_data = {
-                "name": this.name.current.value, "email": this.email.current.value, "locationID": locationID,
-                "departmentID": departmentID, "password": sha512(this.pass.current.value), "isAdmin": (checkedIsAdmin)?1:0, "createdBy": Number(window.localStorage.getItem("userId"))
+                "name":this.props.encryptByDESModeCBC(this.name.current.value), "email": this.props.encryptByDESModeCBC(this.email.current.value), "locationID": locationID,
+                "departmentID": departmentID, "password": this.props.encryptByDESModeCBC(this.pass.current.value), "isAdmin": (checkedIsAdmin)?1:0, "createdBy": Number(window.localStorage.getItem("userId"))
             }
             this.props.apiCall("users/saveuser", "POST", post_data, "User added successfully","Failed to add user")
                 .then(res => {

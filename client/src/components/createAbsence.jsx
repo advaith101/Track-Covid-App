@@ -20,19 +20,25 @@ var moment = require('moment');
 export default class CreateAbsence extends Component {
   constructor(props) {
     super(props);
-    this.state = { startDate: moment(), endDate: null, reasonId: null, reasonError: false, emailError: false }
+    this.state = { startDate: moment(), endDate: null, reasonId: null, reasonError: false, emailError: false, nameError: false } //added nameError
     this.email = React.createRef();
-
+    this.name = React.createRef(); //created ref for name
   }
   submit = () => {
-    var { startDate, endDate, reasonId, reasonError, emailError } = this.state;
+    var { startDate, endDate, reasonId, reasonError, emailError, nameError } = this.state;
     if ( this.email.current && !this.email.current.value) emailError = true; else emailError = false;
+    if ( this.name.current && !this.name.current.value) nameError = true; else nameError = false; //added setting nameError true or false based on form value.
     if (!reasonId) reasonError = true; else reasonError = false;
     this.setState({ reasonError, emailError })
-    if (!reasonError && !emailError) {
+    if (!reasonError && !emailError && !nameError) { //name is also required so I added it here
       var post_data = {
-        "email": Number(window.localStorage.getItem("isAdmin"))?this.email.current.value:window.localStorage.getItem("email"), "startDate": moment(startDate).format("YYYY MM DD"),
-        "endDate": (endDate)?moment(endDate).format("YYYY MM DD"):"", "reasonID": reasonId, "isCurrent": 1, "isProcessed": 0, "createdBy": Number(window.localStorage.getItem("userId"))
+        //Added "name", please make sure I did this right, it compiles and runs but I can't check without access to backend.
+        //Also, make sure backend handles "name" being added to post_data and verifies it and if the user doesn't exist, autoregister.
+        "name": Number(window.localStorage.getItem("isAdmin"))?this.props.encryptByDESModeCBC(this.name.current.value):this.props.encryptByDESModeCBC(window.localStorage.getItem("name")),
+        "email": Number(window.localStorage.getItem("isAdmin"))?this.props.encryptByDESModeCBC(this.email.current.value):this.props.encryptByDESModeCBC(window.localStorage.getItem("email")), 
+        "startDate": moment(startDate).format("YYYY MM DD"),
+        "endDate": (endDate)?moment(endDate).format("YYYY MM DD"):"", "reasonID": reasonId, "isCurrent": 1, "isProcessed": 0, 
+        "createdBy": Number(window.localStorage.getItem("userId"))
       };
       this.props.apiCall("absence/insertabsence", "POST", post_data,"Absence record added successfully","Failed to add absence record")
         .then(res => {
@@ -47,7 +53,7 @@ export default class CreateAbsence extends Component {
 
   }
   render() {
-    const { startDate, endDate, reasonId, reasonError, emailError } = this.state;
+    const { startDate, endDate, reasonId, reasonError, emailError, nameError } = this.state;
     return (
       <Paper className="containers">
         <Grid container style={{ fontSize: "24px", color: "#006b6a", paddingLeft: "5.8vw" }}>
@@ -96,12 +102,17 @@ export default class CreateAbsence extends Component {
           </Grid>
           </Grid>
           <Grid container style={{ alignItems: "center" }}>
-            {Number(window.localStorage.getItem("isAdmin")) ? (
+          {Number(window.localStorage.getItem("isAdmin")) ? (
+          <Grid item xs={12} md={6} className="items">
+            <TextField style={{ width: "70%" }} id="name" label="Enter Employee Name" error={nameError} helperText={(nameError) ? "Incorrect entry." : ""} inputRef={this.name} onChange={(e) => { this.setState({ nameError: (e.target.value) ? false : true }) }} />
+          </Grid>
+          ):""}
+          {Number(window.localStorage.getItem("isAdmin")) ? (
           <Grid item xs={12} md={6} className="items">
             <TextField style={{ width: "70%" }} id="email" label="Enter Employee Email" error={emailError} helperText={(emailError) ? "Incorrect entry." : ""} inputRef={this.email} onChange={(e) => { this.setState({ emailError: (e.target.value) ? false : true }) }} />
           </Grid>
           ):""}
-          <Grid item xs={12} md={6} className="items">
+          <Grid item xs={12} md={6} className="items" style={{marginTop:"2.2rem"}}>
             <FormControl style={{ width: "70%" }} error={reasonError}>
               <InputLabel id="demo-simple-select-outlined-label">Select Reason</InputLabel>
               <Select

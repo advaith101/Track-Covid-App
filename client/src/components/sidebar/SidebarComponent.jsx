@@ -104,7 +104,7 @@ function SidebarComponent({ changeRouter }) {
         setExpanded(false)
     }
     return (
-        <div style={{ position: 'relative' }} tabIndex="0" onBlur={collapse }>{console.log(isMobile ,expanded)}
+        <div style={{ position: 'relative' }} tabIndex="0" onBlur={collapse }>
             <Row
                 componentRef={element => (input1.current = element)}
                 class={css(styles.mainContainer)}
@@ -170,7 +170,14 @@ function SidebarComponent({ changeRouter }) {
 
                                 </li>
                             </NavLink>
-                            <div onClick={() => { window.location.href = "/"; window.localStorage.clear() }} style={{ color: "inherit" }}>
+                            <div onClick={() => { window.location.href = "/";  window.localStorage.setItem("CompanyID","")
+        window.localStorage.setItem("refresh_token", "")
+        window.localStorage.setItem("bearer_token","")
+        window.localStorage.setItem("isAdmin", "");
+        window.localStorage.setItem("name", "");
+        window.localStorage.setItem("userId", "");
+        window.localStorage.setItem("email", "");
+         }} style={{ color: "inherit" }}>
                                 <li class="ant-menu-item" role="menuitem" style={{ paddingLeft: "24px" }}>
 
                                     <span class="isoMenuHolder" style={{ color: "inherit" }}>

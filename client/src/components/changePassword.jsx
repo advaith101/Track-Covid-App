@@ -22,7 +22,7 @@ export default class ChangePassword extends Component {
         if(this.confPass.current.value != this.newPass.current.value) confPassErr = true; else confPassErr = false;
         this.setState({currentPassErr,newPassErr,confPassErr});
         if(!currentPassErr&&!newPassErr&&!confPassErr){
-            var post_data={"email":window.localStorage.getItem("email"),"oldPassword":sha512(this.currentPass.current.value),"newPassword": sha512(this.newPass.current.value) }
+            var post_data={"email":this.props.encryptByDESModeCBC(window.localStorage.getItem("email")),"oldPassword":sha512(this.currentPass.current.value),"newPassword": sha512(this.newPass.current.value) }
             this.props.apiCall("users/changepassword","POST",post_data,"Password changed successfully","Failed to change password")
             .then(res=>{if(res.status=="ok"){this.setState({currentPassErr:false,newPassErr:false,confPassErr:false});
             this.currentPass.current.value = "";

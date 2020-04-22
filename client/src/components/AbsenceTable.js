@@ -15,23 +15,28 @@ class AbsenceTable extends Component {
         this.absenceDatefilterValue = [];
         this.namefilterValue = [];
         this.departmentfilterValue = [];
-        this.locationfilterValue = [];        
+        this.locationfilterValue = [];    
+        this.isCurrentfilterValue = [];    
     }
 
 
     state = {
         header : [
-            { headerName: "Name", field: "name", cellRendererFramework: withIcon, editable: window.localStorage.getItem("isAdmin") == 1 ? true : false},
+            { headerName: "Name", field: "name", cellRendererFramework: withIcon, editable:  false},
             {
-                headerName: "Leave Reason", field: "leavereason", cellEditor: "select", editable: true, cellEditorParams: {
+                headerName: "Leave Reason", field: "leavereason", cellEditor: "select", editable:function(value){
+            if(value.data.isCurrent=="True")return true;else return false;}, cellEditorParams: {
                     // values: this.reasonValue   //this is not working: reasonValue seems to be undefined. I fixed it for now below:
                     values: ['EE Quarantine - not sick', 'EE Quarantine - sick', 'Other Quarantine - not sick', 'Other Quarantine - sick', 'School/Business Closure']
                 }
             },
             { headerName: "Date of Absence", field: "dateOfAbsence", editable: false }, //need to make this editable only if absence is current, and need to make it work in backend.
             { headerName: "Location", field: "location", editable: false },
-            { headerName: "Department", field: "department", editable: false }
-
+            { headerName: "Department", field: "department", editable: false },
+            { headerName: "Current", field: "isCurrent", cellEditor: "select",hide:Number(window.localStorage.getItem("isAdmin"))?false:true, editable: true, cellEditorParams: {
+                // values: this.reasonValue   //this is not working: reasonValue seems to be undefined. I fixed it for now below:
+                values: ["True","False"]
+            } }
 
         ],
         viewModels: [], // these are to be kept as our reset viewModels, do not modify
@@ -50,6 +55,15 @@ class AbsenceTable extends Component {
 
     componentDidMount() {
         this.props.onRef(this);
+        // if(Number(window.localStorage.getItem("isAdmin")))
+        // {
+        //     let header = JSON.parse(JSON.stringify(this.state.header));
+        //     header.push({ headerName: "Current", field: "isCurrent", cellEditor: "select", editable: true, cellEditorParams: {
+        //         // values: this.reasonValue   //this is not working: reasonValue seems to be undefined. I fixed it for now below:
+        //         values: ["True","False"]
+        //     } });
+        //     this.setState({header})
+        // }
         this.createViewModels();
 
     }
@@ -59,15 +73,15 @@ class AbsenceTable extends Component {
     }
 
     createViewModels() {
-        var post_data = { "email": window.localStorage.getItem("email") };
+        var post_data = { "email":this.props.encryptByDESModeCBC( window.localStorage.getItem("email")) };
         var url = Number(window.localStorage.getItem("isAdmin")) ? "absence/getallabsence" : "absence/getabsence";
         this.props.apiCall(url, "POST", post_data, "")
             .then(res => {
                 const data = res.data;
                 var filterData = data.map((viewModel) => {
                     return {
-                        "name": viewModel.name, "leavereason": viewModel.reasonName, "dateOfAbsence": viewModel.dateOfAbsence,
-                        "location": viewModel.locationName, "department": viewModel.departmentName, "id": viewModel.AbsenceID,
+                        "name":this.props.decryptByDESModeCBC(viewModel.name), "leavereason": viewModel.reasonName, "dateOfAbsence": viewModel.dateOfAbsence,
+                        "location": viewModel.locationName, "department": viewModel.departmentName, "id": viewModel.AbsenceID,"isCurrent": (viewModel.isCurrent)?"True":"False",
                         "reasonId": viewModel.reasonID, "departmentId": viewModel.departmentID, "locationId": viewModel.locationID
                     }
                 })
@@ -78,8 +92,7 @@ class AbsenceTable extends Component {
     }
 
     excelData() {
-        // console.log(this.state.filteredViewModels)
-        return this.state.filteredViewModels.map(viewModel => {
+        return this.getTabelDate().map(viewModel => {
             var date = viewModel.dateOfAbsence && viewModel.dateOfAbsence.split(" - ");
             return {
                 name: viewModel.name,
@@ -89,282 +102,63 @@ class AbsenceTable extends Component {
                 reason: viewModel.leavereason,
                 startDate: (date)?date[0]:"",
                 endDate: (date)?date[1]:"",
-                // current: 1,
+                 current: viewModel.isCurrent,
                 // processed: 1
             }
         });
 
     }
     clearAllfilter=(value,index)=>{
- 
-        if(!index){
-        this.gridApi.destroyFilter('leavereason');
-        this.gridApi.destroyFilter('dateOfAbsence');
-        this.gridApi.destroyFilter('name');
-        this.gridApi.destroyFilter('location');
-        this.gridApi.destroyFilter('department');
+        if(!index){        
+            this.gridApi.setFilterModel(null);
         }
         else{
-            if(index == 1){
-              if(this.leaveReasonfilterValue.length==1)  this.gridApi.destroyFilter('leavereason');
+            var filter = this.gridApi.getFilterInstance(index);
+            var filterModel = filter.getModel();
+              if(!filterModel.condition1)  this.gridApi.destroyFilter(index);
               else{
-                var leaveReasonfilter = this.gridApi.getFilterInstance("leavereason");
-                let leaveReasonfinal = this.leaveReasonfilterValue.filter(filterValue=>{
-                    if(filterValue.filter == value) return false ; else return true;
-                })
-                leaveReasonfilter.setModel({
-                    filter: leaveReasonfinal[0].filter,
-                    filterType: leaveReasonfinal[0].filterType,
-                    type: leaveReasonfinal[0].type
-                })
+                let final = [];
+                if(filterModel.condition1.filter == value) final = filterModel.condition2 ; else final = filterModel.condition1;
+                filter.setModel(final);
                 this.gridApi.onFilterChanged();
               }
-            }
-            else if(index == 2){
-                if(this.absenceDatefilterValue.length==1)  this.gridApi.destroyFilter('dateOfAbsence');
-                else{
-                  var absencefilter = this.gridApi.getFilterInstance("dateOfAbsence");
-                  let absencefinal = this.absenceDatefilterValue.filter(filterValue=>{
-                      if(filterValue.filter == value) return false ; else return true;
-                  })
-                  absencefilter.setModel({
-                      filter: absencefinal[0].filter,
-                      filterType: absencefinal[0].filterType,
-                      type: absencefinal[0].type
-                  })
-                  this.gridApi.onFilterChanged();
-                }
-            }
-            else if(index == 3){
-                if(this.departmentfilterValue.length==1)  this.gridApi.destroyFilter('department');
-                else{
-                  var departmentfilter = this.gridApi.getFilterInstance("department");
-                  let departmentfinal = this.departmentfilterValue.filter(filterValue=>{
-                      if(filterValue.filter == value) return false ; else return true;
-                  })
-                  departmentfilter.setModel({
-                      filter: departmentfinal[0].filter,
-                      filterType: departmentfinal[0].filterType,
-                      type: departmentfinal[0].type
-                  })
-                  this.gridApi.onFilterChanged();
-                }
-            }
-            else if(index == 4){
-                if(this.locationfilterValue.length==1)  this.gridApi.destroyFilter('location');
-                else{
-                  var locationfilter = this.gridApi.getFilterInstance("location");
-                  let locationfinal = this.locationfilterValue.filter(filterValue=>{
-                      if(filterValue.filter == value) return false ; else return true;
-                  })
-                  locationfilter.setModel({
-                      filter: locationfinal[0].filter,
-                      filterType: locationfinal[0].filterType,
-                      type: locationfinal[0].type
-                  })
-                  this.gridApi.onFilterChanged();
-                }
-            }
-            else if(index == 5){
-                if(this.namefilterValue.length==1)  this.gridApi.destroyFilter('name');
-                else{
-                  var namefilter = this.gridApi.getFilterInstance("name");
-                  let namefinal = this.namefilterValue.filter(filterValue=>{
-                      if(filterValue.filter == value) return false ; else return true;
-                  })
-                  namefilter.setModel({
-                      filter: namefinal[0].filter,
-                      filterType: namefinal[0].filterType,
-                      type: namefinal[0].type
-                  })
-                  this.gridApi.onFilterChanged();
-                }
-            }
-            else{}
+            
         }
     }
+    // get  tabel data after sort and filter for print
+    getTabelDate=()=>{
+        var tableData = []
+        this.gridApi && this.gridApi.forEachNodeAfterFilterAndSort( function(rowNode, index) {
+             tableData.push(rowNode.data);
+        })
+        return tableData ;
+    }
     filterDedect=(e)=>{        
-        var leaveReasonfilter = this.gridApi.getFilterInstance("leavereason");
-        var absenceDatefilter = this.gridApi.getFilterInstance("dateOfAbsence");
-        var namefilter = this.gridApi.getFilterInstance("name");
-        var locationfilter = this.gridApi.getFilterInstance("location");
-        var departmentfilter = this.gridApi.getFilterInstance("dapartment");
-        // leaveReasonfilter;
-        var colNo = 0 ;
-        var leaveReasonCheck=[];
-        var absenceCheck=[];
-        var departmentCheck=[];
-        var locationCheck=[];
-        var nameCheck=[];
-        if(leaveReasonfilter && leaveReasonfilter.getModel()) {   
-              if(leaveReasonfilter.getModel().condition1){
-                if(!this.leaveReasonfilterValue[0] || !this.leaveReasonfilterValue[1] || this.leaveReasonfilterValue[0].filter!= leaveReasonfilter.getModel().condition1.filter || this.leaveReasonfilterValue[1].filter!= leaveReasonfilter.getModel().condition2.filter) {
-                    this.leaveReasonfilterValue=[leaveReasonfilter.getModel().condition1,leaveReasonfilter.getModel().condition2];
-                    colNo = 1;
-                }
+        var filter = this.gridApi.getFilterModel();
+        var result = [];
+        for(let filterValue in filter){
+            if(filter[filterValue].condition1){
+                result.push([filter[filterValue].condition1.filter,filterValue]);
+                result.push([filter[filterValue].condition2.filter,filterValue]);
             }
             else{
-                if( !this.leaveReasonfilterValue[0] || this.leaveReasonfilterValue[0].filter != leaveReasonfilter.getModel().filter ){
-                this.leaveReasonfilterValue = [leaveReasonfilter.getModel()];
-                colNo = 1;
-                }
-                else{
-                    if(!leaveReasonfilter.getModel().condition1 && (this.leaveReasonfilterValue.length==2)){
-                        this.leaveReasonfilterValue = [leaveReasonfilter.getModel()];
-                    colNo = 1;
-                    }
-                }
-            } 
-        }
-        else{
-            leaveReasonCheck=[];
-        }
-
-        if(colNo == 0){
-            if(absenceDatefilter && absenceDatefilter.getModel()) {    
-                if(absenceDatefilter.getModel().condition1){
-                  if(!this.absenceDatefilterValue[0] || !this.absenceDatefilterValue[1] || this.absenceDatefilterValue[0].filter!= absenceDatefilter.getModel().condition1.filter || this.absenceDatefilterValue[1].filter!= absenceDatefilter.getModel().condition2.filter) {
-                      this.absenceDatefilterValue=[absenceDatefilter.getModel().condition1,absenceDatefilter.getModel().condition2];
-                      colNo = 2;
-                  }
-              }
-              else{
-                  if(!this.absenceDatefilterValue[0] || this.absenceDatefilterValue[0].filter != absenceDatefilter.getModel().filter ){
-                  this.absenceDatefilterValue = [absenceDatefilter.getModel()];
-                  colNo = 2;
-                  }
-                  else{
-                    if(!absenceDatefilter.getModel().condition1 && (this.absenceDatefilterValue.length==2)){
-                        this.absenceDatefilterValue = [absenceDatefilter.getModel()];
-                    colNo = 2;
-                    }
-                }
-              } 
-          }
-          else{
-            absenceCheck = [];
-          }
-        }
-        if(colNo == 0){
-            if(departmentfilter && departmentfilter.getModel()) {    
-                if(departmentfilter.getModel().condition1){
-                  if(!this.departmentfilterValue[0] || !this.departmentfilterValue[1] || this.departmentfilterValue[0].filter!= departmentfilter.getModel().condition1.filter || this.departmentfilterValue[1].filter!= departmentfilter.getModel().condition2.filter) {
-                      this.departmentfilterValue=[departmentfilter.getModel().condition1,departmentfilter.getModel().condition2];
-                      colNo = 3;
-                  }
-              }
-              else{
-                  if(!this.departmentfilterValue[0] || this.departmentfilterValue[0].filter != departmentfilter.getModel().filter ){
-                  this.departmentfilterValue = [departmentfilter.getModel()];
-                  colNo = 3;
-                  }
-                  else{
-                    if(!departmentfilter.getModel().condition1 && (this.departmentfilterValue.length==2)){
-                        this.departmentfilterValue = [departmentfilter.getModel()];
-                    colNo = 3;
-                    }
-                }
-              } 
-          }
-          else {
-            departmentCheck = [];
-          }
-        }
-        if(colNo == 0){
-            if(locationfilter && locationfilter.getModel()) {    
-                if(locationfilter.getModel().condition1){
-                  if(!this.locationfilterValue[0] || !this.locationfilterValue[1] || this.locationfilterValue[0].filter!= locationfilter.getModel().condition1.filter || this.locationfilterValue[1].filter!= locationfilter.getModel().condition2.filter) {
-                      this.locationfilterValue=[locationfilter.getModel().condition1,locationfilter.getModel().condition2];
-                      colNo = 4;
-                  }
-              }
-              else{
-                  if(!this.locationfilterValue[0] || this.locationfilterValue[0].filter != locationfilter.getModel().filter ){
-                  this.locationfilterValue = [locationfilter.getModel()];
-                  colNo = 4;
-                  }
-                  else{
-                    if(!locationfilter.getModel().condition1 && (this.locationfilterValue.length==2)){
-                        this.locationfilterValue = [locationfilter.getModel()];
-                    colNo = 4;
-                    }
-                }
-              } 
-          }
-          else{
-            locationCheck = [];
-          }
-        }
-        if(colNo == 0){
-            if(namefilter && namefilter.getModel()) {    
-                if(namefilter.getModel().condition1){
-                  if(!this.namefilterValue[0] || !this.namefilterValue[1] || this.namefilterValue[0].filter!= namefilter.getModel().condition1.filter || this.namefilterValue[1].filter!= namefilter.getModel().condition2.filter) {
-                      this.namefilterValue=[namefilter.getModel().condition1,namefilter.getModel().condition2];
-                      colNo = 5;
-                  }
-              }
-              else{
-                  if(!this.namefilterValue[0] || this.namefilterValue[0].filter != namefilter.getModel().filter ){
-                  this.namefilterValue = [namefilter.getModel()];
-                  colNo = 5;
-                  }
-                  else{
-                    if(!namefilter.getModel().condition1 && (this.namefilterValue.length==2)){
-                        this.namefilterValue = [namefilter.getModel()];
-                    colNo = 5;
-                    }
-                }
-              } 
-          }
-          else {
-            nameCheck = [] ;
-          }
-        }
-        
-        
-        if(colNo == 1) this.props.sendFilterValue(this.leaveReasonfilterValue,1)
-        else if(colNo == 2) this.props.sendFilterValue(this.absenceDatefilterValue,2)
-        else if(colNo == 3) this.props.sendFilterValue(this.departmentfilterValue,3)
-        else if(colNo == 4) this.props.sendFilterValue(this.locationfilterValue,4)
-        else if(colNo == 5) this.props.sendFilterValue(this.namefilterValue,5)
-        else{
-            if((this.leaveReasonfilterValue.length != leaveReasonCheck.length) && (!leaveReasonfilter.getModel())) {
-                this.props.sendFilterValue([],1);
-                this.leaveReasonfilterValue = [];
+                result.push([filter[filterValue].filter,filterValue]);
             }
-            else if(this.absenceDatefilterValue.length != absenceCheck.length && !absenceDatefilter.getModel()) {
-                this.props.sendFilterValue([],2);
-                this.absenceDatefilterValue = [];
-            }
-            else if(this.departmentfilterValue.length != departmentCheck.length && !departmentfilter.getModel()) {
-                this.props.sendFilterValue([],3);
-                this.departmentfilterValue = [];
-            }
-            else if(this.locationfilterValue.length != locationCheck.length && !locationfilter.getModel()) {
-                this.props.sendFilterValue([],4);
-                this.locationfilterValue = [];
-            }
-            else if(this.namefilterValue.length != nameCheck.length && !namefilter.getModel()) {
-                this.props.sendFilterValue([],5);
-                this.namefilterValue = [];
-            }
-            else{}
-        }
+        }   
+         this.props.sendFilterValue(result);
     }
 
     onCellValueChanged = event => {
-        console.log(event.data)
         var oldDate = event.data.dateOfAbsence.split(" - ");
         if (event.newValue == event.oldValue) {
         }
         else {
             var post_data = {
-                "absenceID": event.data.id, "email": "janet@jackson.com",
+                "absenceID": event.data.id, "email": "",
                 "startDate": oldDate[0], "endDate": oldDate[1],
-                "reasonID": event.data.reasonId, "isCurrent": 1, "isProcessed": 0, "createdBy": Number(window.localStorage.getItem("userId"))
+                "reasonID": event.data.reasonId, "isCurrent": (event.data.isCurrent=="True")?1:0, "isProcessed": 0, "createdBy": Number(window.localStorage.getItem("userId"))
             };
-            console.log(post_data)
-            if (event.colDef.field == "name") post_data["name"] = event.newValue;
+            if (event.colDef.field == "isCurrent") post_data["isCurrent"] = (event.newValue=="True")?1:0;
             else if (event.colDef.field == "leavereason") post_data["reasonID"] = this.props.reason.data.filter(value => { if (value.Name == event.newValue) return true; else return false })[0].ReasonID;
             else {
                 var date = event.value.split(" - ");
@@ -376,7 +170,7 @@ class AbsenceTable extends Component {
                     post_data["endDate"] = event.newValue
                 }
             }
-            if (event.value.split(" - ")[1] || event.colDef.field != "dateOfAbsence") {
+            if ( (event.colDef.field == "dateOfAbsence" && event.value.split(" - ")[1]) || event.colDef.field != "dateOfAbsence"  ) {
                 this.props.apiCall("absence/updateabsence", "POST", post_data, "Absence record updated successfully","Failed to update absence record")
             }
 

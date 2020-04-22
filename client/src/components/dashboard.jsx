@@ -72,78 +72,14 @@ const styles = StyleSheet.create({
   }
 });
 
-const getDifference=(arr1,arr2)=>{
-  var result = [];
-arr1.map((values,index)=>{
-if(values.lenght != arr2[index].length && values.length)
-result.push(1);
-})
-return result;
-}
+
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { department: [], location: [], reason: [] ,changeRouter:true, isLoading: true,filters:[[],[],[],[],[],[],[],[],[],[]]};
+    this.state = { department: [], location: [], reason: [] ,changeRouter:true, isLoading: true,filters:[]};
   }
-  sendFilterValue=(value,index)=>{
- 
-    let filters = [...this.state.filters];
-    if(index==1){
-      if(value.length){
-        filters[1]=[];
-      value.map((mapValue,mapIndex)=>{
-        filters[mapIndex]=[mapValue.filter,index];
-      }) 
-    } 
-      else{
-        filters[0]=[];filters[1]=[];
-      }    
-    }
-    else if(index==2){
-      if(value.length)
-      {
-        filters[3]=[];
-        value.map((mapValue,mapIndex)=>{
-        filters[2+mapIndex]=[mapValue.filter,index];
-      }) }
-      else{
-        filters[2]=[];filters[3]=[];
-      }      
-    }
-    else if(index==3){
-      if(value.length){ filters[5]=[];
-        value.map((mapValue,mapIndex)=>{
-        filters[4+mapIndex]=[mapValue.filter,index];
-      }) }
-      else{
-        filters[4]=[];filters[5]=[];
-      }      
-    }
-    else if(index==4){
-      if(value.length){ filters[7]=[];
-        value.map((mapValue,mapIndex)=>{
-        filters[6+mapIndex]=[mapValue.filter,index];
-      })  }
-      else{
-        filters[6]=[];filters[7]=[];
-      }     
-    }
-    else if(index==5){
-      if(value.length){filters[9]=[];
-        value.map((mapValue,mapIndex)=>{
-        filters[8+mapIndex]=[mapValue.filter,index];
-      })  }
-      else{
-        filters[8]=[];filters[9]=[];
-      }     
-    }else{}
-
-// value.map(mapValue=>{
-//   filters[index]=[mapValue.filter,index];
-// })
-// filters[index][value.length]
-
+  sendFilterValue=(filters)=>{
 this.setState({filters})
   }
 refreshRouter=()=>{
@@ -228,7 +164,6 @@ let filters = this.state.filters.filter(filterValue=>{
 
   render() {
     const { reason, location, department,filters } = this.state;
-    const filterDiff = getDifference(JSON.parse(JSON.stringify(this.state.filters)), [[],[],[],[],[],[],[],[],[],[]]);
     return (
       <Router  >
         <div
@@ -263,7 +198,7 @@ let filters = this.state.filters.filter(filterValue=>{
                       className={css(styles.input)}
                       placeholder="Search "
                       disableUnderline={true}
-                      onChange={(e) => { this.table && this.table.externalFilterChanged(e.target.value); }}
+                      onChange={(e) => {this.table && this.table.externalFilterChanged(e.target.value); }}
                     />
                     <IconButton className={css(styles.iconButton)} >
                       <SearchIcon style={{ color: "#547795" }} />
@@ -271,23 +206,22 @@ let filters = this.state.filters.filter(filterValue=>{
                     {Number(window.localStorage.getItem("isAdmin")) ? (<React.Fragment><Divider className={css(styles.divider)} orientation="vertical" />
                       <ExportCSV csvData={this.table && this.table.excelData()} fileName={'absence_report'} /></React.Fragment>) : ""}
                   </Paper>
-                  <Grid container style={{ marginTop: "10px", minWidth: "56%", width: "auto", display:(filterDiff.length)? "flex":"none", alignItems: "center" }}>
-                    <span style={{ fontSize: "14px", color: "#788195", marginBottom: "2px" }} class="filterDisplayMobile">{`Filters ${(filterDiff.length==1)?"(1 result):":"("+filterDiff.length+"results):"}`}</span>
+                  <Grid container style={{ marginTop: "10px", minWidth: "56%", width: "auto", display:(filters.length)? "flex":"none", alignItems: "center" }}>
+                    <span style={{ fontSize: "14px", color: "#788195", marginBottom: "2px" }} class="filterDisplayMobile">{`Filters ${(filters.length==1)?"(1 result):":"("+filters.length+"results):"}`}</span>
                     {
                       filters.map((value,index)=>{ 
-                        if(value.length)
                          return <span className="filterDisplayMobile breadCrumb" style={{ marginLeft: "45px", display: "flex", alignItems: "center", fontSize: "14px", color: "light-grey" }}>{value[0]} <span style={{ display: "flex", alignItems: "center", marginLeft: "5px" }}><ion-icon onClick={()=>this.singleFilterRemove(value[0],value[1])} style={{ fontSize: "14px" }} name="close"></ion-icon></span></span>
-                      else return " "
+                     
                     })
                   }
-                    <span className="filterDisplayMobile breadCrumb" onClick={()=>{this.table.clearAllfilter();this.setState({filters:[[],[],[],[],[],[],[],[],[],[]]})}} style={{ marginLeft: "45px", fontSize: "14px", color: "light-grey" }}>Clear all</span>
+                    <span className="filterDisplayMobile breadCrumb" onClick={()=>{this.table.clearAllfilter();this.setState({filters:[]})}} style={{ marginLeft: "45px", fontSize: "14px", color: "light-grey" }}>Clear all</span>
                   </Grid>
                 </div>                
-                <AbsenceTable sendFilterValue={this.sendFilterValue} onRef={ref => (this.table = ref)}  reason={reason} department={department} location={location}  apiCall={this.apiCall} />
+                <AbsenceTable  decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} sendFilterValue={this.sendFilterValue} onRef={ref => (this.table = ref)}  reason={reason} department={department} location={location}  apiCall={this.apiCall} />
               </div>)} />
-            <Route path="/dashboard/registration" render={() => (<Registration  apiCall={this.apiCall} department={department} location={location} />)} />
-            <Route path="/dashboard/createAbsence" render={(props) => (<CreateAbsence refreshRouter={this.refreshRouter}  props={props}  reason={reason} apiCall={this.apiCall} />)} />
-            <Route path="/dashboard/changePassword" render={() => (<ChangePassword apiCall={this.apiCall}  />)} />
+            <Route path="/dashboard/registration"  render={() => (<Registration decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} apiCall={this.apiCall} department={department} location={location} />)} />
+            <Route path="/dashboard/createAbsence"  render={(props) => (<CreateAbsence decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} refreshRouter={this.refreshRouter}  props={props}  reason={reason} apiCall={this.apiCall} />)} />
+            <Route path="/dashboard/changePassword"  render={() => (<ChangePassword decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} apiCall={this.apiCall}  />)} />
           </Grid>
         </Row>
         

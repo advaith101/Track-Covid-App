@@ -4,7 +4,7 @@ import Login from './components/Login';
 import Dashboard from './components/dashboard';
 import { transitions, positions, Provider as AlertProvider } from "react-alert";
 import "./App.css"
-
+var CryptoJS = require("crypto-js");
 const AlertTemplate = ({ style, message, close }) => (
     <div style={style} className="alertTemplate">
         {message}<div style={{ marginRight: "15px", marginLeft: "15px" }} onClick={close}>x</div>
@@ -47,9 +47,36 @@ class MainRouter extends Component {
     apiCall(url, method, data, message) {
         this.dashboard.apiCall(url, method, data, message);
     }
+    encryptByDESModeCBC=(message)=> {
+        let key = "1234567890ABCDEFGHIJKLMN"
+        let IV = "12345678"
+        let cipher = CryptoJS.TripleDES.encrypt(message, CryptoJS.enc.Utf8.parse(key), {
+          iv: CryptoJS.enc.Utf8.parse(IV),
+          mode: CryptoJS.mode.CBC,
+          padding: CryptoJS.pad.Pkcs7
+        });
+        return cipher.toString();
+    
+    }
+    
+    
+   decryptByDESModeCBC=(ciphertext)=> {
+    let key = "1234567890ABCDEFGHIJKLMN"
+    let IV = "12345678"
+        var decrypted = CryptoJS.TripleDES.decrypt({
+            ciphertext: CryptoJS.enc.Base64.parse(ciphertext)
+        }, CryptoJS.enc.Utf8.parse(key), {
+            iv: CryptoJS.enc.Utf8.parse(IV),
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        
+        return decrypted.toString(CryptoJS.enc.Utf8);
+    }
 
     render() {
-
+        // var encrypted = this.encryptByDESModeCBC("password")
+        // var decrypted = this.decryptByDESModeCBC(encrypted);
         return (
             <div>
 
@@ -57,13 +84,13 @@ class MainRouter extends Component {
 
                     <Route exact path="/">
                         <AlertProvider template={AlertTemplate} {...options}>
-                            <Login url={this.url} userType={this.state.userType} apiCall={this.apiCall} handleStateChange={this.handleStateChange} />
+                            <Login url={this.url} encryptByDESModeCBC={this.encryptByDESModeCBC} userType={this.state.userType} apiCall={this.apiCall} handleStateChange={this.handleStateChange} />
                         </AlertProvider>
                     </Route>
 
                     <Route path="/dashboard" render={() => (this.state.email ?
                         <AlertProvider template={AlertTemplate} {...options}>
-                            <Dashboard url={this.url} onRef={ref => (this.dashboard = ref)} userType={this.state.userType} name={this.state.name} email={this.state.email} /></AlertProvider>
+                            <Dashboard url={this.url} decryptByDESModeCBC={this.decryptByDESModeCBC} encryptByDESModeCBC={this.encryptByDESModeCBC} onRef={ref => (this.dashboard = ref)} userType={this.state.userType} name={this.state.name} email={this.state.email} /></AlertProvider>
                         : <Redirect to='/' />
                     )}
                     />
