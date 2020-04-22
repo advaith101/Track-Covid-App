@@ -1,0 +1,95 @@
+body {
+    background-color: #f0eff4;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #9b8ec8 !important;
+}
+.filterDisplayMobile{
+    margin-left: 45px !important;
+}
+@media only screen and (max-width: 800px) {
+    .filterDisplayMobile{
+        margin-left: 10px !important;
+    }
+    .searchBar{
+        margin-top: 1rem;
+    }
+    .ag-theme-material .ag-paging-panel > * {
+        margin: 0 !important;
+    }
+    .sideBarHide{
+        /* left: -255 !important; */
+        /* position: absolute !important; */
+        display:none !important;
+    }
+    .contents{
+        margin-left: 17px !important;
+        width: 90% !important;
+    }
+  }
+  .searchBar{}
+.ag-theme-material .ag-root-wrapper{
+    width:100%;
+}
+.ag-theme-material .ag-header-row {
+    color: white !important;
+    background-color: #006b6a;
+}
+.ag-theme-material > div:first-of-type {
+    width:94% !important
+}
+
+.ag-header-cell-text {
+    font-weight: 400 !important;
+}
+
+.BgImage{
+    height:100vh;
+    background-image: url(./assets/stay.jpg );
+  }
+  .breadCrumb{
+      font-family: "Roboto";
+      color: #bfbaba;
+  }
+  .breadCrumb:hover{
+color: #788195;
+cursor: pointer;
+  }
+.ag-center-cols-viewport {
+    max-height: 48vh !important;
+}
+  .ag-theme-material .ag-row {
+    color: #788195 !important;
+}
+.tableDeleteIcon{
+    display: none;
+    transition: display 2s;
+    color: #788195 !important;
+}
+
+.ag-row-hover .ag-cell .ag-react-container .encloser .tableDeleteIcon{
+    display: inline-flex !important;
+    max-width: 19px !important;
+    max-height: 19px !important;
+    color: #788195 !important;
+}
+
+.alertTemplate{
+    margin: 10px;
+    pointer-events: all;
+    font-family: "Roboto";
+    letter-spacing: 0.4;
+    font-size: 15px;
+    justify-content: space-between;
+    min-width: 22vw !important;
+    width: auto;
+    height: 5vh;
+    background-color: #f1f3f6;
+    display: flex;
+    border-left: 5px solid;
+    padding-left: 15px;
+    align-items: center;
+    color: #2d3446;
+    text-transform: uppercase;
+}

@@ -1,4 +1,20 @@
-# TrackCovid-Web-App
-An elegant employee absence and COVID-19 tracking platform for HR departments.
 
-Run npm start in terminal to run application on localhost 5000.
+# Run Scripts
+
+## To run locally for Dev env
+
+``npm run dev``
+
+
+
+# Heroku Details
+
+## Login
+
+``heroku login``
+
+opens up browser for login
+
+## To check Logs
+
+``heroku logs --app esratrackcovid -t``

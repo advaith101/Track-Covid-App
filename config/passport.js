@@ -2,11 +2,11 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 
 // Load User model
-const User = require('../models/User');
-
 module.exports = function(passport) {
+  
   passport.use(
     new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+      console.log("authentication started");
       // Match user
       User.findOne({
         email: email
@@ -14,6 +14,8 @@ module.exports = function(passport) {
         if (!user) {
           return done(null, false, { message: 'That email is not registered' });
         }
+
+        console.log("USER user has been found");
 
         // Match password
         bcrypt.compare(password, user.password, (err, isMatch) => {
@@ -29,10 +31,12 @@ module.exports = function(passport) {
   );
 
   passport.serializeUser(function(user, done) {
+    console.log("user serialized");
     done(null, user.id);
   });
 
   passport.deserializeUser(function(id, done) {
+    console.log("user being deserialized");
     User.findById(id, function(err, user) {
       done(err, user);
     });
