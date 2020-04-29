@@ -1,0 +1,14 @@
+Tue, 10 Mar 2020 11:49:46 GMT tedious deprecated The default value for `config.options.enableArithAbort` will change from `false` to `true` in the next major version of `tedious`. Set the value to `true` or `false` explicitly to silence this message. at node_modules\mssql\lib\tedious\connection-pool.js:61:23
+(node:2428) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+Application has thrown an uncaught exception and is terminated:
+Error: listen EADDRINUSE: address already in use :::3001
+    at Server.setupListenHandle [as _listen2] (net.js:1279:14)
+    at listenInCluster (net.js:1327:12)
+    at Server.listen (net.js:1414:7)
+    at Function.listen (C:\ApparelStoreAPI\node_modules\express\lib\application.js:618:24)
+    at Object.<anonymous> (C:\ApparelStoreAPI\app.js:52:5)
+    at Module._compile (internal/modules/cjs/loader.js:778:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:789:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)

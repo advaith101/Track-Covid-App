@@ -13,6 +13,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import AbsenceTable from './AbsenceTable';
 import CreateAbsence from './createAbsence.jsx';
+import AdaRequest from './adaRequest.jsx';
 import ChangePassword from './changePassword.jsx'
 import { ExportCSV } from './ExportCSV';
 import { Provider as AlertProvider, withAlert } from "react-alert";
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { department: [], location: [], reason: [] ,changeRouter:true, isLoading: true,filters:[]};
+    this.state = { department: [], location: [], reason: [] , adaRequest: {}, changeRouter:true, isLoading: true,filters:[]};
   }
   sendFilterValue=(filters)=>{
 this.setState({filters})
@@ -163,7 +164,7 @@ let filters = this.state.filters.filter(filterValue=>{
   }
 
   render() {
-    const { reason, location, department,filters } = this.state;
+    const { reason, location, department, filters, adaRequest } = this.state; //added adaRequest here
     return (
       <Router  >
         <div
@@ -221,7 +222,10 @@ let filters = this.state.filters.filter(filterValue=>{
               </div>)} />
             <Route path="/dashboard/registration"  render={() => (<Registration decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} apiCall={this.apiCall} department={department} location={location} />)} />
             <Route path="/dashboard/createAbsence"  render={(props) => (<CreateAbsence decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} refreshRouter={this.refreshRouter}  props={props}  reason={reason} apiCall={this.apiCall} />)} />
+            {/* added routing for ada request */}
+            <Route path="/dashboard/ada"  render={(props) => (<AdaRequest decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} refreshRouter={this.refreshRouter}  props={props}  adaRequest={adaRequest} apiCall={this.apiCall} />)} />
             <Route path="/dashboard/changePassword"  render={() => (<ChangePassword decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} apiCall={this.apiCall}  />)} />
+
           </Grid>
         </Row>
         

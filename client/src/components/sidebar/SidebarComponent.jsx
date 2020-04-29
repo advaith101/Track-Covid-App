@@ -160,6 +160,16 @@ function SidebarComponent({ changeRouter }) {
 
                                 </li>
                             </NavLink>
+                            
+                            <NavLink to="/dashboard/ada" style={{ color: "inherit" }}>
+                                <li class="ant-menu-item" id="ada" role="menuitem" style={{ paddingLeft: "24px" }}>
+                                    <span class="isoMenuHolder" style={{ color: "inherit" }}>
+                                        <ion-icon class="ion" name="create"></ion-icon>
+                                        <span class="nav-text"><span>{Number(window.localStorage.getItem("isAdmin")) ? "Create Employee ADA" : "Create ADA Request"}</span></span>
+                                    </span>
+                                </li>
+                            </NavLink>
+
                             <NavLink to="/dashboard/changePassword" style={{ color: "inherit" }}>
                                 <li class="ant-menu-item" id="changePassword" role="menuitem" style={{ paddingLeft: "24px" }}>
 
@@ -171,13 +181,13 @@ function SidebarComponent({ changeRouter }) {
                                 </li>
                             </NavLink>
                             <div onClick={() => { window.location.href = "/";  window.localStorage.setItem("CompanyID","")
-        window.localStorage.setItem("refresh_token", "")
-        window.localStorage.setItem("bearer_token","")
-        window.localStorage.setItem("isAdmin", "");
-        window.localStorage.setItem("name", "");
-        window.localStorage.setItem("userId", "");
-        window.localStorage.setItem("email", "");
-         }} style={{ color: "inherit" }}>
+                                window.localStorage.setItem("refresh_token", "")
+                                window.localStorage.setItem("bearer_token","")
+                                window.localStorage.setItem("isAdmin", "");
+                                window.localStorage.setItem("name", "");
+                                window.localStorage.setItem("userId", "");
+                                window.localStorage.setItem("email", "");
+                                }} style={{ color: "inherit" }}>
                                 <li class="ant-menu-item" role="menuitem" style={{ paddingLeft: "24px" }}>
 
                                     <span class="isoMenuHolder" style={{ color: "inherit" }}>
