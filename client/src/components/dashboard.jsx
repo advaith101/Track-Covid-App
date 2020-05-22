@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { department: [], location: [], reason: [] , adaRequest: {}, changeRouter:true, isLoading: true,filters:[]};
+    this.state = { department: [], location: [], reason: [] , adaRequest: {}, changeRouter:true, isLoading: true,filters:[], uploadedabsences: React.createRef()};
   }
   sendFilterValue=(filters)=>{
 this.setState({filters})
@@ -147,6 +147,11 @@ refreshRouter=()=>{
     }, 0);
   }
 
+  convertSpreadsheet(file) {
+  console.log("i have been clicked");
+  console.log(file);
+  }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.resize);
     this.props.onRef(undefined)
@@ -162,6 +167,8 @@ let filters = this.state.filters.filter(filterValue=>{
 })
     this.setState({filters})
   }
+
+
 
   render() {
     const { reason, location, department, filters, adaRequest } = this.state; //added adaRequest here
@@ -190,8 +197,16 @@ let filters = this.state.filters.filter(filterValue=>{
 
             <Route path={["/dashboard", "/dashboard/leaveRecord"]} exact render={(props) => (
               <div className={`${css(styles.content)} contents`} style={{ width: "97%" }}>
-                <div class="searchBar" style={{ minHeight: "9vw",height:"auto", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+
+                <div class="searchBar" style={{ minHeight: "9vw",height:"auto", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                   
+
+                   <input type="file" id="importedabsences" ref={this.uploadedabsences} accept='.csv, .xlsx'
+                      onChange={(e) => {this.convertSpreadsheet(e.target.files[0])}}/>
+                  
+
                   <Paper className={css(styles.root)} style={{ width: "56%", height: "auto",minHeigth:"3vw" }}>
+
                     <IconButton className={css(styles.iconButton)} aria-label="menu">
                       <FilterListIcon style={{ color: "#547795" }} />
                     </IconButton>
@@ -217,7 +232,10 @@ let filters = this.state.filters.filter(filterValue=>{
                   }
                     <span className="filterDisplayMobile breadCrumb" onClick={()=>{this.table.clearAllfilter();this.setState({filters:[]})}} style={{ marginLeft: "45px", fontSize: "14px", color: "light-grey" }}>Clear all</span>
                   </Grid>
-                </div>                
+                  </div>
+                
+                            
+                
                 <AbsenceTable  decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} sendFilterValue={this.sendFilterValue} onRef={ref => (this.table = ref)}  reason={reason} department={department} location={location}  apiCall={this.apiCall} />
               </div>)} />
             <Route path="/dashboard/registration"  render={() => (<Registration decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} apiCall={this.apiCall} department={department} location={location} />)} />
