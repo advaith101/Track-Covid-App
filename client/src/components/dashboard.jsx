@@ -16,6 +16,8 @@ import CreateAbsence from './createAbsence.jsx';
 import AdaRequest from './adaRequest.jsx';
 import ChangePassword from './changePassword.jsx'
 import { ExportCSV } from './ExportCSV';
+import * as XLSX from 'xlsx';
+import test from '../assets/test.xlsx'
 import { Provider as AlertProvider, withAlert } from "react-alert";
 import Loader from 'react-loader-spinner';
 
@@ -148,9 +150,17 @@ refreshRouter=()=>{
   }
 
   convertSpreadsheet(file) {
-  console.log("i have been clicked");
-  console.log(file);
-  }
+    if(typeof require !== 'undefined') {
+    console.log('hey');
+    XLSX = require('xlsx');
+}
+  var workbook = XLSX.readFile(file);
+    console.log(workbook);
+    }
+
+  downloadTemp() {
+
+    }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.resize);
@@ -199,11 +209,16 @@ let filters = this.state.filters.filter(filterValue=>{
               <div className={`${css(styles.content)} contents`} style={{ width: "97%" }}>
 
                 <div class="searchBar" style={{ minHeight: "9vw",height:"auto", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-                   
-
-                   <input type="file" id="importedabsences" ref={this.uploadedabsences} accept='.csv, .xlsx'
-                      onChange={(e) => {this.convertSpreadsheet(e.target.files[0])}}/>
+                <div>
+                  <label class="btn btn-outline-primary" style={{width: "auto", height : "auto", display: "flex", flexDirection: "row" }}>Import Absences  
+                   <input type="file" id="importedabsences" ref={this.uploadedabsences} accept='.xlsx'
+                      onChange={(e) => {this.convertSpreadsheet(e.target.files[0])}} hidden/>
+                  </label>
                   
+                {/*allows user to download template. template is in the assets folder, so idk if this is the best way of doing it.*/}
+                  <a href={test} download="template.xlsx">Download Template</a>
+                  </div>
+
 
                   <Paper className={css(styles.root)} style={{ width: "56%", height: "auto",minHeigth:"3vw" }}>
 
