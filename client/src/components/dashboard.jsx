@@ -150,27 +150,34 @@ refreshRouter=()=>{
     }, 0);
   }
 
+//Converts uploaded spreadsheet into insertable absences
+//file : file to be converted
   convertSpreadsheet(file) {
     if (file != null) {
+
       var moment = require('moment');
       var reader = new FileReader();
       console.log(file);
+      
       reader.onload = (e) => {
+        //converts file into a readable json object
         var data = new Uint8Array(e.target.result);
         var workbook = XLSX.read(data, {type:'array', cellDates:true});
         console.log(workbook);
-         const wsname = workbook.SheetNames[0];
+        const wsname = workbook.SheetNames[0];
         const ws = workbook.Sheets[wsname];
-        const datddd = XLSX.utils.sheet_to_json(ws, {header:1,raw:false,dateNF:'yyyy-mm-dd'});
-              console.log(datddd);
-        for (var i = 1; i < datddd.length; i++) {
-          if (datddd[i][0] != null && datddd[i][1] != null
-            && datddd[i][2] != null && datddd[i][4] != null) {
+        const absences = XLSX.utils.sheet_to_json(ws, {header:1,raw:false,dateNF:'yyyy-mm-dd'});
+
+        //loops through and json object and inserts data into database
+        for (var i = 1; i < absences.length; i++) {
+          //checks to make sure that Start Date, email, name, 
+          if (absences[i][0] != null && absences[i][1] != null
+            && absences[i][2] != null && absences[i][4] != null) {
               var post_data = {
-                "name": datddd[i][1].toString(),
-                "email": datddd[i][0].toString(),
-                "startDate": moment(datddd[i][2]).format("YYYY MM DD"),
-                "endDate":  (datddd[i][3] != null)?moment(datddd[i][3]).format("YYYY MM DD"):"", "reasonID": datddd[i][4], "isCurrent": 1, "isProcessed": 0, 
+                "name": this.props.encryptByDESModeCBC(absences[i][1].toString()),
+                "email": this.props.encryptByDESModeCBC(absences[i][0].toString()),
+                "startDate": moment(absences[i][2]).format("YYYY MM DD"),
+                "endDate":  (absences[i][3] != null)?moment(absences[i][3]).format("YYYY MM DD"):"", "reasonID": absences[i][4], "isCurrent": 1, "isProcessed": 0, 
                 "createdBy": Number(window.localStorage.getItem("userId"))
               };
               console.log(post_data.name);
