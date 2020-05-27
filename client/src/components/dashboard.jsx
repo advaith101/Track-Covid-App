@@ -5,7 +5,7 @@ import SidebarComponent from './sidebar/SidebarComponent.jsx';
 import HeaderComponent from './header/HeaderComponent';
 import Input from '@material-ui/core/Input';
 import Grid from '@material-ui/core/Grid';
-import Registration from "./registration"
+import Registration from "./registration";
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,8 +16,9 @@ import CreateAbsence from './createAbsence.jsx';
 import AdaRequest from './adaRequest.jsx';
 import ChangePassword from './changePassword.jsx'
 import { ExportCSV } from './ExportCSV';
+import { ImportCSV } from './ImportCSV';
+import { DownloadTemp } from './DownloadTemp';
 import * as XLSX from 'xlsx';
-import template from '../assets/template.xlsx'
 import { Provider as AlertProvider, withAlert } from "react-alert";
 import Loader from 'react-loader-spinner';
 
@@ -82,6 +83,7 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = { department: [], location: [], reason: [] , adaRequest: {}, changeRouter:true, isLoading: true,filters:[], uploadedabsences: React.createRef()};
+
   }
   sendFilterValue=(filters)=>{
 this.setState({filters})
@@ -150,46 +152,7 @@ refreshRouter=()=>{
     }, 0);
   }
 
-//Converts uploaded spreadsheet into insertable absences
-//file : file to be converted
-  convertSpreadsheet(file) {
-    if (file != null) {
 
-      var moment = require('moment');
-      var reader = new FileReader();
-      console.log(file);
-      
-      reader.onload = (e) => {
-        //converts file into a readable json object
-        var data = new Uint8Array(e.target.result);
-        var workbook = XLSX.read(data, {type:'array', cellDates:true});
-        console.log(workbook);
-        const wsname = workbook.SheetNames[0];
-        const ws = workbook.Sheets[wsname];
-        const absences = XLSX.utils.sheet_to_json(ws, {header:1,raw:false,dateNF:'yyyy-mm-dd'});
-
-        //loops through and json object and inserts data into database
-        for (var i = 1; i < absences.length; i++) {
-          //checks to make sure that Start Date, email, name, 
-          if (absences[i][0] != null && absences[i][1] != null
-            && absences[i][2] != null && absences[i][4] != null) {
-              var post_data = {
-                "name": this.props.encryptByDESModeCBC(absences[i][1].toString()),
-                "email": this.props.encryptByDESModeCBC(absences[i][0].toString()),
-                "startDate": moment(absences[i][2]).format("YYYY MM DD"),
-                "endDate":  (absences[i][3] != null)?moment(absences[i][3]).format("YYYY MM DD"):"", "reasonID": absences[i][4], "isCurrent": 1, "isProcessed": 0, 
-                "createdBy": Number(window.localStorage.getItem("userId"))
-              };
-              console.log(post_data.name);
-              console.log(post_data.email);
-              this.apiCall("absence/insertabsence", "POST", post_data,"Absence record added successfully","Failed to add absence record");
-          }
-        }
-      }
-    }  
-    reader.readAsArrayBuffer(file);
-      this.refreshRouter();
-  }
   
   componentWillUnmount() {
     window.removeEventListener('resize', this.resize);
@@ -240,17 +203,6 @@ let filters = this.state.filters.filter(filterValue=>{
                 <div class="searchBar" style={{ minHeight: "9vw",height:"auto", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                 
 
-                <div style={{marginRight:"2vw"}}>
-              {/*takes in absences and */}
-                  <label class="btn btn-outline-info" style={{width: "auto", height : "auto", display: "flex", flexDirection: "row"}}>Import Absences  
-                   <input type="file" id="importedabsences" ref={this.uploadedabsences} accept='.xlsx'
-                      onChange={(e) => {this.convertSpreadsheet(e.target.files[0])}} hidden/>
-                  </label>
-                  
-                {/*allows user to download template. template is in the assets folder, so idk if this is the best way of doing it.*/}
-                  <a class="text-info" href={template} download="template.xlsx">Download Template</a>
-                  </div>
-
 
                   <Paper className={css(styles.root)} style={{ width: "56%", height: "auto",minHeigth:"3vw" }}>
 
@@ -268,6 +220,10 @@ let filters = this.state.filters.filter(filterValue=>{
                     </IconButton>
                     {Number(window.localStorage.getItem("isAdmin")) ? (<React.Fragment><Divider className={css(styles.divider)} orientation="vertical" />
                       <ExportCSV csvData={this.table && this.table.excelData()} fileName={'absence_report'} /></React.Fragment>) : ""}
+                    <Divider className={css(styles.divider)} orientation="vertical" />
+                      <ImportCSV parent={this}/>
+                      <Divider className={css(styles.divider)} orientation="vertical" />
+                      <DownloadTemp/>
                   </Paper>
                   <Grid container style={{ marginTop: "10px", minWidth: "56%", width: "auto", display:(filters.length)? "flex":"none", alignItems: "center" }}>
                     <span style={{ fontSize: "14px", color: "#788195", marginBottom: "2px" }} class="filterDisplayMobile">{`Filters ${(filters.length==1)?"(1 result):":"("+filters.length+"results):"}`}</span>
