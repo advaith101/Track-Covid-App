@@ -5,7 +5,7 @@ import SidebarComponent from './sidebar/SidebarComponent.jsx';
 import HeaderComponent from './header/HeaderComponent';
 import Input from '@material-ui/core/Input';
 import Grid from '@material-ui/core/Grid';
-import Registration from "./registration"
+import Registration from "./registration";
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,6 +16,9 @@ import CreateAbsence from './createAbsence.jsx';
 import AdaRequest from './adaRequest.jsx';
 import ChangePassword from './changePassword.jsx'
 import { ExportCSV } from './ExportCSV';
+import { ImportCSV } from './ImportCSV';
+import { DownloadTemp } from './DownloadTemp';
+import * as XLSX from 'xlsx';
 import { Provider as AlertProvider, withAlert } from "react-alert";
 import Loader from 'react-loader-spinner';
 
@@ -25,6 +28,7 @@ import {
 } from "react-router-dom";
 var _ = require("underscore");
 const styles = StyleSheet.create({
+
   container: {
     height: '100%',
     minHeight: '100vh'
@@ -78,7 +82,8 @@ const styles = StyleSheet.create({
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { department: [], location: [], reason: [] , adaRequest: {}, changeRouter:true, isLoading: true,filters:[]};
+    this.state = { department: [], location: [], reason: [] , adaRequest: {}, changeRouter:true, isLoading: true,filters:[], uploadedabsences: React.createRef()};
+
   }
   sendFilterValue=(filters)=>{
 this.setState({filters})
@@ -147,6 +152,8 @@ refreshRouter=()=>{
     }, 0);
   }
 
+
+  
   componentWillUnmount() {
     window.removeEventListener('resize', this.resize);
     this.props.onRef(undefined)
@@ -162,6 +169,8 @@ let filters = this.state.filters.filter(filterValue=>{
 })
     this.setState({filters})
   }
+
+
 
   render() {
     const { reason, location, department, filters, adaRequest } = this.state; //added adaRequest here
@@ -190,8 +199,13 @@ let filters = this.state.filters.filter(filterValue=>{
 
             <Route path={["/dashboard", "/dashboard/leaveRecord"]} exact render={(props) => (
               <div className={`${css(styles.content)} contents`} style={{ width: "97%" }}>
-                <div class="searchBar" style={{ minHeight: "9vw",height:"auto", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+
+                <div class="searchBar" style={{ minHeight: "9vw",height:"auto", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                
+
+
                   <Paper className={css(styles.root)} style={{ width: "56%", height: "auto",minHeigth:"3vw" }}>
+
                     <IconButton className={css(styles.iconButton)} aria-label="menu">
                       <FilterListIcon style={{ color: "#547795" }} />
                     </IconButton>
@@ -206,6 +220,10 @@ let filters = this.state.filters.filter(filterValue=>{
                     </IconButton>
                     {Number(window.localStorage.getItem("isAdmin")) ? (<React.Fragment><Divider className={css(styles.divider)} orientation="vertical" />
                       <ExportCSV csvData={this.table && this.table.excelData()} fileName={'absence_report'} /></React.Fragment>) : ""}
+                    <Divider className={css(styles.divider)} orientation="vertical" />
+                      <ImportCSV parent={this}/>
+                      <Divider className={css(styles.divider)} orientation="vertical" />
+                      <DownloadTemp/>
                   </Paper>
                   <Grid container style={{ marginTop: "10px", minWidth: "56%", width: "auto", display:(filters.length)? "flex":"none", alignItems: "center" }}>
                     <span style={{ fontSize: "14px", color: "#788195", marginBottom: "2px" }} class="filterDisplayMobile">{`Filters ${(filters.length==1)?"(1 result):":"("+filters.length+"results):"}`}</span>
@@ -217,7 +235,10 @@ let filters = this.state.filters.filter(filterValue=>{
                   }
                     <span className="filterDisplayMobile breadCrumb" onClick={()=>{this.table.clearAllfilter();this.setState({filters:[]})}} style={{ marginLeft: "45px", fontSize: "14px", color: "light-grey" }}>Clear all</span>
                   </Grid>
-                </div>                
+                  </div>
+                
+                            
+                
                 <AbsenceTable  decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} sendFilterValue={this.sendFilterValue} onRef={ref => (this.table = ref)}  reason={reason} department={department} location={location}  apiCall={this.apiCall} />
               </div>)} />
             <Route path="/dashboard/registration"  render={() => (<Registration decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} apiCall={this.apiCall} department={department} location={location} />)} />

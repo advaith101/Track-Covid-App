@@ -30,12 +30,19 @@ export default class Registration extends Component {
     }
     submit = () => {
         var { checkedIsAdmin,nameError, emailError, locationIDError, departmentIDError, passwordError, confPassError, locationID, departmentID } = this.state;
+        
         if (!this.name.current.value) nameError = true; else nameError = false;
+        
         if (!this.email.current.value) emailError = true; else emailError = false;
+        
         if (!this.pass.current.value) passwordError = true; else passwordError = false;
+        
         if (this.confPass.current.value != this.pass.current.value) confPassError = true; else confPassError = false;
+        
         if (!locationID) locationIDError = true; else locationIDError = false;
+        
         if (!departmentID) departmentIDError = true; else departmentIDError = false;
+        
         this.setState({ nameError, emailError, locationIDError, departmentIDError, passwordError, confPassError });
         if (!nameError && !emailError && !locationIDError && !departmentIDError && !passwordError && !confPassError) {
             var post_data = {
