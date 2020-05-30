@@ -52,6 +52,9 @@ class AbsenceTable extends Component {
         }
     }
 
+    sizeToFit() {
+        AgGridReact.api.sizeColumnsToFit();
+    }
 
     componentDidMount() {
         this.props.onRef(this);
@@ -65,6 +68,7 @@ class AbsenceTable extends Component {
         //     this.setState({header})
         // }
         this.createViewModels();
+
 
     }
 
@@ -182,9 +186,9 @@ class AbsenceTable extends Component {
     }
 
     adminTable() {
-
         return (
             <Fragment>
+
 
                 <div
                     class="ag-theme-material"
@@ -192,13 +196,18 @@ class AbsenceTable extends Component {
                         height: "65vh",
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center', width: "100%"
+                        justifyContent: 'center', width: "auto"
                     }}
                 >
                     <AgGridReact
                     suppressTouch={false}
                     suppressMovableColumns={true}
-                        onGridReady={(params) => { params.api.sizeColumnsToFit(); this.gridApi = params.api; }}
+                        onGridReady={(params) => { params.api.sizeColumnsToFit(); this.gridApi = params.api;
+                            window.addEventListener('resize', function() {
+      setTimeout(function() {
+        params.api.sizeColumnsToFit();
+      });
+        }); }}
                         gridOptions={{ rowHeight: 40, headerHeight: 40 }}
                         columnDefs={this.state.header}
                         onCellValueChanged={this.onCellValueChanged}
@@ -209,6 +218,8 @@ class AbsenceTable extends Component {
                         defaultColDef={this.state.defaultColDef}
                         deleteAbsence={this.deleteAbsence}
                         onFilterChanged={this.filterDedect}
+                        suppressHorizontalScroll={true}
+
                     ></AgGridReact>
                 </div>
             </Fragment>
@@ -233,7 +244,7 @@ class AbsenceTable extends Component {
     }
 
     render() {
-        return (<Container style={{ width: "100%", marginTop: "10px" }}>
+        return (<Container id="resizemeplease" style={{ width: "auto", marginTop: "10px" }}>
             {this.tableForType()}
         </Container>)
 

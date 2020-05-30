@@ -6,7 +6,7 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import PublishIcon from '@material-ui/icons/Publish';
 
 export const ImportCSV = ({parent}) => {
-
+    var hover = false;
      //Converts uploaded spreadsheet into insertable absences
 //csvData : file to be converted
     const convertSpreadsheet = (csvData) => {
@@ -37,18 +37,17 @@ export const ImportCSV = ({parent}) => {
                 "endDate":  (absences[i][3] != null)?moment(absences[i][3]).format("YYYY MM DD"):"", "reasonID": absences[i][4], "isCurrent": 1, "isProcessed": 0, 
                 "createdBy": Number(window.localStorage.getItem("userId"))
               };
-              console.log(post_data.name);
-              console.log(post_data.email);
               //props.apiCall("absence/insertabsence", "POST", post_data,"Absence record added successfully","Failed to add absence record");
           }
         }
       }
         reader.readAsArrayBuffer(csvData);
     }  
-    parent.AbsenceTable.forceUpdate();
   }
 
     return (
-        <label class="btn btn-default" style={{padding:0,margin:0,minWidth:0,marginLeft:"5px",marginRight:"5px"}} variant="warning"><PublishIcon style={{color:"#547795"}} /><input type="file" onChange={(e) => convertSpreadsheet(e.target.files[0])} hidden/></label >
+        <label class="btn btn-default" style={{padding:0,margin:0,minWidth:0,marginLeft:"5px",marginRight:"5px"}} variant="warning">
+        <PublishIcon style={{color:"#547795"}}/><input type="file" onChange={(e) => convertSpreadsheet(e.target.files[0])} hidden/>
+        </label >
     )
 }

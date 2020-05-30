@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
         position: 'absolute',
         left: 24,
-        top: 20
+        top: 9
     },
     container: {
         backgroundColor: 'rgb(45, 52, 70)',
