@@ -16,6 +16,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import AbsenceTable from './AbsenceTable';
 import CreateAbsence from './createAbsence.jsx';
 import AdaRequest from './adaRequest.jsx';
+import Button from '@material-ui/core/Button';
 import ChangePassword from './changePassword.jsx'
 import { ExportCSV } from './ExportCSV';
 import { ImportCSV } from './ImportCSV';
@@ -208,9 +209,10 @@ let filters = this.state.filters.filter(filterValue=>{
 
             <Route path={["/dashboard", "/dashboard/leaveRecord"]} exact render={(props) => (
               <div className={`${css(styles.content)} contents`} style={{ width: "97%" }}>
+
                 <div class="searchBar" style={{ minHeight: "6vw",height:"auto", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                 
-                
+                <Button variant="contained"style={{backgroundColor: '#006b6a', color:"white", marginRight:"1vw"}}> Clock-in </Button>
 
                   <Paper className={css(styles.root)} style={{ width: "56%", height: "auto",minHeigth:"3vw" }}>
 
@@ -259,6 +261,9 @@ let filters = this.state.filters.filter(filterValue=>{
 
                   </div> 
                 <AbsenceTable  decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} sendFilterValue={this.sendFilterValue} onRef={ref => (this.table = ref)}  reason={reason} department={department} location={location}  apiCall={this.apiCall} />
+                  
+                
+
               </div>)} />
             <Route path="/dashboard/registration"  render={() => (<Registration decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} apiCall={this.apiCall} department={department} location={location} />)} />
             <Route path="/dashboard/createAbsence"  render={(props) => (<CreateAbsence decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} refreshRouter={this.refreshRouter}  props={props}  reason={reason} apiCall={this.apiCall} />)} />

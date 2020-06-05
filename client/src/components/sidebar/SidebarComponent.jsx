@@ -169,6 +169,16 @@ function SidebarComponent({ changeRouter }) {
                                     </span>
                                 </li>
                             </NavLink>
+                            <NavLink to="/dashboard/clockedData" style={{ color: "inherit" }}>
+                                <li class="ant-menu-item" id="clockedData" role="menuitem" style={{ paddingLeft: "24px" }}>
+
+                                    <span class="isoMenuHolder" style={{ color: "inherit" }}>
+                                        <ion-icon class="ion" name="time"></ion-icon>
+                                        <span class="nav-text"><span>Clocked In Stuff</span></span>
+                                    </span>
+
+                                </li>
+                            </NavLink>
 
                             <NavLink to="/dashboard/changePassword" style={{ color: "inherit" }}>
                                 <li class="ant-menu-item" id="changePassword" role="menuitem" style={{ paddingLeft: "24px" }}>
