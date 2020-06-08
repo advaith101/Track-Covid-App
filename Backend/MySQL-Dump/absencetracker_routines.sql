@@ -36,7 +36,7 @@ SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '';
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`admin`@`%` PROCEDURE `FilterAbsence`(In CompanyIDIn int,In EmailIn varchar(8000), in LocationIDIn int,
+CREATE   PROCEDURE `FilterAbsence`(In CompanyIDIn int,In EmailIn varchar(8000), in LocationIDIn int,
 In DepartmentIDIn int,In ReasonIDin int,In IsAbsentIn tinyint,In IsAdminIn tinyint )
 BEGIN               
              
@@ -71,7 +71,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`admin`@`%` PROCEDURE `InsertJWtToken`(In TokenIn varchar(1000), in RefreshTokenIn varchar(1000),In UserIDIn int, TokenDataIn json )
+CREATE   PROCEDURE `InsertJWtToken`(In TokenIn varchar(1000), in RefreshTokenIn varchar(1000),In UserIDIn int, TokenDataIn json )
 BEGIN               
              
 if (select count(*) from jwttokens where UserID=UserIDIn and IsActive=1) >0 then  
@@ -97,7 +97,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`admin`@`%` PROCEDURE `InsertorUpdateAbsence`(In AbsenceIDIn int,In CompanyIDIn int, In EmailIn varchar(8000), in StartDateIn date,In EndDateIn Date,in ReasonIDin int,in IsCurrentIn tinyint,
+CREATE   PROCEDURE `InsertorUpdateAbsence`(In AbsenceIDIn int,In CompanyIDIn int, In EmailIn varchar(8000), in StartDateIn date,In EndDateIn Date,in ReasonIDin int,in IsCurrentIn tinyint,
 in IsProcessedIn tinyint,in CreatedByIn int,in NameIn text )
 BEGIN      
       
@@ -129,7 +129,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`admin`@`%` PROCEDURE `ValidateLogin`(In UserEmailIn varchar(8000), in PasswordIn text, in CompanyIDin int )
+CREATE  PROCEDURE `ValidateLogin`(In UserEmailIn varchar(8000), in PasswordIn text, in CompanyIDin int )
 BEGIN                
        Set @UserID=0; Set @UserName=''; Set @IsAdmin=0;   Set @CompanyID=0;
 if (select count(*) from users where email = UserEmailIn and Password = PasswordIn and CompanyID=CompanyIDin and IsActive=1) >0 then            

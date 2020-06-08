@@ -91,8 +91,11 @@ class Dashboard extends React.Component {
       adaRequest: {}, 
       changeRouter:true, 
       isLoading: true,
-      hovering:false,
       filters:[],
+      userActivityTimeout: null,
+      iNACTIVE_USER_TIME_THRESHOLD: 2000,
+      uSER_ACTIVITY_THROTTLER_TIME: 1200,
+      userActivityTimeoutThrottlerTimeout: null,
       uploadedabsences: React.createRef()};
 
   }
@@ -148,10 +151,38 @@ refreshRouter=()=>{
         })
     })
   }
+  //resets
+  resetUserActivityTimeout() {
+  clearTimeout(this.state.userActivityTimeout);
+  this.state.userActivityTimeout = setTimeout(() => {
+    alert("YOU GONNA GET FUCKING LOGGED")
+  }, this.state.iNACTIVE_USER_TIME_THRESHOLD);
+    
+  }
+
+  userActivityTimeout() {
+    if(!this.state.userActivityThrottlerTimeout) {
+      this.state.userActivityThrottlerTimeout = setTimeout(() => {
+        this.resetUserActivityTimeout();
+
+        clearTimeout(this.state.userActivityTimeoutThrottlerTimeout);
+        this.setState({
+          userActivityTimeoutThrottlerTimeout:null
+        })
+      }, this.state.uSER_ACTIVITY_THROTTLER_TIME);
+    }
+  } 
+  activateActivityTracker() {
+  window.addEventListener("mousemove", this.resetUserActivityTimeout());
+  window.addEventListener("scroll", this.resetUserActivityTimeout());
+  window.addEventListener("keydown", this.resetUserActivityTimeout());
+  window.addEventListener("resize", this.resetUserActivityTimeout());
+}
 
   componentDidMount() {
     this.props.onRef(this);
     window.addEventListener('resize', this.resize);
+    this.activateActivityTracker();
     setTimeout(() => {
       this.apiCall("common/getdepartments", "POST", {}, "").then(department => this.setState({ department }))
     }, 0);
