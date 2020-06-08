@@ -25,8 +25,8 @@ class MainRouter extends Component {
     constructor() {
         super()
         this.handleStateChange = this.handleStateChange.bind(this);
-        this.url = "https://api.esratrackcovid.com/";
-        // this.url = "http://15.206.72.83:8090/";
+        //this.url = "https://api.esratrackcovid.com/"; //FOR PRODUCTION
+        this.url = "http://localhost:8090/"; //FOR LOCAL TESTING PURPOSES
     }
 
     state = {
