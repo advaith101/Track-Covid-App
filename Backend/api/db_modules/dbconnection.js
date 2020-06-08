@@ -4,8 +4,8 @@ const connectionPool = mysql.createPool({
     host: 'localhost',
     // port: '8080',
     user: 'root',
-    password: 'whateveryouneed',
-    database: 'whateveryouschemaiscalled',
+    password: '1 Love GT Sustainability.',
+    database: 'covidtracker',
     multipleStatements: true
 
 })

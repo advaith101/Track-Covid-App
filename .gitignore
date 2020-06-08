@@ -8,3 +8,4 @@ dist
 coverage/
 .nyc_output/
 yarn.lock
+Backend/api/db_modules/dbconnection.js
