@@ -2,19 +2,11 @@ import React from 'react';
 import { string } from 'prop-types';
 import { Row } from 'simple-flexbox';
 import { StyleSheet, css } from 'aphrodite';
-import EsraLogo from '../../assets/EsraLogo.ico'
-import { Avatar } from '@material-ui/core';
+
 
 const styles = StyleSheet.create({
-    avatar: {
-        height: 35,
-        width: 35,
-        borderRadius: 50,
-        marginLeft: 14,
-        border: '1px solid #DFE0EB',
-    },
     container: {
-        height: 70, width: "100%",
+        height: 50, width: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "flex-start",
@@ -77,7 +69,7 @@ function HeaderComponent(props) {
     const { icon, title, ...otherProps } = props;
     return (
         <Row className={css(styles.container)} vertical="center" horizontal="space-between" {...otherProps}>
-            <Avatar variant='square' className={css(styles.iconStyles)} src={EsraLogo} />
+            
             <span className={css(styles.title)}>{(Number(window.localStorage.getItem("isAdmin"))) ? "Admin Dashboard" : "Employee Dashboard"}</span>
             
         </Row>

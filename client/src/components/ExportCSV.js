@@ -19,6 +19,8 @@ export const ExportCSV = ({csvData, fileName}) => {
     }
 
     return (
-        <label class="btn btn-default" style={{padding:0,margin:0,minWidth:0,marginLeft:"5px",marginRight:"5px"}}><GetAppIcon style={{color:"#547795"}} variant="warning" onClick={(e) => exportToCSV(csvData,fileName)}/></label>
+        <label class="btn btn-default" style={{padding:0,margin:0,minWidth:0,marginLeft:"5px",marginRight:"5px"}}>
+        <GetAppIcon style={{color:"#547795"}} variant="warning" onClick={(e) => exportToCSV(csvData,fileName)}/>
+        </label>
     )
 }

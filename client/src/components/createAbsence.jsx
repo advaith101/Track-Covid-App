@@ -56,7 +56,7 @@ export default class CreateAbsence extends Component {
     const { startDate, endDate, reasonId, reasonError, emailError, nameError } = this.state;
     return (
       <Paper className="containers">
-        <Grid container style={{ fontSize: "24px", color: "#006b6a", paddingLeft: "5.8vw" }}>
+        <Grid container style={{ fontSize: "24px", color: "#006b6a", paddingLeft: "5.8vw", marginTop:"10px"}}>
           <span>{Number(window.localStorage.getItem("isAdmin")) ?"CREATE EMPLOYEE ABSENCE":"CREATE ABSENCE"}</span>
         </Grid>
 
@@ -133,7 +133,7 @@ export default class CreateAbsence extends Component {
           </Grid>
         </Grid>
 
-          <Grid container style={{ justifyContent: "flex-end", width: "92.6%", marginTop: "2vw" }} >
+          <Grid container style={{ justifyContent: "flex-end", width: "92.6%", marginTop: "3vw", marginBottom:"15px" }} >
             <Button variant="contained" color="secondary" onClick={this.submit}> Submit </Button>
           </Grid>
        

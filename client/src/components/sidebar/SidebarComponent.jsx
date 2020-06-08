@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
         position: 'absolute',
         left: 24,
-        top: 20
+        top: 9
     },
     container: {
         backgroundColor: 'rgb(45, 52, 70)',
@@ -167,6 +167,16 @@ function SidebarComponent({ changeRouter }) {
                                         <ion-icon class="ion" name="create"></ion-icon>
                                         <span class="nav-text"><span>{Number(window.localStorage.getItem("isAdmin")) ? "Create Employee ADA" : "Create ADA Request"}</span></span>
                                     </span>
+                                </li>
+                            </NavLink>
+                            <NavLink to="/dashboard/clockedData" style={{ color: "inherit" }}>
+                                <li class="ant-menu-item" id="clockedData" role="menuitem" style={{ paddingLeft: "24px" }}>
+
+                                    <span class="isoMenuHolder" style={{ color: "inherit" }}>
+                                        <ion-icon class="ion" name="time"></ion-icon>
+                                        <span class="nav-text"><span>Clocked In Stuff</span></span>
+                                    </span>
+
                                 </li>
                             </NavLink>
 

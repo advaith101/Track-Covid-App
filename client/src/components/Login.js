@@ -24,7 +24,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Container from '@material-ui/core/Container';
 import 'typeface-roboto';
 import "../App.css";
-import EsraLogo from '../assets/EsraLogo.ico';
+import EsraLogo from '../assets/logodarknotext.ico';
 
 
 
@@ -165,7 +165,7 @@ componentDidMount=()=>{
             <CssBaseline />
             <div className={classes.paper}>
               <Grid container style={{alignItems:"center",flexDirection:"column"}}>
-              <Avatar variant='square' style={{  marginTop: '0.1rem', marginBottom: "1rem" }} src={EsraLogo} />
+              <Avatar variant='square' style={{  marginTop: '0.1rem', marginBottom: "1rem", width:"15%", height:"15%"}} src={EsraLogo} />
               <Typography style={{ fontFamily: "Roboto", fontWeight: "bold", marginBottom:'0.3rem' }} component="h1" variant="h5">
                 Login
               </Typography>

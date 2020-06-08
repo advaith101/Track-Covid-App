@@ -3,6 +3,7 @@ import { Row } from 'simple-flexbox';
 import { StyleSheet, css } from 'aphrodite';
 import SidebarComponent from './sidebar/SidebarComponent.jsx';
 import HeaderComponent from './header/HeaderComponent';
+import FooterComponent from './footer/FooterComponent';
 import Input from '@material-ui/core/Input';
 import Grid from '@material-ui/core/Grid';
 import Registration from "./registration";
@@ -10,14 +11,16 @@ import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
+import Tooltip from '@material-ui/core/Tooltip';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import AbsenceTable from './AbsenceTable';
 import CreateAbsence from './createAbsence.jsx';
 import AdaRequest from './adaRequest.jsx';
+import Button from '@material-ui/core/Button';
 import ChangePassword from './changePassword.jsx'
 import { ExportCSV } from './ExportCSV';
 import { ImportCSV } from './ImportCSV';
-import { DownloadTemp } from './DownloadTemp';
+import DownloadTemp from './DownloadTemp';
 import * as XLSX from 'xlsx';
 import { Provider as AlertProvider, withAlert } from "react-alert";
 import Loader from 'react-loader-spinner';
@@ -82,7 +85,15 @@ const styles = StyleSheet.create({
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { department: [], location: [], reason: [] , adaRequest: {}, changeRouter:true, isLoading: true,filters:[], uploadedabsences: React.createRef()};
+    this.state = { department: [], 
+      location: [], 
+      reason: [], 
+      adaRequest: {}, 
+      changeRouter:true, 
+      isLoading: true,
+      hovering:false,
+      filters:[],
+      uploadedabsences: React.createRef()};
 
   }
   sendFilterValue=(filters)=>{
@@ -152,8 +163,6 @@ refreshRouter=()=>{
     }, 0);
   }
 
-
-  
   componentWillUnmount() {
     window.removeEventListener('resize', this.resize);
     this.props.onRef(undefined)
@@ -173,8 +182,9 @@ let filters = this.state.filters.filter(filterValue=>{
 
 
   render() {
-    const { reason, location, department, filters, adaRequest } = this.state; //added adaRequest here
+    const { reason, location, department, filters, adaRequest, hovering } = this.state; //added adaRequest here
     return (
+
       <Router  >
         <div
                     style={{
@@ -194,15 +204,15 @@ let filters = this.state.filters.filter(filterValue=>{
                 </div>
         <Row className={css(styles.container)} style={{ background: "#f1f3f6", width: "100vw" }}>
           <SidebarComponent changeRouter={this.state.changeRouter}/>
-          <Grid container style={{ flexDirection: "column", width: "100%" }}>
+          <Grid container style={{ flexDirection: "column", width: "100%", marginBottom:"0px" }}>
             <HeaderComponent />
 
             <Route path={["/dashboard", "/dashboard/leaveRecord"]} exact render={(props) => (
               <div className={`${css(styles.content)} contents`} style={{ width: "97%" }}>
 
-                <div class="searchBar" style={{ minHeight: "9vw",height:"auto", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                <div class="searchBar" style={{ minHeight: "6vw",height:"auto", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                 
-
+                <Button variant="contained"style={{backgroundColor: '#006b6a', color:"white", marginRight:"1vw"}}> Clock-in </Button>
 
                   <Paper className={css(styles.root)} style={{ width: "56%", height: "auto",minHeigth:"3vw" }}>
 
@@ -217,13 +227,26 @@ let filters = this.state.filters.filter(filterValue=>{
                     />
                     <IconButton className={css(styles.iconButton)} >
                       <SearchIcon style={{ color: "#547795" }} />
+                      
                     </IconButton>
                     {Number(window.localStorage.getItem("isAdmin")) ? (<React.Fragment><Divider className={css(styles.divider)} orientation="vertical" />
-                      <ExportCSV csvData={this.table && this.table.excelData()} fileName={'absence_report'} /></React.Fragment>) : ""}
+                      <Tooltip title="Dowload Current Table with applied filter" placement="top" arrow>
+                        <div>                      
+                          <ExportCSV csvData={this.table && this.table.excelData()} fileName={'absence_report'} />                        </div>
+                      </Tooltip></React.Fragment>) : ""}
+
                     <Divider className={css(styles.divider)} orientation="vertical" />
-                      <ImportCSV parent={this}/>
+                      <Tooltip title="Upload your own Excel spreadsheet and add absences from there" placement="top" arrow>
+                        <div>
+                        <ImportCSV parent={this} id="importer" />
+                        </div>
+                      </Tooltip>
                       <Divider className={css(styles.divider)} orientation="vertical" />
-                      <DownloadTemp/>
+                      <Tooltip title="Download the template for correct upload" placement="top" arrow>
+                        <div>
+                          <DownloadTemp/>
+                        </div>
+                      </Tooltip>
                   </Paper>
                   <Grid container style={{ marginTop: "10px", minWidth: "56%", width: "auto", display:(filters.length)? "flex":"none", alignItems: "center" }}>
                     <span style={{ fontSize: "14px", color: "#788195", marginBottom: "2px" }} class="filterDisplayMobile">{`Filters ${(filters.length==1)?"(1 result):":"("+filters.length+"results):"}`}</span>
@@ -235,21 +258,23 @@ let filters = this.state.filters.filter(filterValue=>{
                   }
                     <span className="filterDisplayMobile breadCrumb" onClick={()=>{this.table.clearAllfilter();this.setState({filters:[]})}} style={{ marginLeft: "45px", fontSize: "14px", color: "light-grey" }}>Clear all</span>
                   </Grid>
-                  </div>
-                
-                            
-                
+
+                  </div> 
                 <AbsenceTable  decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} sendFilterValue={this.sendFilterValue} onRef={ref => (this.table = ref)}  reason={reason} department={department} location={location}  apiCall={this.apiCall} />
+                  
+                
+
               </div>)} />
             <Route path="/dashboard/registration"  render={() => (<Registration decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} apiCall={this.apiCall} department={department} location={location} />)} />
             <Route path="/dashboard/createAbsence"  render={(props) => (<CreateAbsence decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} refreshRouter={this.refreshRouter}  props={props}  reason={reason} apiCall={this.apiCall} />)} />
             {/* added routing for ada request */}
             <Route path="/dashboard/ada"  render={(props) => (<AdaRequest decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} refreshRouter={this.refreshRouter}  props={props}  adaRequest={adaRequest} apiCall={this.apiCall} />)} />
             <Route path="/dashboard/changePassword"  render={() => (<ChangePassword decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} apiCall={this.apiCall}  />)} />
-
+                
           </Grid>
+                
         </Row>
-        
+  <FooterComponent/>  
       </Router>
     );
   }
