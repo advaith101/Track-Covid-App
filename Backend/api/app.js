@@ -26,6 +26,7 @@ var usersRouter = require('./routes/userroutes');
 var indexRouter = require('./routes/index');
 var absenceRouter = require('./routes/absenceroutes');
 var commonRouter = require('./routes/commonroutes');
+var timestampRouter = require('./routes/timestamproutes');
 
 app.use(express.json({
   limit: '50mb'
@@ -46,6 +47,7 @@ app.use('/',  indexRouter);
 app.use(tokenChecker);
 app.use('/absence', absenceRouter);
 app.use('/common', commonRouter);
+app.use('/timestamp', timestampRouter);
 
 // error handler
 if (app.get('env') === 'development') {

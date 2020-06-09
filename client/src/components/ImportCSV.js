@@ -42,7 +42,8 @@ export const ImportCSV = ({parent}) => {
         }
       }
         reader.readAsArrayBuffer(csvData);
-    }  
+    }
+    window.location.reload(false);  
   }
 
     return (

@@ -92,10 +92,8 @@ class Dashboard extends React.Component {
       changeRouter:true, 
       isLoading: true,
       filters:[],
-      userActivityTimeout: null,
-      iNACTIVE_USER_TIME_THRESHOLD: 2000,
-      uSER_ACTIVITY_THROTTLER_TIME: 1200,
-      userActivityTimeoutThrottlerTimeout: null,
+      iNACTIVE_USER_TIME_THRESHOLD: 30000,
+      userActivityTimeout:null,
       uploadedabsences: React.createRef()};
 
   }
@@ -106,7 +104,9 @@ refreshRouter=()=>{
   this.setState({changeRouter:!this.state.changeRouter})
 }
   apiCall = (url, method, data, succMessage,errMessage) => {
-    this.setState({isLoading: true});
+    if(url != "timestamp/setonlinestatusonline") {
+      this.setState({isLoading: true});
+    }
     return new Promise((resolve, reject) => {
       var bearer = 'Bearer ' + window.localStorage.getItem("bearer_token");
       data["companyID"] = Number(window.localStorage.getItem("CompanyID"));
@@ -155,34 +155,22 @@ refreshRouter=()=>{
   resetUserActivityTimeout() {
   clearTimeout(this.state.userActivityTimeout);
   this.state.userActivityTimeout = setTimeout(() => {
-    alert("YOU GONNA GET FUCKING LOGGED")
+    this.Onlinestatus();
   }, this.state.iNACTIVE_USER_TIME_THRESHOLD);
     
   }
 
-  userActivityTimeout() {
-    if(!this.state.userActivityThrottlerTimeout) {
-      this.state.userActivityThrottlerTimeout = setTimeout(() => {
-        this.resetUserActivityTimeout();
-
-        clearTimeout(this.state.userActivityTimeoutThrottlerTimeout);
-        this.setState({
-          userActivityTimeoutThrottlerTimeout:null
-        })
-      }, this.state.uSER_ACTIVITY_THROTTLER_TIME);
-    }
-  } 
-  activateActivityTracker() {
-  window.addEventListener("mousemove", this.resetUserActivityTimeout());
-  window.addEventListener("scroll", this.resetUserActivityTimeout());
-  window.addEventListener("keydown", this.resetUserActivityTimeout());
-  window.addEventListener("resize", this.resetUserActivityTimeout());
-}
+  Onlinestatus() {
+    this.resetUserActivityTimeout();
+    var post_data = {
+      "userid":window.localStorage.getItem("userId")
+    };
+    this.apiCall("timestamp/setonlinestatusonline", "POST", post_data,"updated online status!","offline!");
+  }
 
   componentDidMount() {
     this.props.onRef(this);
     window.addEventListener('resize', this.resize);
-    this.activateActivityTracker();
     setTimeout(() => {
       this.apiCall("common/getdepartments", "POST", {}, "").then(department => this.setState({ department }))
     }, 0);
@@ -192,6 +180,7 @@ refreshRouter=()=>{
     setTimeout(() => {
       this.apiCall("common/getreasons", "POST", {}, "").then(reason => this.setState({ reason }))
     }, 0);
+    this.resetUserActivityTimeout();
   }
 
   componentWillUnmount() {
