@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
         left: 0
     }
 });
+function SidebarComponent({ changeRouter, dashboard}) {
 
-function SidebarComponent({ changeRouter }) {
     const [expanded, setExpanded] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const input1 = useRef(null);
@@ -190,7 +190,8 @@ function SidebarComponent({ changeRouter }) {
 
                                 </li>
                             </NavLink>
-                            <div onClick={() => { window.location.href = "/";  window.localStorage.setItem("CompanyID","")
+                            <div onClick={() => { dashboard.offlineStatus();
+                                window.location.href = "/";  window.localStorage.setItem("CompanyID","")
                                 window.localStorage.setItem("refresh_token", "")
                                 window.localStorage.setItem("bearer_token","")
                                 window.localStorage.setItem("isAdmin", "");

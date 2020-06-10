@@ -94,7 +94,11 @@ class Dashboard extends React.Component {
       filters:[],
       iNACTIVE_USER_TIME_THRESHOLD: 30000,
       userActivityTimeout:null,
+      online:false,
       uploadedabsences: React.createRef()};
+      this.setOnline.bind(this);
+      this.offlineStatus.bind(this);
+
 
   }
   sendFilterValue=(filters)=>{
@@ -155,17 +159,34 @@ refreshRouter=()=>{
   resetUserActivityTimeout() {
   clearTimeout(this.state.userActivityTimeout);
   this.state.userActivityTimeout = setTimeout(() => {
-    this.Onlinestatus();
+    this.onlineStatus();
   }, this.state.iNACTIVE_USER_TIME_THRESHOLD);
     
   }
 
-  Onlinestatus() {
+  setOnline() {
+     this.setState({online:true})
+    this.onlineStatus();
+  }
+
+  onlineStatus() {
+
     this.resetUserActivityTimeout();
     var post_data = {
-      "userid":window.localStorage.getItem("userId")
+      "userid":window.localStorage.getItem("userId"),
+      "online": 1
     };
     this.apiCall("timestamp/setonlinestatusonline", "POST", post_data,"updated online status!","offline!");
+  }
+
+  offlineStatus() {
+    this.setState({online:false})
+    clearTimeout(this.state.userActivityTimeout);
+    var post_data = {
+      "userid":window.localStorage.getItem("userId"),
+      "online": 0
+    };
+    this.apiCall("timestamp/setonlinestatusonline", "POST", post_data,"successfully clocked out","offline!");
   }
 
   componentDidMount() {
@@ -180,7 +201,7 @@ refreshRouter=()=>{
     setTimeout(() => {
       this.apiCall("common/getreasons", "POST", {}, "").then(reason => this.setState({ reason }))
     }, 0);
-    this.resetUserActivityTimeout();
+    
   }
 
   componentWillUnmount() {
@@ -203,6 +224,14 @@ let filters = this.state.filters.filter(filterValue=>{
 
   render() {
     const { reason, location, department, filters, adaRequest, hovering } = this.state; //added adaRequest here
+    let clockbutton;
+    if(!this.state.online) {
+        clockbutton= <Button variant="contained"style={{backgroundColor: '#006b6a', color:"white", marginRight:"1vw"}}
+                  onClick={() => this.setOnline()}> Clock-in </Button>
+    } else {
+        clockbutton= <Button variant="contained"style={{backgroundColor: '#006b6a', color:"white", marginRight:"1vw"}}
+                  onClick={() =>  this.offlineStatus()}> Clock-out </Button>
+    }
     return (
 
       <Router  >
@@ -223,7 +252,7 @@ let filters = this.state.filters.filter(filterValue=>{
                 
                 </div>
         <Row className={css(styles.container)} style={{ background: "#f1f3f6", width: "100vw" }}>
-          <SidebarComponent changeRouter={this.state.changeRouter}/>
+          <SidebarComponent changeRouter={this.state.changeRouter} dashboard={this}/>
           <Grid container style={{ flexDirection: "column", width: "100%", marginBottom:"0px" }}>
             <HeaderComponent />
 
@@ -232,7 +261,7 @@ let filters = this.state.filters.filter(filterValue=>{
 
                 <div class="searchBar" style={{ minHeight: "6vw",height:"auto", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                 
-                <Button variant="contained"style={{backgroundColor: '#006b6a', color:"white", marginRight:"1vw"}}> Clock-in </Button>
+                {clockbutton}
 
                   <Paper className={css(styles.root)} style={{ width: "56%", height: "auto",minHeigth:"3vw" }}>
 

@@ -12,4 +12,13 @@ router.post('/setOnlineStatusOnline', async function (req, res) {
   res.status(200).json(response);
 });
 
+router.post('/getOnlineStatus', async function (req, res) {
+   await timestampMethods.setOnlineStatusOnline(req.body);
+  const response = {
+    "status": "ok",
+    // "data": result      
+  }
+  res.status(200).json(response);
+});
+
 module.exports = router;
