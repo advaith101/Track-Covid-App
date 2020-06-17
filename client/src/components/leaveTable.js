@@ -6,31 +6,30 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-material.css";
 import 'typeface-roboto';
-import Brightness1Icon from '@material-ui/icons/Brightness1';
+import buttonCellRenderer from './buttonCellRenderer';
 
-class AbsenceTable extends Component {
+class LeaveTable extends Component {
     constructor(props) {
         super(props);
-        this.reasonValue = this.props.reason.data && this.props.reason.data.map(value => value.Name);
-        this.leaveReasonfilterValue = [];
-        this.absenceDatefilterValue = [];
-        this.namefilterValue = [];
-        this.departmentfilterValue = [];
-        this.locationfilterValue = [];    
-        this.isCurrentfilterValue = [];    
     }
 
 
     state = {
         header : [
-            { headerName: "Name", field: "name", cellRendererFramework: withIcon, editable:  false},
-            { headerName: "Online", field: "status", cellRendererFramework: withIcon, editable:  false}
+            { headerName: "Name", field: "name", editable:  false},
+            { headerName: "Online", field: "status", editable:  false, cellRenderer:buttonCellRenderer},
+            { headerName: "Department", field: "department", editable:  false},
+            { headerName: "Location", field: "location", editable:  false}
 
         ],
+
         viewModels: [], // these are to be kept as our reset viewModels, do not modify
         filteredViewModels: [],
+            components: {
+        'buttonCellRenderer': buttonCellRenderer
+    	},
         defaultColDef: {
-            editable: true,
+            editable: false,
             sortable: true,
             flex: 1,
             minWidth: 100,
@@ -44,7 +43,6 @@ class AbsenceTable extends Component {
     }
 
     componentDidMount() {
-        this.props.onRef(this);
         // if(Number(window.localStorage.getItem("isAdmin")))
         // {
         //     let header = JSON.parse(JSON.stringify(this.state.header));
@@ -60,28 +58,36 @@ class AbsenceTable extends Component {
     }
 
     componentWillUnmount() {
-        this.props.onRef(undefined)
     }
 
-    createViewModels() {
-    	post_data = {
 
+    //This attempts to get the values needed for the table and decrypts Name
+    createViewModels() {
+    	 var post_data = {
+    		"companyid":window.localStorage.getItem("CompanyID")
     	}
-        var url = "timestamp/getOnlineStatus";
+     	var url = "timestamp/getOnlineStatus";
+
         this.props.apiCall(url, "POST", post_data, "")
             .then(res => {
-                const data = res.data;
+                const data = res.data[0];
+                console.log(data)
                 var filterData = data.map((viewModel) => {
                     return {
-                        "name":this.props.decryptByDESModeCBC(viewModel.name), 
-                        "status":viewModel.status
+                        "name":this.props.decryptByDESModeCBC(viewModel.Name),
+                        "status":viewModel.Status,
+                        "location": viewModel.locname,
+                        "department": viewModel.depname
+
+
                     }
                 })
-                this.setState({ viewModels: data, filteredViewModels: JSON.parse(JSON.stringify(filterData)) });
+                this.setState({ viewModels : data, filteredViewModels: JSON.parse(JSON.stringify(filterData)) });
 
             }).catch(res => console.log(res));
          }
 
+    //returns table with all of the necessary components and resizing
     adminTable() {
         return (
             <Fragment>
@@ -103,15 +109,17 @@ class AbsenceTable extends Component {
         params.api.sizeColumnsToFit();
       });
         }); }}
-                        gridOptions={{ rowHeight: 40, headerHeight: 40 }}
+                        gridOptions={{ rowHeight: 40, headerHeight: 40,}}
                         columnDefs={this.state.header}
                         rowData={this.state.filteredViewModels}
                         paginationAutoPageSize={true}
                         singleClickEdit={true}
                         pagination={true}
+                        componets={this.state.components}
                         defaultColDef={this.state.defaultColDef}
                         deleteAbsence={this.deleteAbsence}
                         suppressHorizontalScroll={true}
+
 
                     ></AgGridReact>
                 </div>
@@ -124,7 +132,7 @@ class AbsenceTable extends Component {
     }
 
     render() {
-        return (<Container id="resizemeplease" style={{ width: "auto", marginTop: "10px" }}>
+        return (<Container id="resizemeplease" style={{ width: "90%", marginTop: "10px" }}>
             {this.tableForType()}
         </Container>)
 
@@ -133,5 +141,5 @@ class AbsenceTable extends Component {
 
 }
 
-export default AbsenceTable;
-}
+
+export default LeaveTable;

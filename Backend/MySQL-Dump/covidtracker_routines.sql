@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
--- Host: localhost    Database: absencetracker
+-- Host: localhost    Database: covidtracker
 -- ------------------------------------------------------
--- Server version	8.0.17
+-- Server version	8.0.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,17 +14,13 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
 
 --
--- GTID state at the beginning of the backup 
+-- Dumping events for database 'covidtracker'
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '';
-
 --
--- Dumping routines for database 'absencetracker'
+-- Dumping routines for database 'covidtracker'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `FilterAbsence` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -36,7 +32,7 @@ SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '';
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE   PROCEDURE `FilterAbsence`(In CompanyIDIn int,In EmailIn varchar(8000), in LocationIDIn int,
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FilterAbsence`(In CompanyIDIn int,In EmailIn varchar(8000), in LocationIDIn int,
 In DepartmentIDIn int,In ReasonIDin int,In IsAbsentIn tinyint,In IsAdminIn tinyint )
 BEGIN               
              
@@ -61,6 +57,28 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `getEmployees` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getEmployees`(in CompanyIdin int)
+BEGIN
+SELECT users.Name, users.Status, departments.Name as depname, locations.Name as locname
+from users,departments, locations
+where users.companyID=CompanyIdin and users.IsActive=1 and users.LocationID=locations.locationID
+and users.DepartmentID=departments.DepartmentID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `InsertJWtToken` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -71,7 +89,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE   PROCEDURE `InsertJWtToken`(In TokenIn varchar(1000), in RefreshTokenIn varchar(1000),In UserIDIn int, TokenDataIn json )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertJWtToken`(In TokenIn varchar(1000), in RefreshTokenIn varchar(1000),In UserIDIn int, TokenDataIn json )
 BEGIN               
              
 if (select count(*) from jwttokens where UserID=UserIDIn and IsActive=1) >0 then  
@@ -97,7 +115,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE   PROCEDURE `InsertorUpdateAbsence`(In AbsenceIDIn int,In CompanyIDIn int, In EmailIn varchar(8000), in StartDateIn date,In EndDateIn Date,in ReasonIDin int,in IsCurrentIn tinyint,
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertorUpdateAbsence`(In AbsenceIDIn int,In CompanyIDIn int, In EmailIn varchar(8000), in StartDateIn date,In EndDateIn Date,in ReasonIDin int,in IsCurrentIn tinyint,
 in IsProcessedIn tinyint,in CreatedByIn int,in NameIn text )
 BEGIN      
       
@@ -119,6 +137,38 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `InsertorUpdateClockIn` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertorUpdateClockIn`(
+in updateorinsertin boolean,
+in ClockedInIn datetime, 
+in ClockedOutin datetime,
+in UserIDIn int,
+ in companyIDIn int)
+BEGIN
+if(updateorinsertin) then
+	insert into clockedintimes (ClockedIn, ClockedOut, UserID, companyID)
+ values
+ (ClockedInIn,ClockedOutin,UserIDIn,companyIDIn);
+ else
+	UPDATE clockedtimes SET ClockedOut=ClockedOutin
+        WHERE UserID=UserID AND  companyID=companyIDIn order by ClockedIn desc
+        limit 1;
+	end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `ValidateLogin` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -129,7 +179,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `ValidateLogin`(In UserEmailIn varchar(8000), in PasswordIn text, in CompanyIDin int )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ValidateLogin`(In UserEmailIn varchar(8000), in PasswordIn text, in CompanyIDin int )
 BEGIN                
        Set @UserID=0; Set @UserName=''; Set @IsAdmin=0;   Set @CompanyID=0;
 if (select count(*) from users where email = UserEmailIn and Password = PasswordIn and CompanyID=CompanyIDin and IsActive=1) >0 then            
@@ -144,7 +194,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -155,4 +204,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-28  5:41:45
+-- Dump completed on 2020-06-16 20:19:40

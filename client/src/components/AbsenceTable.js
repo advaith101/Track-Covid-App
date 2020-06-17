@@ -16,18 +16,20 @@ class AbsenceTable extends Component {
         this.namefilterValue = [];
         this.departmentfilterValue = [];
         this.locationfilterValue = [];    
-        this.isCurrentfilterValue = [];    
+        this.isCurrentfilterValue = [];
+        this.reasonscouldleave = [];
+
     }
 
 
     state = {
+            
         header : [
             { headerName: "Name", field: "name", cellRendererFramework: withIcon, editable:  false},
             {
                 headerName: "Leave Reason", field: "leavereason", cellEditor: "select", editable:function(value){
             if(value.data.isCurrent=="True")return true;else return false;}, cellEditorParams: {
-                    // values: this.reasonValue   //this is not working: reasonValue seems to be undefined. I fixed it for now below:
-                    values: ['EE Quarantine - not sick', 'EE Quarantine - sick', 'Other Quarantine - not sick', 'Other Quarantine - sick', 'School/Business Closure']
+                    values: []
                 }
             },
             { headerName: "Date of Absence", field: "dateOfAbsence", editable: false }, //need to make this editable only if absence is current, and need to make it work in backend.
@@ -50,6 +52,7 @@ class AbsenceTable extends Component {
             filter: true,
             resizable: true,
         }
+
     }
 
     sizeToFit() {
@@ -75,8 +78,25 @@ class AbsenceTable extends Component {
     componentWillUnmount() {
         this.props.onRef(undefined)
     }
+    updateReasons() {
+        var post_data = { "companyID":window.localStorage.getItem("CompanyID") };
+        var url = "common/GetReasons";
+        var updatedreasons = [];
+         (this.props.apiCall(url, "POST", post_data, "")
+            .then(res => {
+                console.log(res.data);
+                for (var i = res.data.length - 1; i >= 0; i--) {
+                    this.reasonscouldleave.push(res.data[i].Name);
+                     console.log(this.reasonscouldleave);
+         }
+            }));
 
+
+         console.log(this.reasonscouldleave);
+    }
     createViewModels() {
+        this.updateReasons();
+        this.state.header[1].cellEditorParams.values = this.reasonscouldleave;
         var post_data = { "email":this.props.encryptByDESModeCBC( window.localStorage.getItem("email")) };
         var url = Number(window.localStorage.getItem("isAdmin")) ? "absence/getallabsence" : "absence/getabsence";
         this.props.apiCall(url, "POST", post_data, "")

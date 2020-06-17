@@ -1,13 +1,36 @@
 var timestampMethods = {
     setOnlineStatusOnline : async function (postData) {
       var sql = `UPDATE users
-            SET Status =${postData.online}  WHERE UserID = ${postData.userid} `;
+            SET Status =${postData.online}  WHERE userID = ${postData.userId} `;
       const result = await dbConnection.query(sql);
-    }
+      return result;
+    },
     
     getOnlineStatus : async function (postData) {
-      var sql = `SELECT Name, Status FROM users WHERE UserID = ${postData.userid} `;
+      var sql = `CALL getEmployees(${postData.companyID})`;
       const result = await dbConnection.query(sql);
+      return result[0];
+    },
+
+      addClockin : async function (postData) {
+        var sql = "CALL InsertorUpdateClockIn(true, NOW(), null, "
+        + postData.userId
+        + ","
+        + postData.companyID 
+        + ") ";
+        const result = await dbConnection.query(sql);
+        return result;
+    },
+
+      addClockOut : async function (postData) {
+        var sql = "CALL InsertorUpdateClockIn(false,"
+        + ", null, NOW()"
+        + postData.userId
+        + ","
+        + postData.companyID 
+        + ") ";
+        const result = await dbConnection.query(sql);
+        return result;
     }
 };
 

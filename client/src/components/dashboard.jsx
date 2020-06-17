@@ -21,6 +21,7 @@ import ChangePassword from './changePassword.jsx'
 import { ExportCSV } from './ExportCSV';
 import { ImportCSV } from './ImportCSV';
 import DownloadTemp from './DownloadTemp';
+import LeaveTable from './LeaveTable'
 import * as XLSX from 'xlsx';
 import { Provider as AlertProvider, withAlert } from "react-alert";
 import Loader from 'react-loader-spinner';
@@ -166,27 +167,37 @@ refreshRouter=()=>{
 
   setOnline() {
      this.setState({online:true})
+     
+     var post_data = {
+       "userId":window.localStorage.getItem("userId"),
+       "companyID":window.localStorage.getItem("companyID"),
+       
+     };
+     this.apiCall("timestamp/addClockin", "POST", post_data,"Clocked In!","error");
     this.onlineStatus();
+
   }
 
   onlineStatus() {
 
     this.resetUserActivityTimeout();
     var post_data = {
-      "userid":window.localStorage.getItem("userId"),
-      "online": 1
+      "userId":window.localStorage.getItem("userId"),
+      "companyID":window.localStorage.getItem("companyID"),
+      "online": 2,
     };
-    this.apiCall("timestamp/setonlinestatusonline", "POST", post_data,"updated online status!","offline!");
+    this.apiCall("timestamp/setonlinestatusonline", "POST", post_data,"updated online status!","failed!!");
   }
 
   offlineStatus() {
     this.setState({online:false})
     clearTimeout(this.state.userActivityTimeout);
     var post_data = {
-      "userid":window.localStorage.getItem("userId"),
-      "online": 0
+      "userId":window.localStorage.getItem("userId"),
+      "companyID": window.localStorage.getItem("CompanyID"),
     };
-    this.apiCall("timestamp/setonlinestatusonline", "POST", post_data,"successfully clocked out","offline!");
+    this.apiCall("timestamp/addClockOut", "POST", post_data,"successfully clocked out","offline!");
+
   }
 
   componentDidMount() {
@@ -319,7 +330,7 @@ let filters = this.state.filters.filter(filterValue=>{
             {/* added routing for ada request */}
             <Route path="/dashboard/ada"  render={(props) => (<AdaRequest decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} refreshRouter={this.refreshRouter}  props={props}  adaRequest={adaRequest} apiCall={this.apiCall} />)} />
             <Route path="/dashboard/changePassword"  render={() => (<ChangePassword decryptByDESModeCBC={this.props.decryptByDESModeCBC} encryptByDESModeCBC={this.props.encryptByDESModeCBC} apiCall={this.apiCall}  />)} />
-                
+            <Route path="/dashboard/clockedData"  render={() => (<LeaveTable decryptByDESModeCBC={this.props.decryptByDESModeCBC} props={this.props} apiCall={this.apiCall}/>) } />
           </Grid>
                 
         </Row>

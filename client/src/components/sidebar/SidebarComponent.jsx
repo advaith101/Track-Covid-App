@@ -173,8 +173,8 @@ function SidebarComponent({ changeRouter, dashboard}) {
                                 <li class="ant-menu-item" id="clockedData" role="menuitem" style={{ paddingLeft: "24px" }}>
 
                                     <span class="isoMenuHolder" style={{ color: "inherit" }}>
-                                        <ion-icon class="ion" name="time"></ion-icon>
-                                        <span class="nav-text"><span>Clocked In Stuff</span></span>
+                                        <ion-icon class="ion" name="analytics"></ion-icon>
+                                        <span class="nav-text"><span>Employee Activity</span></span>
                                     </span>
 
                                 </li>
