@@ -31,6 +31,13 @@ var timestampMethods = {
         + ") ";
         const result = await dbConnection.query(sql);
         return result;
+    },
+
+    getActivity : async function (postData) {
+        var sql = `CALL getActivity(${postData.companyID}, ${postData.UserID})`
+        const result = await dbConnection.query(sql);
+        return result[0][0];
+
     }
 };
 

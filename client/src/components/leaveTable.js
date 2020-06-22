@@ -1,12 +1,16 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, useState } from 'react';
 import { Container} from 'reactstrap';
-import DeleteIcon from '@material-ui/icons/Delete';
+import AssessmentIcon from '@material-ui/icons/Assessment';
 import "../App.css";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-material.css";
 import 'typeface-roboto';
-import buttonCellRenderer from './buttonCellRenderer';
+import onlineCellRenderer from './onlineCellRenderer';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import rd3 from 'react-d3-library';
+import ActivityWindow from './ActivityWindow';
 
 class LeaveTable extends Component {
     constructor(props) {
@@ -15,9 +19,11 @@ class LeaveTable extends Component {
 
 
     state = {
+        data:{},
+        showModal:false,
         header : [
-            { headerName: "Name", field: "name", editable:  false},
-            { headerName: "Online", field: "status", editable:  false, cellRenderer:buttonCellRenderer},
+            { headerName: "Name", field: "name", editable:  false, cellRendererFramework: withIcon},
+            { headerName: "Online", field: "status", editable:  false, cellRenderer: onlineCellRenderer},
             { headerName: "Department", field: "department", editable:  false},
             { headerName: "Location", field: "location", editable:  false}
 
@@ -26,7 +32,7 @@ class LeaveTable extends Component {
         viewModels: [], // these are to be kept as our reset viewModels, do not modify
         filteredViewModels: [],
             components: {
-        'buttonCellRenderer': buttonCellRenderer
+        'onlineCellRenderer': onlineCellRenderer,
     	},
         defaultColDef: {
             editable: false,
@@ -71,13 +77,14 @@ class LeaveTable extends Component {
         this.props.apiCall(url, "POST", post_data, "")
             .then(res => {
                 const data = res.data[0];
-                console.log(data)
+                console.log(data);
                 var filterData = data.map((viewModel) => {
                     return {
                         "name":this.props.decryptByDESModeCBC(viewModel.Name),
                         "status":viewModel.Status,
                         "location": viewModel.locname,
-                        "department": viewModel.depname
+                        "department": viewModel.depname,
+                        "id": viewModel.UserID
 
 
                     }
@@ -88,7 +95,7 @@ class LeaveTable extends Component {
          }
 
     //returns table with all of the necessary components and resizing
-    adminTable() {
+    leaveTable() {
         return (
             <Fragment>
                 <div
@@ -117,7 +124,7 @@ class LeaveTable extends Component {
                         pagination={true}
                         componets={this.state.components}
                         defaultColDef={this.state.defaultColDef}
-                        deleteAbsence={this.deleteAbsence}
+                        createChart={this.createChart}
                         suppressHorizontalScroll={true}
 
 
@@ -128,13 +135,31 @@ class LeaveTable extends Component {
     }
 
     tableForType() {
-        return this.adminTable();
+        return this.leaveTable();
     }
+createChart = (id) => {
+    console.log(id);
+    console.log("createChart is being called")
+     var post_data = { "UserID": id,
+                        "companyID": window.localStorage.getItem("CompanyID") 
+                    };
+            console.log(post_data);
+        this.props.apiCall("timestamp/getActivity", "POST", post_data, "Sucess!!","Failure!!!").then(res => {
+            
+            this.setState({showModal:true});
+            this.setState({data:res.data});
+            console.log(res.data);
+        });
+    }
+
 
     render() {
         return (<Container id="resizemeplease" style={{ width: "90%", marginTop: "10px" }}>
             {this.tableForType()}
+           <ActivityWindow props={this.props} showstate={this.state.showModal} action={() => this.setState({showModal:false})} data={this.state.data}>
+             </ActivityWindow>
         </Container>)
+
 
 
     }
@@ -143,3 +168,17 @@ class LeaveTable extends Component {
 
 
 export default LeaveTable;
+
+
+class withIcon extends Component {
+    constructor(props) {
+        super(props)
+    }
+    render() {
+        return (
+            <div class="encloser">
+                <AssessmentIcon onClick={(e) => { e.stopPropagation(); this.props.agGridReact.props.createChart(this.props.data.id);}} class={"tableDeleteIcon"} style={{ marginRight: "10px", cursor: "pointer", color:"#788195" }} /> {this.props.value}
+            </div>
+        )
+    }
+}

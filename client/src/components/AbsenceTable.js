@@ -84,15 +84,10 @@ class AbsenceTable extends Component {
         var updatedreasons = [];
          (this.props.apiCall(url, "POST", post_data, "")
             .then(res => {
-                console.log(res.data);
                 for (var i = res.data.length - 1; i >= 0; i--) {
                     this.reasonscouldleave.push(res.data[i].Name);
-                     console.log(this.reasonscouldleave);
          }
             }));
-
-
-         console.log(this.reasonscouldleave);
     }
     createViewModels() {
         this.updateReasons();
@@ -102,6 +97,7 @@ class AbsenceTable extends Component {
         this.props.apiCall(url, "POST", post_data, "")
             .then(res => {
                 const data = res.data;
+                console.log(data);
                 var filterData = data.map((viewModel) => {
                     return {
                         "name":this.props.decryptByDESModeCBC(viewModel.name), "leavereason": viewModel.reasonName, "dateOfAbsence": viewModel.dateOfAbsence,
@@ -283,7 +279,7 @@ class withIcon extends Component {
     render() {
         return (
             <div class="encloser">
-                <DeleteIcon onClick={(e) => { e.stopPropagation(); this.props.agGridReact.props.deleteAbsence(this.props.data.id); }} class={"tableDeleteIcon"} style={{ marginRight: "10px", cursor: "pointer", color:"#788195" }} /> {this.props.value}
+                <DeleteIcon onClick={(e) => { e.stopPropagation(); this.props.agGridReact.props.deleteAbsence(this.props.data.id);}} class={"tableDeleteIcon"} style={{ marginRight: "10px", cursor: "pointer", color:"#788195" }} /> {this.props.value}
             </div>
         )
     }

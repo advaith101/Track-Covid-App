@@ -4,7 +4,7 @@ import statusonline from '../assets/statusonline.png';
 import statusoffline from '../assets/statusoffline.png';
 import statusidle from '../assets/statusidle.png';
 
-export default class buttonCellRenderer {
+export default class onlineCellRenderer {
   constructor() {
   }
 // init method gets the details of the cell to be renderer
@@ -26,9 +26,10 @@ switch (params.value) {
   case 0:
     var offline = document.createElement('img');
     offline.src = statusoffline;
-    this.eGui.appendChild(offline);;
+    this.eGui.appendChild(offline);
     break;
   }
+
 }
 getGui() {
   return this.eGui;

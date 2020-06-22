@@ -39,4 +39,14 @@ router.post('/addClockOut', async function (req, res) {
   res.status(200).json(response);
 });
 
+
+router.post('/getActivity', async function (req, res) {
+  const result = await timestampMethods.getActivity(req.body);
+  const response = {
+    "status": "ok",
+     "data": result      
+  }
+  res.status(200).json(response);
+  });
+
 module.exports = router;
