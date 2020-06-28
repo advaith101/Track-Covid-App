@@ -292,7 +292,8 @@ let filters = this.state.filters.filter(filterValue=>{
                     {Number(window.localStorage.getItem("isAdmin")) ? (<React.Fragment><Divider className={css(styles.divider)} orientation="vertical" />
                       <Tooltip title="Dowload Current Table with applied filter" placement="top" arrow>
                         <div>                      
-                          <ExportCSV csvData={this.table && this.table.excelData()} fileName={'absence_report'} />                        </div>
+                          <ExportCSV csvData={this.table && this.table.excelData()} fileName={'absence_report'} />                        
+                          </div>
                       </Tooltip></React.Fragment>) : ""}
 
                     <Divider className={css(styles.divider)} orientation="vertical" />

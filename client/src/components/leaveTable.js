@@ -9,7 +9,6 @@ import 'typeface-roboto';
 import onlineCellRenderer from './onlineCellRenderer';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import rd3 from 'react-d3-library';
 import ActivityWindow from './ActivityWindow';
 
 class LeaveTable extends Component {
@@ -93,7 +92,20 @@ class LeaveTable extends Component {
 
             }).catch(res => console.log(res));
          }
-
+    
+    createData = (id) => {
+        console.log(id);
+        console.log("createData is being called")
+     var post_data = { "UserID": id,
+                        "companyID": window.localStorage.getItem("CompanyID") 
+                    };
+        this.props.apiCall("timestamp/getActivity", "POST", post_data, "Sucess!!","Failure!!!")
+        .then(res => {
+            this.setState({data:res.data});
+            this.setState({showModal:true});
+            
+        });
+    }
     //returns table with all of the necessary components and resizing
     leaveTable() {
         return (
@@ -124,12 +136,15 @@ class LeaveTable extends Component {
                         pagination={true}
                         componets={this.state.components}
                         defaultColDef={this.state.defaultColDef}
-                        createChart={this.createChart}
+                        createData={this.createData}
                         suppressHorizontalScroll={true}
 
 
                     ></AgGridReact>
                 </div>
+                {this.state.showModal && 
+                    <ActivityWindow props={this.props} showstate={this.state.showModal} 
+                    action={() => {this.setState({showModal:false});}} data={this.state.data}/>}
             </Fragment>
         );
     }
@@ -137,27 +152,13 @@ class LeaveTable extends Component {
     tableForType() {
         return this.leaveTable();
     }
-createChart = (id) => {
-    console.log(id);
-    console.log("createChart is being called")
-     var post_data = { "UserID": id,
-                        "companyID": window.localStorage.getItem("CompanyID") 
-                    };
-            console.log(post_data);
-        this.props.apiCall("timestamp/getActivity", "POST", post_data, "Sucess!!","Failure!!!").then(res => {
-            
-            this.setState({showModal:true});
-            this.setState({data:res.data});
-            console.log(res.data);
-        });
-    }
+
 
 
     render() {
         return (<Container id="resizemeplease" style={{ width: "90%", marginTop: "10px" }}>
             {this.tableForType()}
-           <ActivityWindow props={this.props} showstate={this.state.showModal} action={() => this.setState({showModal:false})} data={this.state.data}>
-             </ActivityWindow>
+           
         </Container>)
 
 
@@ -177,7 +178,7 @@ class withIcon extends Component {
     render() {
         return (
             <div class="encloser">
-                <AssessmentIcon onClick={(e) => { e.stopPropagation(); this.props.agGridReact.props.createChart(this.props.data.id);}} class={"tableDeleteIcon"} style={{ marginRight: "10px", cursor: "pointer", color:"#788195" }} /> {this.props.value}
+                <AssessmentIcon onClick={(e) => { e.stopPropagation(); this.props.agGridReact.props.createData(this.props.data.id);}} class={"tableDeleteIcon"} style={{ marginRight: "10px", cursor: "pointer", color:"#788195" }} /> {this.props.value}
             </div>
         )
     }
