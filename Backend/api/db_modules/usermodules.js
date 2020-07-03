@@ -31,7 +31,7 @@ var userMethods = {
     var sql = `select UserID from users where email='${postData.email}' and CompanyID=${postData.companyID} and IsActive=1 `;
     const result = await dbConnection.query(sql);
     return result;
-  }
+  },
 };
 
 module.exports = userMethods;

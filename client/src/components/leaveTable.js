@@ -20,6 +20,7 @@ class LeaveTable extends Component {
     state = {
         data:{},
         showModal:false,
+        name:null,
         header : [
             { headerName: "Name", field: "name", editable:  false, cellRendererFramework: withIcon},
             { headerName: "Online", field: "status", editable:  false, cellRenderer: onlineCellRenderer},
@@ -93,8 +94,7 @@ class LeaveTable extends Component {
             }).catch(res => console.log(res));
          }
     
-    createData = (id) => {
-        console.log(id);
+    createData = (id, name) => {
         console.log("createData is being called")
      var post_data = { "UserID": id,
                         "companyID": window.localStorage.getItem("CompanyID") 
@@ -102,6 +102,7 @@ class LeaveTable extends Component {
         this.props.apiCall("timestamp/getActivity", "POST", post_data, "Sucess!!","Failure!!!")
         .then(res => {
             this.setState({data:res.data});
+            this.setState({name:name})
             this.setState({showModal:true});
             
         });
@@ -144,7 +145,8 @@ class LeaveTable extends Component {
                 </div>
                 {this.state.showModal && 
                     <ActivityWindow props={this.props} showstate={this.state.showModal} 
-                    action={() => {this.setState({showModal:false});}} data={this.state.data}/>}
+                    action={() => {this.setState({showModal:false});}} data={this.state.data}
+                    person={this.state.name}/>}
             </Fragment>
         );
     }
@@ -178,7 +180,7 @@ class withIcon extends Component {
     render() {
         return (
             <div class="encloser">
-                <AssessmentIcon onClick={(e) => { e.stopPropagation(); this.props.agGridReact.props.createData(this.props.data.id);}} class={"tableDeleteIcon"} style={{ marginRight: "10px", cursor: "pointer", color:"#788195" }} /> {this.props.value}
+                <AssessmentIcon onClick={(e) => { e.stopPropagation(); this.props.agGridReact.props.createData(this.props.data.id, this.props.data.name); }} class={"tableDeleteIcon"} style={{ marginRight: "10px", cursor: "pointer", color:"#788195" }} /> {this.props.value}
             </div>
         )
     }

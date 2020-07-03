@@ -25,6 +25,7 @@ switch (params.value) {
     break;
   case 0:
     var offline = document.createElement('img');
+    var lastseen = document.createElement('span');
     offline.src = statusoffline;
     this.eGui.appendChild(offline);
     break;

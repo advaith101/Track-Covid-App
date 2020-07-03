@@ -35,9 +35,10 @@ export const ImportCSV = ({parent}) => {
                 "email": parent.props.encryptByDESModeCBC(absences[i][0].toString()),
                 "startDate": moment(absences[i][2]).format("YYYY MM DD"),
                 "endDate":  (absences[i][3] != null)?moment(absences[i][3]).format("YYYY MM DD"):"", "reasonID": absences[i][4], "isCurrent": 1, "isProcessed": 0, 
-                "createdBy": Number(window.localStorage.getItem("userId"))
+                "createdBy": Number(window.localStorage.getItem("userId")),
+                "isCurrent":1
               };
-              //props.apiCall("absence/insertabsence", "POST", post_data,"Absence record added successfully","Failed to add absence record");
+              parent.apiCall("absence/insertabsence", "POST", post_data,"Absence record added successfully","Failed to add absence record");
           }
         }
       }

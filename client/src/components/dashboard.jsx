@@ -166,8 +166,11 @@ refreshRouter=()=>{
   }
 
   setOnline() {
+
+
      this.setState({online:true})
      
+
      var post_data = {
        "userId":window.localStorage.getItem("userId"),
        "companyID":window.localStorage.getItem("companyID"),
@@ -182,11 +185,12 @@ refreshRouter=()=>{
 
     this.resetUserActivityTimeout();
     var post_data = {
-      "userId":window.localStorage.getItem("userId"),
+      "UserID":window.localStorage.getItem("userId"),
       "companyID":window.localStorage.getItem("companyID"),
       "online": 2,
     };
-    this.apiCall("timestamp/setonlinestatusonline", "POST", post_data,"updated online status!","failed!!");
+
+    this.apiCall("timestamp/setOnlineStatus", "POST", post_data);
   }
 
   offlineStatus() {
@@ -197,7 +201,12 @@ refreshRouter=()=>{
       "companyID": window.localStorage.getItem("CompanyID"),
     };
     this.apiCall("timestamp/addClockOut", "POST", post_data,"successfully clocked out","offline!");
-
+    var post_data = {
+      "UserID":window.localStorage.getItem("userId"),
+      "companyID":window.localStorage.getItem("companyID"),
+      "online": 0,
+    };
+    this.apiCall("timestamp/setOnlineStatus", "POST", post_data);
   }
 
   componentDidMount() {
@@ -234,6 +243,7 @@ let filters = this.state.filters.filter(filterValue=>{
 
 
   render() {
+
     const { reason, location, department, filters, adaRequest, hovering } = this.state; //added adaRequest here
     let clockbutton;
     if(!this.state.online) {
@@ -271,9 +281,7 @@ let filters = this.state.filters.filter(filterValue=>{
               <div className={`${css(styles.content)} contents`} style={{ width: "97%" }}>
 
                 <div class="searchBar" style={{ minHeight: "6vw",height:"auto", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-                
                 {clockbutton}
-
                   <Paper className={css(styles.root)} style={{ width: "56%", height: "auto",minHeigth:"3vw" }}>
 
                     <IconButton className={css(styles.iconButton)} aria-label="menu">
@@ -290,24 +298,25 @@ let filters = this.state.filters.filter(filterValue=>{
                       
                     </IconButton>
                     {Number(window.localStorage.getItem("isAdmin")) ? (<React.Fragment><Divider className={css(styles.divider)} orientation="vertical" />
-                      <Tooltip title="Dowload Current Table with applied filter" placement="top" arrow>
+                      <Tooltip title="Dowload Current Table with Applied Filters" placement="top" arrow>
                         <div>                      
                           <ExportCSV csvData={this.table && this.table.excelData()} fileName={'absence_report'} />                        
                           </div>
-                      </Tooltip></React.Fragment>) : ""}
-
-                    <Divider className={css(styles.divider)} orientation="vertical" />
-                      <Tooltip title="Upload your own Excel spreadsheet and add absences from there" placement="top" arrow>
+                      </Tooltip>                  
+                      <Divider className={css(styles.divider)} orientation="vertical" />
+                      <Tooltip title="Upload an Excel SpreadSheet to add Absences" placement="top" arrow>
                         <div>
                         <ImportCSV parent={this} id="importer" />
                         </div>
                       </Tooltip>
                       <Divider className={css(styles.divider)} orientation="vertical" />
-                      <Tooltip title="Download the template for correct upload" placement="top" arrow>
+                      <Tooltip title="Download the Template for Uploading Documents" placement="top" arrow>
                         <div>
-                          <DownloadTemp/>
+                          <DownloadTemp props={this.props}/>
                         </div>
-                      </Tooltip>
+                      </Tooltip></React.Fragment>) : ""}
+
+  
                   </Paper>
                   <Grid container style={{ marginTop: "10px", minWidth: "56%", width: "auto", display:(filters.length)? "flex":"none", alignItems: "center" }}>
                     <span style={{ fontSize: "14px", color: "#788195", marginBottom: "2px" }} class="filterDisplayMobile">{`Filters ${(filters.length==1)?"(1 result):":"("+filters.length+"results):"}`}</span>

@@ -120,6 +120,6 @@ router.post('/ChangePassword', tokenChecker, async (req, res) => {
   };
   res.json(response);
 
-})
+});
 
 module.exports = router;

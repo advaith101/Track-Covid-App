@@ -1,7 +1,7 @@
 var timestampMethods = {
     setOnlineStatusOnline : async function (postData) {
       var sql = `UPDATE users
-            SET Status =${postData.online}  WHERE userID = ${postData.userId} `;
+            SET Status =${postData.online}  WHERE UserID =${postData.UserID} `;
       const result = await dbConnection.query(sql);
       return result;
     },
@@ -24,7 +24,7 @@ var timestampMethods = {
 
       addClockOut : async function (postData) {
         var sql = "CALL InsertorUpdateClockIn(false,"
-        + ", null, NOW()"
+        + "null, NOW(),"
         + postData.userId
         + ","
         + postData.companyID 

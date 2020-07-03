@@ -43,7 +43,14 @@ export default class ActivityWindow extends Component {
       for (var i = data.length - 1; i >= 0; i--) {
          hours.push(data[i].hoursworked);
        }
-
+      var clockedin = [];
+      for (var i = data.length - 1; i >= 0; i--) {
+          clockedin.push(data[i].clockin);
+      }
+      var clockedout = [];
+      for (var i = data.length - 1; i >= 0; i--) {
+          clockedout.push(data[i].clockout);
+      }
     var xScale = d3.scaleBand()
         .domain(dates)
         .rangeRound([0, width])
@@ -94,43 +101,58 @@ export default class ActivityWindow extends Component {
                         .attr("width", xScale.bandwidth())
                         .attr("y", function(d,i) { return yScale(hours[i]); })
                         .attr("height", function(d,i) { return height - yScale(hours[i]) })
-                        .on("mouseover", function() {
-                              tooltip
-                              .transition()
-                              .duration(200)
-                              .style("opacity", 1);
-                              tooltip
-                              .style("left", function(d,i) { return xScale(dates[i]) + "px"; })
-                              .style("top",  function(d,i) { return yScale(hours[i]) + "px"; })
+                        .style("fill", "#006b6a")
+                        .on("mouseover", function(d,i) {
+                              tooltip.html(
+                                 "<text style=\"font-size:20px\"> Date Clocked in: <br/>" + dates[i] + "<br/>" 
+                                + "Hours Worked: <br/>" + hours[i] + "<br />"
+                                + "Time Clocked in: <br/>" + clockedin[i] + "<br/>"
+                                + "Time Clocked out: <br/>" + clockedout[i] + "<br/></text>");
+                              tooltip.style("background-color", "#006b6a");
+                              tooltip.transition().duration(300).delay(400).style("background-color", "#212529");
+                              d3.select(this).style("fill", "#212529");
+                                
                         })
-                        .on("mouseout", function() {
-                              tooltip
-                              .transition()
-                              .duration(200)
-                              .style("opacity", 0);})
-      canvas.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left)
-      .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .style("font-size", "20")
-      .text("Hours Worked");   
-      canvas.append("text")             
-      .attr("transform",
-            "translate(" + (width/2 - 50) + " ," + 
-                           (height + 40) + ")")
-      .text("Date of Clock-In");     
-    var tooltip = d3.select("#vis-container")
-    .append("div")
-      .style("opacity", 0)
-      .attr("class", "tooltip")
-      .style("background-color", "black")
-      .style("border-radius", "5px")
-      .style("padding", "10px")
-      .style("position", "absolute")
-      .style("color", "white")
-      .text("")
+                        .on("mouseout",  function(d,i) {
+                          d3.select(this).transition().duration(300).style("fill", "#006b6a");
+                        });
+                        canvas.append("text")
+                          .attr("transform", "rotate(-90)")
+                          .attr("y", 0 - margin.left)
+                          .attr("x",0 - (height / 2))
+                          .attr("dy", "1em")
+                          .style("text-anchor", "middle")
+                          .style("font-size", "20")
+                          .text("Hours Worked");   
+                        
+                        canvas.append("text")             
+                          .attr("transform",
+                                "translate(" + (width/2 - 50) + " ," + 
+                                               (height + 40) + ")")
+                          .text("Date of Clock-In");     
+                      
+                        canvas.append("text")             
+                          .attr("transform",
+                                "translate(" + (width/2) + " ," + 
+                                               (10) + ")")
+                          .text(this.props.person)
+                          .style("font-size", "25");  
+
+                      var tooltip = d3.select("#vis-container")
+                        .append("g")
+                        .style("opacity", 1)
+                        .attr("class", "tooltip")
+                        .style("background-color", "#006b6a")
+                        .style("border-radius", "5px")
+                        .style("padding", "10px")
+                        .style("position", "absolute")
+                        .style("color", "white")
+                        .style("left", "950px")
+                        .style("top", "10px")
+                        .html( "<text style=\"font-size:20px\"> Date Clocked in: <br/><br/>" 
+                                + "Hours Worked: <br/><br />"
+                                + "Time Clocked in: <br/><br/>"
+                                + "Time Clocked out: <br/><br/></text>")
 
  
 

@@ -169,7 +169,7 @@ function SidebarComponent({ changeRouter, dashboard}) {
                                     </span>
                                 </li>
                             </NavLink>
-                            <NavLink to="/dashboard/clockedData" style={{ color: "inherit" }}>
+                            {Number(window.localStorage.getItem("isAdmin")) ? (                            <NavLink to="/dashboard/clockedData" style={{ color: "inherit" }}>
                                 <li class="ant-menu-item" id="clockedData" role="menuitem" style={{ paddingLeft: "24px" }}>
 
                                     <span class="isoMenuHolder" style={{ color: "inherit" }}>
@@ -178,7 +178,8 @@ function SidebarComponent({ changeRouter, dashboard}) {
                                     </span>
 
                                 </li>
-                            </NavLink>
+                            </NavLink>) : ""}
+
 
                             <NavLink to="/dashboard/changePassword" style={{ color: "inherit" }}>
                                 <li class="ant-menu-item" id="changePassword" role="menuitem" style={{ paddingLeft: "24px" }}>
