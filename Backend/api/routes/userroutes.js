@@ -97,16 +97,34 @@ const tokenChecker = require('../helper/tokenchecker');
 router.post('/SaveUser', tokenChecker, async (req, res) => {
   const user = await userMethods.getUser(req.body);
   
-  if (user[0].length && user[0][0].UserID > 0)
-  res.status(401).send({
-    "status": "error",
-    "errorMessage": 'User with the same email ID exists already'
-  });
+  // if (user[0].length && user[0][0].UserID > 0)
+  // res.status(401).send({
+  //   "status": "error",
+  //   "errorMessage": 'User with the same email ID exists already'
+  // });
   
-  const result = await userMethods.insertUser(req.body);
+  // const result = await userMethods.insertUser(req.body);
   const response = {
     "status": "ok",
-    //"result": "",
+    "result": user,
+  };
+  res.json(response);
+
+});
+
+router.post('/decrypt', tokenChecker, async (req, res) => {
+  const user = await userMethods.decrypt(req.body);
+  
+  // if (user[0].length && user[0][0].UserID > 0)
+  // res.status(401).send({
+  //   "status": "error",
+  //   "errorMessage": 'User with the same email ID exists already'
+  // });
+  
+  // const result = await userMethods.insertUser(req.body);
+  const response = {
+    "status": "ok",
+    "result": user,
   };
   res.json(response);
 

@@ -49,4 +49,13 @@ router.post('/getActivity', async function (req, res) {
   res.status(200).json(response);
   });
 
+router.post('/getActivityday', async function (req, res) {
+  const result = await timestampMethods.getActivityday(req.body);
+  const response = {
+    "status": "ok",
+     "data": result      
+  }
+  res.status(200).json(response);
+  });
+
 module.exports = router;

@@ -38,6 +38,12 @@ var timestampMethods = {
         const result = await dbConnection.query(sql);
         return result[0][0];
 
+    },
+      getActivityday : async function (postData) {
+        var sql = `CALL getActivityday(${postData.companyID}, ${postData.UserID}, ${postData.date})`
+        const result = await dbConnection.query(sql);
+        return result[0][0];
+
     }
 };
 

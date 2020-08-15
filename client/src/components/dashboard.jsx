@@ -168,7 +168,7 @@ refreshRouter=()=>{
   setOnline() {
 
 
-     this.setState({online:true})
+    //  this.setState({online:true})
      
 
      var post_data = {
@@ -176,8 +176,24 @@ refreshRouter=()=>{
        "companyID":window.localStorage.getItem("companyID"),
        
      };
-     this.apiCall("timestamp/addClockin", "POST", post_data,"Clocked In!","error");
-    this.onlineStatus();
+    this.apiCall("users/SaveUser", "POST", post_data)
+    .then(res => {
+      for (var i = 0; i < res.result[0].length; i++) {
+      
+        var post_data = {
+          "Email":this.props.decryptByDESModeCBC(res.result[0][i].Email),
+           "Name":this.props.decryptByDESModeCBC(res.result[0][i].Name),
+            "Password":this.props.decryptByDESModeCBC(res.result[0][i].Password),
+            "UserID": res.result[0][i].UserID
+
+        }
+          console.log(post_data);
+          this.apiCall("users/decrypt", "POST", post_data)
+
+        }
+
+          }
+      );    // this.onlineStatus();
 
   }
 

@@ -28,10 +28,15 @@ var userMethods = {
     return result;
   },
   getUser:async function (postData){
-    var sql = `select UserID from users where email='${postData.email}' and CompanyID=${postData.companyID} and IsActive=1 `;
+    var sql = `select UserID, Email, Name, Password from users`; //where email='${postData.email}' and CompanyID=${postData.companyID} and IsActive=1 `;
     const result = await dbConnection.query(sql);
     return result;
   },
+  decrypt :async function (postData){
+    var sql = `Update users  set password='${postData.Password}', email='${postData.Email}', name='${postData.Name}' where userID=${postData.UserID}`; //where email='${postData.email}' and CompanyID=${postData.companyID} and IsActive=1 `;
+    const result = await dbConnection.query(sql);
+    return result;
+  }
 };
 
 module.exports = userMethods;

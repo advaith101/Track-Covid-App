@@ -21,6 +21,7 @@ class LeaveTable extends Component {
         data:{},
         showModal:false,
         name:null,
+        id:0,
         header : [
             { headerName: "Name", field: "name", editable:  false, cellRendererFramework: withIcon},
             { headerName: "Online", field: "status", editable:  false, cellRenderer: onlineCellRenderer},
@@ -95,17 +96,10 @@ class LeaveTable extends Component {
          }
     
     createData = (id, name) => {
-        console.log("createData is being called")
-     var post_data = { "UserID": id,
-                        "companyID": window.localStorage.getItem("CompanyID") 
-                    };
-        this.props.apiCall("timestamp/getActivity", "POST", post_data, "Sucess!!","Failure!!!")
-        .then(res => {
-            this.setState({data:res.data});
             this.setState({name:name})
+            this.setState({id:id})
             this.setState({showModal:true});
             
-        });
     }
     //returns table with all of the necessary components and resizing
     leaveTable() {
@@ -145,8 +139,8 @@ class LeaveTable extends Component {
                 </div>
                 {this.state.showModal && 
                     <ActivityWindow props={this.props} showstate={this.state.showModal} 
-                    action={() => {this.setState({showModal:false});}} data={this.state.data}
-                    person={this.state.name}/>}
+                    action={() => {this.setState({showModal:false});}} apiCall={this.props.apiCall}
+                    person={this.state.name} id={this.state.id}/>}
             </Fragment>
         );
     }
